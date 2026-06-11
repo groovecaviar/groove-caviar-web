@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demande de Devis | Groove Caviar - DJ & Événementiel Haut de Gamme</title>
-    <meta name="description" content="Planifiez votre événement d'exception sur la Côte Basque. Demande de devis sur-mesure pour prestations DJ de luxe, mariages, soirées privées et événements haut de gamme à Biarritz.">
-    
+    <meta name="description"
+        content="Planifiez votre événement d'exception sur la Côte Basque. Demande de devis sur-mesure pour prestations DJ de luxe, mariages, soirées privées et événements haut de gamme à Biarritz.">
+
     <meta property="og:type" content="website">
     <meta property="og:title" content="Demande de Devis Sur-Mesure | Groove Caviar">
-    <meta property="og:description" content="Création d'expériences sonores exclusives et sur-mesure à Biarritz et à l'international.">
-    <meta property="og:image" content="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/2026/01/logo-GC-mdq-noirorfd-512px.png">
+    <meta property="og:description"
+        content="Création d'expériences sonores exclusives et sur-mesure à Biarritz et à l'international.">
+    <meta property="og:image"
+        content="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/2026/01/logo-GC-mdq-noirorfd-512px.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script type="application/ld+json">
@@ -54,6 +60,7 @@
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
         }
+
         .baseline-luxe {
             letter-spacing: 0.25em;
         }
@@ -64,6 +71,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -74,9 +82,17 @@
             animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
 
         /* --- Interactive Components --- */
         .selection-card {
@@ -84,7 +100,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             background: rgba(255, 255, 255, 0.02);
         }
-        
+
         .selection-card:hover {
             border-color: rgba(175, 148, 83, 0.4);
             background: rgba(255, 255, 255, 0.04);
@@ -109,11 +125,13 @@
         }
     </style>
 </head>
+
 <body class="flex flex-col min-h-screen p-4 sm:p-6 md:p-8 justify-between">
 
     <header class="w-full max-w-4xl mx-auto flex justify-between items-center py-4 border-b border-white/5 opacity-80">
         <a href="links.html" class="flex items-center space-x-3 group">
-            <img src="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/2026/01/logo-GC-mdq-noirorfd-512px.png" alt="Groove Caviar" class="w-10 h-10 object-contain transition-transform group-hover:scale-105">
+            <img src="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/2026/01/logo-GC-mdq-noirorfd-512px.png"
+                alt="Groove Caviar" class="w-10 h-10 object-contain transition-transform group-hover:scale-105">
             <span class="text-xs tracking-widest font-medium uppercase hidden sm:inline-block">Groove Caviar</span>
         </a>
         <nav class="text-xs tracking-widest uppercase space-x-3">
@@ -124,39 +142,48 @@
     </header>
 
     <main class="w-full max-w-4xl mx-auto my-auto py-8 space-y-12">
-        
+
         <section class="text-center space-y-3 animate-fade-in delay-1">
             <h1 class="text-2xl sm:text-4xl font-medium tracking-wider uppercase">Votre Projet sur-mesure</h1>
             <p class="text-xs sm:text-sm text-gray-400 uppercase baseline-luxe font-light">
-                Étude personnalisée et confidentielle de votre événement <span class="serif-accent lowercase text-base tracking-normal text-[#af9453]">haut de gamme</span>
+                Étude personnalisée et confidentielle de votre événement <span
+                    class="serif-accent lowercase text-base tracking-normal text-[#af9453]">haut de gamme</span>
             </p>
         </section>
 
         <section class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 animate-fade-in delay-2">
-            
-            <button id="btn-mariage" onclick="switchForm('mariage')" class="selection-card p-6 sm:p-8 text-left rounded-none flex flex-col justify-between space-y-4 focus:outline-none active">
+
+            <button id="btn-mariage" onclick="switchForm('mariage')"
+                class="selection-card p-6 sm:p-8 text-left rounded-none flex flex-col justify-between space-y-4 focus:outline-none active">
                 <div class="space-y-1 w-full">
-                    <span class="text-[10px] tracking-widest text-[#af9453] uppercase font-semibold">Prestation Premium</span>
+                    <span class="text-[10px] tracking-widest text-[#af9453] uppercase font-semibold">Prestation
+                        Premium</span>
                     <h2 class="text-xl sm:text-2xl font-light tracking-wide uppercase">Mariages</h2>
                 </div>
                 <p class="text-xs text-gray-400 font-light leading-relaxed">
-                    Accompagnement d'exception pour votre destination wedding sur la Côte Basque ou à l'international. Répertoire sur-mesure et coordination technique absolue.
+                    Accompagnement d'exception pour votre destination wedding sur la Côte Basque ou à l'international.
+                    Répertoire sur-mesure et coordination technique absolue.
                 </p>
                 <div class="pt-2 flex items-center text-[11px] tracking-widest uppercase text-[#af9453]">
                     <span>Sélectionner</span>
-                    <span class="ml-2 transition-transform duration-300 transform translate-x-0" id="arrow-mariage">→</span>
+                    <span class="ml-2 transition-transform duration-300 transform translate-x-0"
+                        id="arrow-mariage">→</span>
                 </div>
             </button>
 
-            <button id="btn-soiree" onclick="switchForm('soiree')" class="selection-card p-6 sm:p-8 text-left rounded-none flex flex-col justify-between space-y-4 focus:outline-none">
+            <button id="btn-soiree" onclick="switchForm('soiree')"
+                class="selection-card p-6 sm:p-8 text-left rounded-none flex flex-col justify-between space-y-4 focus:outline-none">
                 <div class="space-y-1 w-full">
-                    <span class="text-[10px] tracking-widest text-[#af9453] uppercase font-semibold">Prestation Exclusive</span>
+                    <span class="text-[10px] tracking-widest text-[#af9453] uppercase font-semibold">Prestation
+                        Exclusive</span>
                     <h2 class="text-xl sm:text-2xl font-light tracking-wide uppercase">Soirées & Événements</h2>
                 </div>
                 <p class="text-xs text-gray-400 font-light leading-relaxed">
-                    Soirées privées, lancements de marques, événements corporate d'envergure ou pool parties exclusives. Identité sonore haut de gamme ajustée à votre cible.
+                    Soirées privées, lancements de marques, événements corporate d'envergure ou pool parties exclusives.
+                    Identité sonore haut de gamme ajustée à votre cible.
                 </p>
-                <div class="pt-2 flex items-center text-[11px] tracking-widest uppercase text-gray-400" id="text-arrow-soiree">
+                <div class="pt-2 flex items-center text-[11px] tracking-widest uppercase text-gray-400"
+                    id="text-arrow-soiree">
                     <span>Sélectionner</span>
                     <span class="ml-2 transition-transform duration-300 transform translate-x-0">→</span>
                 </div>
@@ -165,24 +192,18 @@
         </section>
 
         <section class="animate-fade-in delay-3 border border-white/5 bg-white/[0.01] p-2 sm:p-4 min-h-[600px]">
-            
+
             <div id="form-mariage" class="form-stage active">
-                <iframe
-                  id="JotFormIFrame-Mariage"
-                  title="Formulaire Demande Devis Mariage"
-                  src="https://form.jotform.com/241513982404050"
-                  style="width: 100%; min-height: 650px; border: none; background: transparent;"
-                  scrolling="no">
+                <iframe id="JotFormIFrame-Mariage" title="Formulaire Demande Devis Mariage"
+                    src="https://form.jotform.com/241513982404050"
+                    style="width: 100%; min-height: 650px; border: none; background: transparent;" scrolling="no">
                 </iframe>
             </div>
 
             <div id="form-soiree" class="form-stage">
-                <iframe
-                  id="JotFormIFrame-Soiree"
-                  title="Formulaire Demande Devis Soiree"
-                  src="https://form.jotform.com/241513982404050"
-                  style="width: 100%; min-height: 650px; border: none; background: transparent;"
-                  scrolling="no">
+                <iframe id="JotFormIFrame-Soiree" title="Formulaire Demande Devis Soiree"
+                    src="https://form.jotform.com/241513982404050"
+                    style="width: 100%; min-height: 650px; border: none; background: transparent;" scrolling="no">
                 </iframe>
             </div>
 
@@ -190,12 +211,14 @@
 
     </main>
 
-    <footer class="w-full max-w-4xl mx-auto pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] tracking-widest text-gray-500 uppercase">
+    <footer
+        class="w-full max-w-4xl mx-auto pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] tracking-widest text-gray-500 uppercase">
         <div>
             &copy; 2026 Groove Caviar. Tous droits réservés.
         </div>
         <div class="space-x-4">
-            <a href="https://www.instagram.com/groove.caviar" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Instagram</a>
+            <a href="https://www.instagram.com/groove.caviar" target="_blank" rel="noopener noreferrer"
+                class="hover:text-white transition-colors">Instagram</a>
             <span>•</span>
             <a href="tel:+33623625704" class="hover:text-white transition-colors">Téléphone</a>
         </div>
@@ -206,16 +229,16 @@
             // Reset active states on stage views
             document.getElementById('form-mariage').classList.remove('active');
             document.getElementById('form-soiree').classList.remove('active');
-            
+
             // Reset active states on trigger cards
             document.getElementById('btn-mariage').classList.remove('active');
             document.getElementById('btn-soiree').classList.remove('active');
 
             // Apply targeted active attributes
-            if(type === 'mariage') {
+            if (type === 'mariage') {
                 document.getElementById('form-mariage').classList.add('active');
                 document.getElementById('btn-mariage').classList.add('active');
-            } else if(type === 'soiree') {
+            } else if (type === 'soiree') {
                 document.getElementById('form-soiree').classList.add('active');
                 document.getElementById('btn-soiree').classList.add('active');
             }
@@ -223,4 +246,5 @@
     </script>
 
 </body>
+
 </html>
