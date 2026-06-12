@@ -8,7 +8,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Josefin+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -22,6 +22,13 @@
 
         .serif-title {
             font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Classe Titre Réutilisable demandée */
+        .title {
+            font-family: 'Josefin Sans', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
         }
 
         /* Effet d'apparition au scroll très fluide */
@@ -63,21 +70,18 @@
         </div>
     </header>
 
-    <section class="py-24 max-w-5xl mx-auto px-4 text-center space-y-6">
-        <span class="text-xs tracking-[0.4em] text-gray-400 uppercase font-medium block reveal active">L’excellence artistique</span>
-        <h1 class="text-5xl sm:text-7xl font-light tracking-tight text-black reveal active">
-            Nos <span class="serif-title italic font-normal text-amber-800">Services</span>
-        </h1>
-        <div class="w-12 h-[1px] bg-amber-700 mx-auto my-8 reveal active"></div>
-        <h2 class="text-xl sm:text-2xl font-light tracking-wide text-neutral-800 max-w-3xl mx-auto leading-relaxed reveal active">
-            Une expertise musicale & technique au service de l’émotion
-        </h2>
-        <p class="text-sm text-gray-500 font-light max-w-2xl mx-auto leading-loose tracking-wide reveal active">
-            GROOVE CAVIAR sublime vos événements avec une approche sur-mesure, alliant excellence artistique et maîtrise technique pour créer des moments inoubliables. Chaque prestation est pensée comme une œuvre d’art unique, où le luxe rencontre la performance.
-        </p>
+    <section class="relative h-[calc(100vh-76px)] w-full flex items-center justify-center bg-cover bg-center bg-no-repeat" style="background-image: url('Images/SERVICES-hero.webp');">
+        <div class="absolute inset-0 bg-black/45"></div>
+        
+        <div class="relative z-10 text-center px-4 reveal active">
+            <h1 class="title text-5xl sm:text-7xl md:text-8xl font-bold tracking-[0.05em] leading-none space-x-2 sm:space-x-4">
+                <span class="text-white">Nos</span>
+                <span class="text-[#AF9453] italic">Services</span>
+            </h1>
+        </div>
     </section>
 
-    <main class="w-full space-y-32 pb-32">
+    <main class="w-full space-y-32 py-32">
 
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -155,7 +159,7 @@
                     <span class="text-xs tracking-widest text-amber-800 font-medium block">04 / Identité auditive</span>
                     <h3 class="text-3xl font-light uppercase tracking-wider text-black">Design sonore</h3>
                     <div class="text-lg serif-title italic text-amber-900 border-b border-neutral-100 pb-4">
-                        “L’ADN sonore de votre marque est aussi important que son identité visuelle.”
+                        “L’ADN sonore de votre marque est aussi important que son identity visuelle.”
                     </div>
                     <div class="space-y-4 text-xs text-gray-500 font-light leading-relaxed tracking-wide">
                         <p>Vous gérez une boutique, un restaurant ou un hôtel ? Nous vous aidons à définir l’ambiance musicale de votre établissement et élaborer sa programmation sur-mesure.</p>
