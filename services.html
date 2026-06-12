@@ -31,14 +31,15 @@
             letter-spacing: 0.08em;
         }
 
-        /* Classe Spécifique pour les Titres de Sections requested */
+        /* Classe Spécifique pour les Titres de Sections - Josefin Sans Bold */
         .section-title {
             font-family: 'Josefin Sans', sans-serif;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        /* Ligne de séparation Or Éditoriale (3x plus longue : 420px) */
+        /* Ligne de séparation Or Éditoriale */
         .editorial-line {
             height: 1px;
             width: 420px;
@@ -56,11 +57,12 @@
             to { transform: scaleX(1); }
         }
 
-        /* Animation de type Slide Up au Scroll */
+        /* Animation Réglée : Plus d'amplitude et transition lissée */
         .reveal {
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1.2s cubic-bezier(0.215, 0.610, 0.355, 1), transform 1.2s cubic-bezier(0.215, 0.610, 0.355, 1);
+            transform: translateY(60px);
+            transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
         }
         .reveal.active {
             opacity: 1;
@@ -95,7 +97,7 @@
         </div>
     </header>
 
-    <section class="relative h-[calc(100vh-76px)] w-full flex items-center justify-center bg-cover bg-center bg-no-repeat" style="background-image: url('images/SERVICES-hero.webp');">
+    <section class="relative h-[calc(100vh-76px)] w-full flex items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('images/SERVICES-hero.webp');">
         <div class="absolute inset-0 bg-black/45"></div>
         
         <div class="relative z-10 text-center px-4 reveal active">
@@ -117,7 +119,7 @@
                 </div>
                 <div class="lg:col-span-6 space-y-6 lg:pl-6">
                     <span class="text-xs tracking-widest text-[#AF9453] font-semibold block uppercase">01 / La meilleure musique, bien mixée</span>
-                    <h3 class="section-title text-3xl font-light text-black">Prestation DJ</h3>
+                    <h3 class="section-title text-3xl text-black">Prestation DJ</h3>
                     <h4 class="text-sm font-medium tracking-widest text-neutral-500 uppercase">Booking DJ & Direction Artistique</h4>
                     <div class="space-y-4 text-sm text-neutral-900 font-normal leading-relaxed tracking-wide">
                         <p><strong class="text-black font-semibold">GROOVE CAVIAR</strong> accompagne vos projets en musique et propose des DJ professionnels pour tout type d’événements privés ou publics. Nous sommes là pour répondre à vos besoins en vous apportant notre savoir-faire dans l’animation musicale de vos manifestations ou de vos établissements.</p>
@@ -138,7 +140,7 @@
                 </div>
                 <div class="lg:col-span-6 lg:order-1 space-y-6 lg:pr-6">
                     <span class="text-xs tracking-widest text-[#AF9453] font-semibold block uppercase">02 / Donnez de la voix à vos événements</span>
-                    <h3 class="section-title text-3xl font-light text-black">Prestation Speaker/MC</h3>
+                    <h3 class="section-title text-3xl text-black">Prestation Speaker/MC</h3>
                     <h4 class="text-sm font-medium tracking-widest text-neutral-500 uppercase">L’Art de l’Éloquence</h4>
                     <div class="space-y-4 text-sm text-neutral-900 font-normal leading-relaxed tracking-wide">
                         <p>La dimension sonore d’un événement ne s’arrête pas à la musique. La voix est l’élément conducteur qui lie vos invités à votre message. Chez <strong class="text-black font-semibold">GROOVE CAVIAR</strong>, nous comprenons que l’animation d’un micro est un exercice de haute précision.</p>
@@ -178,7 +180,7 @@
                 </div>
                 <div class="lg:col-span-6 space-y-6 lg:pl-6">
                     <span class="text-xs tracking-widest text-[#AF9453] font-semibold block uppercase">03 / Haute-fidélité & mise en lumière adaptée</span>
-                    <h3 class="section-title text-3xl font-light text-black">Sonorisation & éclairage</h3>
+                    <h3 class="section-title text-3xl text-black">Sonorisation & éclairage</h3>
                     <h4 class="text-sm font-medium tracking-widest text-neutral-500 uppercase">L’excellence technique au service de l’émotion</h4>
                     <div class="space-y-4 text-sm text-neutral-900 font-normal leading-relaxed tracking-wide">
                         <p>La réussite d’un événement d’exception repose sur une synergie parfaite entre l’art et la technique. Pour éviter tout imprévu technique, nous investissons exclusivement dans des parcs matériels de pointe (marques leaders du marché audio et light).</p>
@@ -198,12 +200,12 @@
                 </div>
                 <div class="lg:col-span-6 lg:order-1 space-y-6 lg:pr-6">
                     <span class="text-xs tracking-widest text-[#AF9453] font-semibold block uppercase">04 / Identité auditive</span>
-                    <h3 class="section-title text-3xl font-light text-black">Design sonore</h3>
+                    <h3 class="section-title text-3xl text-black">Design sonore</h3>
                     <div class="text-lg serif-title italic text-amber-950 border-b border-neutral-100 pb-4">
-                        “L’ADN sonore de votre marque est aussi important que son identity visuelle.”
+                        “L’ADN sonore de votre marque est aussi important que son identité visuelle.”
                     </div>
                     <div class="space-y-4 text-sm text-neutral-900 font-normal leading-relaxed tracking-wide">
-                        <p>Vous gérez une boutique, un restaurant ou un hôtel ? Nous vous helpons à définir l’ambiance musicale de votre établissement et élaborer sa programmation sur-mesure.</p>
+                        <p>Vous gérez une boutique, un restaurant ou un hôtel ? Nous vous aidons à définir l’ambiance musicale de votre établissement et élaborer sa programmation sur-mesure.</p>
                         <p>Le design sonore est un levier marketing puissant. Nous concevons des chartes audio et des bandes-son originales qui incarnent vos valeurs et renforcent votre positionnement sensoriel.</p>
                     </div>
                     <div class="pt-4">
@@ -220,7 +222,7 @@
                 </div>
                 <div class="lg:col-span-6 space-y-6 lg:pl-6">
                     <span class="text-xs tracking-widest text-[#AF9453] font-semibold block uppercase">05 / Direction artistique et technique</span>
-                    <h3 class="section-title text-3xl font-light text-black">Production événementielle</h3>
+                    <h3 class="section-title text-3xl text-black">Production événementielle</h3>
                     <h4 class="text-sm font-medium tracking-widest text-neutral-500 uppercase">Créateurs de moments d’exception</h4>
                     <div class="space-y-4 text-sm text-neutral-900 font-normal leading-relaxed tracking-wide">
                         <p>Au-delà du booking, <strong class="text-black font-semibold">GROOVE CAVIAR</strong> est un moteur de création événementielle. Nous concevons, produisons et gérons des concepts de soirées et des événements innovants qui marquent l’identité culturelle du Pays Basque.</p>
@@ -263,12 +265,15 @@
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
+                    // Ajoute une mini temporisation de 50ms pour fluidifier l'effet visuel
+                    setTimeout(() => {
+                        entry.target.classList.add('active');
+                    }, 50);
                 }
             });
         }, { 
-            rootMargin: '0px 0px -80px 0px',
-            threshold: 0.15 
+            rootMargin: '0px 0px -120px 0px', // L'élément doit rentrer de 120px dans l'écran pour s'animer
+            threshold: 0.1 
         });
 
         revealElements.forEach(element => revealObserver.observe(element));
