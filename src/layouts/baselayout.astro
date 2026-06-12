@@ -1,0 +1,48 @@
+---
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const { title, description } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} – Groove Caviar</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Josefin+Sans:wght@300;400;600;700&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style is:global>
+        body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #1c1c1c; -webkit-font-smoothing: antialiased; }
+        .serif-title { font-family: 'Cormorant Garamond', serif; }
+        .title { font-family: 'Josefin Sans', sans-serif; text-transform: uppercase; letter-spacing: 0.08em; }
+        .section-title { font-family: 'Josefin Sans', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .reveal { opacity: 0; transform: translateY(50px); transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+    <Navbar />
+    
+    <slot /> <Footer />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal:not(.active)');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => { entry.target.classList.add('active'); }, 150);
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '0px 0px -100px 0px', threshold: 0.1 });
+            revealElements.forEach(element => revealObserver.observe(element));
+        });
+    </script>
+</body>
+</html>
