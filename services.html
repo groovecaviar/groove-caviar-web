@@ -31,7 +31,7 @@
             letter-spacing: 0.08em;
         }
 
-        /* Classe Spécifique pour les Titres de Sections - Josefin Sans Bold */
+        /* Classe Spécifique pour les Titres de Sections - Josefin Sans Bold requested */
         .section-title {
             font-family: 'Josefin Sans', sans-serif;
             font-weight: 700;
@@ -49,7 +49,7 @@
             transform: scaleX(0);
             transform-origin: center;
             animation: stretchLine 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            animation-delay: 1.5s;
+            animation-delay: 1s;
         }
 
         @keyframes stretchLine {
@@ -57,11 +57,11 @@
             to { transform: scaleX(1); }
         }
 
-        /* Animation Réglée : Plus d'amplitude et transition lissée */
+        /* Animation On-Scroll Slide Up */
         .reveal {
             opacity: 0;
-            transform: translateY(60px);
-            transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(50px);
+            transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform, opacity;
         }
         .reveal.active {
@@ -114,7 +114,7 @@
 
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <div class="lg:col-span-6 overflow-hidden bg-neutral-100 aspect-square group">
+                <div class="lg:col-span-6 overflow-hidden bg-neutral-100 aspect-square group rounded-md">
                     <img src="images/SERVICES-prestation-dj.webp" alt="Prestation DJ" class="w-full h-full object-cover grayscale contrast-110 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105">
                 </div>
                 <div class="lg:col-span-6 space-y-6 lg:pl-6">
@@ -135,7 +135,7 @@
 
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <div class="lg:col-span-6 lg:order-2 overflow-hidden bg-neutral-100 aspect-square group">
+                <div class="lg:col-span-6 lg:order-2 overflow-hidden bg-neutral-100 aspect-square group rounded-md">
                     <img src="images/SERVICES-prestation-speaker.webp" alt="Prestation Speaker MC" class="w-full h-full object-cover grayscale contrast-110 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105">
                 </div>
                 <div class="lg:col-span-6 lg:order-1 space-y-6 lg:pr-6">
@@ -175,7 +175,7 @@
 
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <div class="lg:col-span-6 overflow-hidden bg-neutral-100 aspect-square group">
+                <div class="lg:col-span-6 overflow-hidden bg-neutral-100 aspect-square group rounded-md">
                     <img src="images/SERVICES-sonorisation.webp" alt="Sonorisation et Éclairage" class="w-full h-full object-cover grayscale contrast-110 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105">
                 </div>
                 <div class="lg:col-span-6 space-y-6 lg:pl-6">
@@ -185,7 +185,7 @@
                     <div class="space-y-4 text-sm text-neutral-900 font-normal leading-relaxed tracking-wide">
                         <p>La réussite d’un événement d’exception repose sur une synergie parfaite entre l’art et la technique. Pour éviter tout imprévu technique, nous investissons exclusivement dans des parcs matériels de pointe (marques leaders du marché audio et light).</p>
                         <p><strong class="text-black font-semibold">La clarté avant tout :</strong> Diffusion cristalline et discrète pour vos cocktails en extérieur, gestion de la dynamique pour les discours, et puissance maîtrisée pour une immersion totale façon "Club" sur le dancefloor.</p>
-                        <div class="p-4 bg-neutral-50 border-l-2 border-neutral-800 text-neutral-800 italic text-xs">
+                        <div class="p-4 bg-neutral-50 border-l-2 border-neutral-800 text-neutral-800 italic text-xs rounded-md">
                             "Notre obsession : l’esthétique. Câblage dissimulé, couleurs sobres, régies discrètes. La technique doit s’effacer pour laisser place à la magie de l’instant."
                         </div>
                     </div>
@@ -195,7 +195,7 @@
 
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <div class="lg:col-span-6 lg:order-2 overflow-hidden bg-neutral-100 aspect-square group">
+                <div class="lg:col-span-6 lg:order-2 overflow-hidden bg-neutral-100 aspect-square group rounded-md">
                     <img src="images/SERVICES-design-sonore.webp" alt="Design Sonore" class="w-full h-full object-cover grayscale contrast-110 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105">
                 </div>
                 <div class="lg:col-span-6 lg:order-1 space-y-6 lg:pr-6">
@@ -217,7 +217,7 @@
 
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <div class="lg:col-span-6 overflow-hidden bg-neutral-100 aspect-square group">
+                <div class="lg:col-span-6 overflow-hidden bg-neutral-100 aspect-square group rounded-md">
                     <img src="images/SERVICES-prod-event.webp" alt="Production Événementielle" class="w-full h-full object-cover grayscale contrast-110 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105">
                 </div>
                 <div class="lg:col-span-6 space-y-6 lg:pl-6">
@@ -237,15 +237,23 @@
 
     </main>
 
-    <section class="py-24 bg-neutral-50 text-center border-t border-neutral-100 space-y-6">
-        <span class="text-xs tracking-[0.3em] text-neutral-400 uppercase font-medium block">VOTRE ÉVÉNEMENT COMMENCE ICI</span>
-        <p class="text-2xl font-light text-black max-w-2xl mx-auto leading-relaxed px-4">
-            Prêt à transformer votre vision en une réalité sonore et visuelle exceptionnelle ? Nous sommes à votre écoute pour concevoir l’inattendu.
-        </p>
-        <div class="pt-4">
-            <a href="links.html" class="inline-block text-[11px] tracking-[0.2em] uppercase font-semibold bg-black text-white px-8 py-4 hover:bg-neutral-800 transition-all">
-                Demander un devis
-            </a>
+    <section class="relative h-[50vh] min-h-[380px] w-full flex items-center justify-center bg-black text-center border-t border-white/[0.05] overflow-hidden">
+        <div class="relative z-10 max-w-4xl mx-auto px-4 space-y-6 reveal">
+            <h2 class="section-title text-3xl sm:text-4xl md:text-5xl text-white font-bold tracking-[0.1em] uppercase leading-tight">
+                Votre événement <br><span class="text-[#AF9453]">commence ici</span>
+            </h2>
+            <p class="text-sm sm:text-base font-light text-neutral-400 max-w-2xl mx-auto leading-relaxed tracking-wide">
+                Prêt à transformer votre vision en une réalité sonore et visuelle exceptionnelle ? Nous sommes à votre écoute pour concevoir l’inattendu.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                <a href="links.html" class="w-full sm:w-auto inline-flex items-center justify-center h-[46px] text-[11px] tracking-[0.2em] uppercase font-bold bg-[#AF9453] text-black px-8 rounded-md shadow-lg transform hover:scale-105 hover:bg-white hover:text-black hover:shadow-[0_0_25px_rgba(175,148,83,0.45)] transition-all duration-300 ease-out">
+                    Demander un devis
+                </a>
+                <a href="links.html" class="w-full sm:w-auto inline-flex items-center justify-center h-[46px] text-[11px] tracking-[0.2em] uppercase font-bold border border-white/40 text-white px-8 rounded-md transform hover:scale-105 hover:bg-white hover:text-black transition-all duration-300 ease-out">
+                    Contacter l’agence
+                </a>
+            </div>
         </div>
     </section>
 
@@ -261,22 +269,23 @@
     </footer>
 
     <script>
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Ajoute une mini temporisation de 50ms pour fluidifier l'effet visuel
-                    setTimeout(() => {
-                        entry.target.classList.add('active');
-                    }, 50);
-                }
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal:not(.active)');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('active');
+                        }, 150); // Petit délai volontaire pour un effet de slide progressif premium
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { 
+                rootMargin: '0px 0px -100px 0px',
+                threshold: 0.1 
             });
-        }, { 
-            rootMargin: '0px 0px -120px 0px', // L'élément doit rentrer de 120px dans l'écran pour s'animer
-            threshold: 0.1 
+            revealElements.forEach(element => revealObserver.observe(element));
         });
-
-        revealElements.forEach(element => revealObserver.observe(element));
     </script>
 
 </body>
