@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Groove Caviar | DJ & Événementiel Haut de Gamme Biarritz Côte Basque</title>
-    <meta name="description" content="Agence de DJ et production événementielle de luxe à Biarritz. Prestations musicales exclusives sur-mesure pour mariages d'exception, soirées privées et événements corporate haut de gamme.">
+    <title>Groove Caviar | Agence de DJ & Événementiel de Luxe Biarritz</title>
+    <meta name="description" content="Agence de DJ et production événementielle haut de gamme à Biarritz. Prestations de prestige sur-mesure pour mariages d'exception, soirées privées et corporate.">
     
     <meta property="og:type" content="website">
     <meta property="og:title" content="Groove Caviar | DJ & Événementiel Haut de Gamme">
@@ -13,7 +13,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -29,325 +29,420 @@
         "addressRegion": "Nouvelle-Aquitaine",
         "addressCountry": "FR"
       },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "43.4832",
-        "longitude": "-1.5586"
-      },
-      "url": "https://floralwhite-snail-128206.hostingersite.com/",
+      "url": "https://lightslategrey-eel-912520.hostingersite.com/",
       "telephone": "+33623625704",
       "priceRange": "$$$$"
     }
     </script>
 
     <style>
-        /* --- Base Styles --- */
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #050505;
+            background-color: #030303;
             color: #ffffff;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        /* --- Typography --- */
         .serif-accent {
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
         }
-        .baseline-luxe {
-            letter-spacing: 0.25em;
+
+        /* --- Animations d'apparition (Scroll Reveal) --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* --- Interactive Elements --- */
+        /* --- Transitions Boutons de Luxe --- */
         .premium-btn {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }
         .premium-btn:hover {
             background-color: #ffffff;
-            color: #050505;
+            color: #030303;
             border-color: #ffffff;
             transform: translateY(-2px);
         }
         .premium-btn-gold {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid #af9453;
-            background-color: rgba(175, 148, 83, 0.05);
+            background: linear-gradient(180deg, rgba(175,148,83,0.1) 0%, rgba(175,148,83,0) 100%);
         }
         .premium-btn-gold:hover {
-            background-color: #af9453;
-            color: #050505;
+            background: #af9453;
+            color: #030303;
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(175, 148, 83, 0.2);
+            box-shadow: 0 15px 30px rgba(175, 148, 83, 0.25);
         }
 
-        /* --- Cards & Grid Layouts --- */
-        .service-card {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* --- Cartes Éditoriales --- */
+        .editorial-card {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .editorial-card:hover {
+            border-bottom: 1px solid #af9453;
             background: rgba(255, 255, 255, 0.01);
         }
-        .service-card:hover {
-            border-color: #af9453;
-            background: rgba(255, 255, 255, 0.03);
-            transform: translateY(-4px);
-        }
-        .venue-card img {
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .venue-card:hover img {
-            transform: scale(1.04);
-        }
 
-        /* --- Accordion Utilities --- */
-        .faq-details[@open] summary ~ * {
-            animation: sweep 0.5s ease-in-out;
-        }
-        @keyframes sweep {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* --- Masquage Scrollbar Carrousel --- */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scroll-bar-width: none; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-    <header class="w-full sticky top-0 z-50 bg-[#050505]/90 backdrop-blur-md border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3 group">
-                <img src="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/2026/01/logo-GC-mdq-noirorfd-512px.png" alt="Groove Caviar" class="w-10 h-10 object-contain">
-                <span class="text-xs tracking-widest font-medium uppercase hidden sm:inline-block">Groove Caviar</span>
+    <header class="w-full sticky top-0 z-50 bg-[#030303]/80 backdrop-blur-xl border-b border-white/[0.04]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-4 group">
+                <img src="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/2026/01/logo-GC-mdq-noirorfd-512px.png" alt="Groove Caviar" class="w-12 h-12 object-contain transition-transform duration-500 group-hover:rotate-6">
+                <span class="text-xs tracking-[0.3em] font-light uppercase hidden sm:inline-block">Groove Caviar</span>
             </a>
             
-            <nav class="hidden md:flex space-x-8 text-[11px] tracking-widest uppercase font-medium text-gray-400">
-                <a href="#about" class="hover:text-white transition-colors">À Propos</a>
-                <a href="#services" class="hover:text-white transition-colors">Services</a>
-                <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
-                <a href="links.html" class="hover:text-white transition-colors">Liens</a>
+            <nav class="hidden md:flex space-x-10 text-[11px] tracking-[0.25em] uppercase font-medium text-gray-400">
+                <a href="#about" class="hover:text-white transition-colors relative after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-[1px] after:bg-[#af9453] hover:after:w-full after:transition-all after:duration-300">À Propos</a>
+                <a href="#services" class="hover:text-white transition-colors relative after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-[1px] after:bg-[#af9453] hover:after:w-full after:transition-all after:duration-300">Services</a>
+                <a href="#venues" class="hover:text-white transition-colors relative after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-[1px] after:bg-[#af9453] hover:after:w-full after:transition-all after:duration-300">Lieux</a>
+                <a href="links.html" class="hover:text-white transition-colors relative after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-[1px] after:bg-[#af9453] hover:after:w-full after:transition-all after:duration-300">Liens</a>
             </nav>
 
-            <div class="flex items-center space-x-6">
-                <a href="devis.html" class="hidden sm:inline-block text-[10px] tracking-widest uppercase font-semibold border border-[#af9453] px-4 py-2 text-[#af9453] hover:bg-[#af9453] hover:text-black transition-all">
-                    Devis sur-mesure
+            <div class="flex items-center space-x-8">
+                <a href="devis.html" class="hidden sm:inline-block text-[10px] tracking-[0.2em] uppercase font-medium border border-[#af9453] px-5 py-3 text-[#af9453] hover:bg-[#af9453] hover:text-black transition-all duration-300">
+                    Devis en ligne
                 </a>
-                <nav class="text-xs tracking-widest uppercase space-x-2 opacity-80">
-                    <a href="#" class="font-semibold text-[#af9453]">FR</a>
-                    <span class="opacity-30">|</span>
-                    <a href="#" class="hover:text-white transition-colors opacity-60">EN</a>
+                <nav class="text-[11px] tracking-widest uppercase space-x-2 text-gray-400">
+                    <a href="#" class="font-medium text-[#af9453]">FR</a>
+                    <span class="opacity-20">|</span>
+                    <a href="#" class="hover:text-white transition-colors opacity-50">EN</a>
                 </nav>
             </div>
         </div>
     </header>
 
-    <section class="relative min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 border-b border-white/5 bg-gradient-to-b from-black via-[#050505] to-black">
-        <div class="max-w-4xl text-center space-y-8 py-20">
-            <div class="space-y-4">
-                <span class="text-xs tracking-widest text-[#af9453] uppercase font-semibold block">Signature Musicale Exclusive</span>
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-light tracking-wide uppercase leading-tight">
-                    DJ & événementiel <br><span class="serif-accent lowercase text-5xl sm:text-6xl md:text-7xl text-[#af9453] tracking-normal">haut de gamme</span>
+    <section class="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#030303] via-[#0b0b0b] to-[#030303] overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(175,148,83,0.04)_0%,transparent_65%)] pointer-events-none"></div>
+        
+        <div class="max-w-5xl text-center space-y-10 py-24 relative z-10">
+            <div class="space-y-4 reveal active">
+                <span class="text-xs tracking-[0.4em] text-[#af9453] uppercase font-semibold block">Haute Couture Musicale</span>
+                <h1 class="text-4xl sm:text-6xl md:text-7xl font-light tracking-wide uppercase leading-[1.15]">
+                    DJ & direction artistique <br>
+                    <span class="serif-accent lowercase text-5xl sm:text-7xl md:text-8xl text-[#af9453] tracking-normal font-normal">sur-mesure</span>
                 </h1>
             </div>
-            <p class="max-w-2xl mx-auto text-sm sm:text-base text-gray-400 font-light leading-relaxed">
-                L’excellence musicale pour vos événements d’exception sur la Côte Basque, les Landes et à l'international.
+            <p class="max-w-2xl mx-auto text-sm sm:text-base text-gray-400 font-light leading-relaxed tracking-wide reveal active">
+                L’excellence audio et visuelle pour vos événements d’exception sur la Côte Basque, les Landes et à l'international.
             </p>
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
-                <a href="devis.html" class="w-full sm:w-auto premium-btn-gold px-8 py-4 text-xs tracking-widest uppercase font-medium">
-                    Demande de devis
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-5 pt-6 reveal active">
+                <a href="devis.html" class="w-full sm:w-auto premium-btn-gold px-10 py-5 text-xs tracking-[0.25em] uppercase font-medium">
+                    Demande d'étude
                 </a>
-                <a href="links.html" class="w-full sm:w-auto premium-btn px-8 py-4 text-xs tracking-widest uppercase font-medium">
-                    Tous nos liens
+                <a href="links.html" class="w-full sm:w-auto premium-btn px-10 py-5 text-xs tracking-[0.25em] uppercase font-medium">
+                    Consulter nos canaux
                 </a>
             </div>
         </div>
     </section>
 
-    <section id="about" class="py-24 sm:py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-white/5">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-baseline">
-            <div class="lg:col-span-4 space-y-2">
-                <span class="text-[10px] tracking-widest text-[#af9453] uppercase font-semibold">Manifeste</span>
-                <h2 class="text-2xl sm:text-3xl font-light tracking-wide uppercase">À Propos</h2>
+    <section id="about" class="py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-white/[0.04] reveal">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-baseline">
+            <div class="lg:col-span-4 space-y-3">
+                <span class="text-[10px] tracking-[0.3em] text-[#af9453] uppercase font-semibold block">01 / Identité</span>
+                <h2 class="text-3xl font-light tracking-widest uppercase">L'Agence</h2>
             </div>
-            <div class="lg:col-span-8 space-y-6">
-                <p class="text-xl sm:text-2xl font-light text-gray-300 leading-relaxed">
-                    Groove Caviar est une agence de DJ et d’événementiel spécialisée dans la création d’expériences sonores haut de gamme.
+            <div class="lg:col-span-8 space-y-8">
+                <p class="text-2xl sm:text-3xl font-light text-gray-200 leading-relaxed font-sans">
+                    GROOVE CAVIAR sublime vos événements avec une approche exclusive, alliant <span class="serif-accent font-normal text-[#af9453]">excellence artistique</span> et maîtrise technique absolue.
                 </p>
-                <p class="text-sm sm:text-base text-gray-400 font-light leading-relaxed">
-                    Basés à Biarritz, nous intervenons pour une clientèle exigeante en quête d’élégance, de modernité et d’une signature musicale unique. Nous sculptons l'atmosphère de vos projets les plus ambitieux avec une rigueur absolue.
+                <p class="text-sm sm:text-base text-gray-400 font-light leading-loose">
+                    Chaque prestation est pensée comme une œuvre d’art unique, où le luxe rencontre la performance. Basés à Biarritz, nous intervenons pour une clientèle exigeante en quête d’élégance, de modernité et d’une signature sonore sans compromis.
                 </p>
-                <div class="text-xs tracking-widest uppercase text-[#af9453] font-medium pt-2">
-                    L’excellence comme seul standard
-                </div>
+                <div class="w-20 h-[1px] bg-[#af9453] mt-4"></div>
             </div>
         </div>
     </section>
 
-    <section id="services" class="py-24 sm:py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-white/5">
-        <div class="space-y-12">
-            <div class="space-y-2 text-center md:text-left">
-                <span class="text-[10px] tracking-widest text-[#af9453] uppercase font-semibold">Ingénierie & Direction Artistique</span>
-                <h2 class="text-2xl sm:text-3xl font-light tracking-wide uppercase">Nos Services</h2>
+    <section id="services" class="py-32 bg-[#060606] border-y border-white/[0.04]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+            <div class="text-center md:text-left space-y-3 reveal">
+                <span class="text-[10px] tracking-[0.3em] text-[#af9453] uppercase font-semibold block">02 / Ingénierie & Curations</span>
+                <h2 class="text-3xl font-light tracking-widest uppercase">Nos Prestations</h2>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="service-card p-8 flex flex-col justify-between min-h-[220px]">
-                    <h3 class="text-lg tracking-wide uppercase font-medium">Prestation DJ</h3>
-                    <p class="text-xs text-gray-400 font-light leading-relaxed mt-4">
-                        Une sélection musicale pointue, technique et sur-mesure, parfaitement adaptée à l’énergie de votre événement et à vos directives.
-                    </p>
-                </div>
-                <div class="service-card p-8 flex flex-col justify-between min-h-[220px]">
-                    <h3 class="text-lg tracking-wide uppercase font-medium">Prestation Speaker</h3>
-                    <p class="text-xs text-gray-400 font-light leading-relaxed mt-4">
-                        Une animation micro sobre, élégante, disponible en plusieurs langues pour guider vos moments forts sans jamais en faire trop.
-                    </p>
-                </div>
-                <div class="service-card p-8 flex flex-col justify-between min-h-[220px]">
-                    <h3 class="text-lg tracking-wide uppercase font-medium">Son & Lumières</h3>
-                    <p class="text-xs text-gray-400 font-light leading-relaxed mt-4">
-                        Une ingénierie technique haut de gamme utilisant du matériel de qualité hi-fi, s'intégrant proprement dans le décor de votre lieu.
-                    </p>
-                </div>
-                <div class="service-card p-8 flex flex-col justify-between min-h-[220px]">
-                    <h3 class="text-lg tracking-wide uppercase font-medium">Events Production</h3>
-                    <p class="text-xs text-gray-400 font-light leading-relaxed mt-4">
-                        Production logistique et direction technique globale pour les projets d'envergure, mariages internationaux et lancements privés.
-                    </p>
-                </div>
-                <div class="service-card p-8 flex flex-col justify-between min-h-[220px]">
-                    <h3 class="text-lg tracking-wide uppercase font-medium">Design Sonore</h3>
-                    <p class="text-xs text-gray-400 font-light leading-relaxed mt-4">
-                        Création d’identités sonores sur-mesure pour les établissements de prestige, hôtels de luxe, showrooms et marques de mode.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-24 sm:py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-white/5">
-        <div class="space-y-12">
-            <div class="space-y-2">
-                <span class="text-[10px] tracking-widest text-[#af9453] uppercase font-semibold">Références d'Exception</span>
-                <h2 class="text-2xl sm:text-3xl font-light tracking-wide uppercase">Lieux Partenaires</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="venue-card group overflow-hidden border border-white/5 bg-white/[0.01]">
-                    <div class="h-64 overflow-hidden">
-                        <img src="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/Chateau-du-Clair-de-Lune.webp" alt="Château du Clair de Lune" class="w-full h-full object-cover">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+                <div class="editorial-card pb-10 flex flex-col justify-between min-h-[250px] reveal">
+                    <div>
+                        <div class="text-xs text-[#af9453]/60 font-medium tracking-widest mb-4">01 &mdash; ARTISTIC</div>
+                        <h3 class="text-xl tracking-wide uppercase font-light">Prestation DJ</h3>
+                        <p class="text-xs text-gray-400 font-light leading-relaxed mt-4">
+                            Une sélection de musiques pointues, une technique millimétrée et une lecture instinctive de la foule pour un dancefloor magnétique.
+                        </p>
                     </div>
-                    <div class="p-6">
+                </div>
+                <div class="editorial-card pb-10 flex flex-col justify-between min-h-[250px] reveal">
+                    <div>
+                        <div class="text-xs text-[#af9453]/60 font-medium tracking-widest mb-4">02 &mdash; ELOQUENCE</div>
+                        <h3 class="text-xl tracking-wide uppercase font-light">Prestation Speaker</h3>
+                        <p class="text-xs text-gray-400 font-light leading-relaxed mt-4">
+                            Une animation au micro d'une grande sobriété, disponible en format bilingue pour rythmer vos temps forts avec charisme.
+                        </p>
+                    </div>
+                </div>
+                <div class="editorial-card pb-10 flex flex-col justify-between min-h-[250px] reveal">
+                    <div>
+                        <div class="text-xs text-[#af9453]/60 font-medium tracking-widest mb-4">03 &mdash; HIGH-FI</div>
+                        <h3 class="text-xl tracking-wide uppercase font-light">Son & Lumières</h3>
+                        <p class="text-xs text-gray-400 font-light leading-relaxed mt-4">
+                            Des systèmes sonores cristallins et une architecture de mise en lumière invisible s'intégrant parfaitement dans le décor.
+                        </p>
+                    </div>
+                </div>
+                <div class="editorial-card pb-10 flex flex-col justify-between min-h-[250px] reveal">
+                    <div>
+                        <div class="text-xs text-[#af9453]/60 font-medium tracking-widest mb-4">04 &mdash; LOGISTICS</div>
+                        <h3 class="text-xl tracking-wide uppercase font-light">Production Globale</h3>
+                        <p class="text-xs text-gray-400 font-light leading-relaxed mt-4">
+                            Coordination et direction technique complète pour les mariages internationaux à forte envergure et lancements de marques.
+                        </p>
+                    </div>
+                </div>
+                <div class="editorial-card pb-10 flex flex-col justify-between min-h-[250px] reveal">
+                    <div>
+                        <div class="text-xs text-[#af9453]/60 font-medium tracking-widest mb-4">05 &mdash; BRANDING</div>
+                        <h3 class="text-xl tracking-wide uppercase font-light">Design Sonore</h3>
+                        <p class="text-xs text-gray-400 font-light leading-relaxed mt-4">
+                            Création d’identités auditives sur-mesure pour les hôtels de prestige, showrooms d'exception et établissements de luxe.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="venues" class="py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden relative reveal">
+        <div class="flex flex-col sm:flex-row justify-between items-baseline mb-12 gap-6">
+            <div class="space-y-3">
+                <span class="text-[10px] tracking-[0.3em] text-[#af9453] uppercase font-semibold block">03 / Écrins Régionaux</span>
+                <h2 class="text-3xl font-light tracking-widest uppercase">Lieux Partenaires</h2>
+            </div>
+            <div class="flex space-x-4 items-center">
+                <button id="carousel-prev" class="w-12 h-12 border border-white/10 hover:border-white text-white flex items-center justify-center transition-colors focus:outline-none" aria-label="Précédent">
+                    &larr;
+                </button>
+                <button id="carousel-next" class="w-12 h-12 border border-white/10 hover:border-white text-white flex items-center justify-center transition-colors focus:outline-none" aria-label="Suivant">
+                    &rarr;
+                </button>
+            </div>
+        </div>
+        
+        <div class="relative w-full overflow-hidden">
+            <div id="carousel-track" class="flex transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] gap-6">
+                
+                <div class="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-shrink-0 group">
+                    <div class="h-80 w-full overflow-hidden bg-neutral-900 border border-white/[0.05]">
+                        <img src="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/Chateau-du-Clair-de-Lune.webp" alt="Château du Clair de Lune" class="w-full h-full object-cover grayscale contrast-[1.10] transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:grayscale-0 group-hover:scale-105">
+                    </div>
+                    <div class="pt-6 flex justify-between items-baseline border-b border-white/[0.04] pb-2">
                         <h4 class="text-sm tracking-widest uppercase font-medium">Château du Clair de Lune</h4>
-                        <p class="text-[11px] text-[#af9453] uppercase font-light tracking-wider mt-1">Biarritz</p>
+                        <span class="text-[11px] serif-accent text-[#af9453]">Biarritz</span>
                     </div>
                 </div>
-                <div class="venue-card group overflow-hidden border border-white/5 bg-white/[0.01]">
-                    <div class="h-64 overflow-hidden">
-                        <img src="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/Domaine-de-Larbeou.webp" alt="Domaine de Larbéou" class="w-full h-full object-cover">
+
+                <div class="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-shrink-0 group">
+                    <div class="h-80 w-full overflow-hidden bg-neutral-900 border border-white/[0.05]">
+                        <img src="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/Domaine-de-Larbeou.webp" alt="Domaine de Larbéou" class="w-full h-full object-cover grayscale contrast-[1.10] transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:grayscale-0 group-hover:scale-105">
                     </div>
-                    <div class="p-6">
+                    <div class="pt-6 flex justify-between items-baseline border-b border-white/[0.04] pb-2">
                         <h4 class="text-sm tracking-widest uppercase font-medium">Domaine de Larbéou</h4>
-                        <p class="text-[11px] text-[#af9453] uppercase font-light tracking-wider mt-1">Bayonne</p>
+                        <span class="text-[11px] serif-accent text-[#af9453]">Bayonne</span>
                     </div>
                 </div>
-                <div class="venue-card group overflow-hidden border border-white/5 bg-white/[0.01]">
-                    <div class="h-64 overflow-hidden">
-                        <img src="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/Domaine-elhorria.webp" alt="Domaine Elhorria" class="w-full h-full object-cover">
+
+                <div class="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-shrink-0 group">
+                    <div class="h-80 w-full overflow-hidden bg-neutral-900 border border-white/[0.05]">
+                        <img src="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/Domaine-elhorria.webp" alt="Domaine Elhorria" class="w-full h-full object-cover grayscale contrast-[1.10] transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:grayscale-0 group-hover:scale-105">
                     </div>
-                    <div class="p-6">
+                    <div class="pt-6 flex justify-between items-baseline border-b border-white/[0.04] pb-2">
                         <h4 class="text-sm tracking-widest uppercase font-medium">Domaine Elhorria</h4>
-                        <p class="text-[11px] text-[#af9453] uppercase font-light tracking-wider mt-1">Biarritz</p>
+                        <span class="text-[11px] serif-accent text-[#af9453]">Biarritz</span>
                     </div>
                 </div>
+
+                <div class="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-shrink-0 group">
+                    <div class="h-80 w-full overflow-hidden bg-neutral-900 border border-white/[0.05]">
+                        <img src="https://images.unsplash.com/photo-1549294413-26f195afcbce?q=80&w=1200" alt="Prestige Villa Event" class="w-full h-full object-cover grayscale contrast-[1.10] transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:grayscale-0 group-hover:scale-105">
+                    </div>
+                    <div class="pt-6 flex justify-between items-baseline border-b border-white/[0.04] pb-2">
+                        <h4 class="text-sm tracking-widest uppercase font-medium">Villas & Domaines Éphémères</h4>
+                        <span class="text-[11px] serif-accent text-[#af9453]">Côte Basque</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <section id="faq" class="py-24 sm:py-32 max-w-4xl mx-auto px-4 sm:px-6 border-b border-white/5">
-        <div class="space-y-12">
-            <div class="text-center space-y-2">
-                <span class="text-[10px] tracking-widest text-[#af9453] uppercase font-semibold">Des Réponses à Vos Questions</span>
-                <h2 class="text-2xl sm:text-3xl font-light tracking-wide uppercase">Questions Fréquentes</h2>
+    <section id="faq" class="py-32 max-w-4xl mx-auto px-4 sm:px-6 border-t border-white/[0.04] reveal">
+        <div class="space-y-16">
+            <div class="text-center space-y-3">
+                <span class="text-[10px] tracking-[0.3em] text-[#af9453] uppercase font-semibold block">04 / Réponses</span>
+                <h2 class="text-3xl font-light tracking-widest uppercase">Des questions ?</h2>
             </div>
 
-            <div class="space-y-4">
-                <details class="faq-details border-b border-white/5 pb-4 group">
-                    <summary class="list-none flex justify-between items-center cursor-pointer text-sm tracking-wide uppercase py-2 focus:outline-none select-none">
-                        <span>Quel est le tarif d’un DJ pour un mariage au Pays Basque ?</span>
-                        <span class="text-xs transition-transform duration-300 group-open:rotate-180 text-[#af9453]">&darr;</span>
+            <div class="space-y-2">
+                <details class="border-b border-white/[0.06] pb-5 group">
+                    <summary class="list-none flex justify-between items-center cursor-pointer text-sm tracking-widest uppercase py-4 focus:outline-none select-none text-gray-200 hover:text-white transition-colors">
+                        <span>Quel est le positionnement tarifaire de l'agence ?</span>
+                        <span class="text-xs transition-transform duration-500 group-open:rotate-180 text-[#af9453]">&darr;</span>
                     </summary>
-                    <p class="text-xs text-gray-400 font-light leading-relaxed pt-3 pl-1">
-                        Le tarif dépend de la saisonnalité, de l'envergure technique requise et de l'amplitude horaire. GROOVE CAVIAR propose exclusivement des solutions clés en main incluant la sonorisation haute-fidélité et la mise en lumière architecturale. Contactez-nous pour une étude personnalisée.
+                    <p class="text-xs text-gray-400 font-light leading-loose pt-2 pl-1 max-w-3xl">
+                        Chaque projet étant une conception sur-mesure, nos grilles s’adaptent au volume technique, à la saisonnalité et aux contraintes du lieu. Nous incluons systématiquement la sonorisation haute-fidélité et la mise en scène lumineuse.
                     </p>
                 </details>
-                <details class="faq-details border-b border-white/5 pb-4 group">
-                    <summary class="list-none flex justify-between items-center cursor-pointer text-sm tracking-wide uppercase py-2 focus:outline-none select-none">
-                        <span>Intervenez-vous pour des soirées privées à Hossegor ?</span>
-                        <span class="text-xs transition-transform duration-300 group-open:rotate-180 text-[#af9453]">&darr;</span>
+                <details class="border-b border-white/[0.06] pb-5 group">
+                    <summary class="list-none flex justify-between items-center cursor-pointer text-sm tracking-widest uppercase py-4 focus:outline-none select-none text-gray-200 hover:text-white transition-colors">
+                        <span>Couvrez-vous des projets hors de l'Aquitaine ?</span>
+                        <span class="text-xs transition-transform duration-500 group-open:rotate-180 text-[#af9453]">&darr;</span>
                     </summary>
-                    <p class="text-xs text-gray-400 font-light leading-relaxed pt-3 pl-1">
-                        Oui, basés à Biarritz, nous nous déplaçons régulièrement dans les propriétés exclusives et villas privées autour d'Hossegor, Seignosse et Capbreton. Nos DJs maîtrisent le format "Open Format Chic", idéal pour des pool parties ou dîners de prestige.
-                    </p>
-                </details>
-                <details class="faq-details border-b border-white/5 pb-4 group">
-                    <summary class="list-none flex justify-between items-center cursor-pointer text-sm tracking-wide uppercase py-2 focus:outline-none select-none">
-                        <span>Proposez-vous des prestations bilingues pour les mariages ?</span>
-                        <span class="text-xs transition-transform duration-300 group-open:rotate-180 text-[#af9453]">&darr;</span>
-                    </summary>
-                    <p class="text-xs text-gray-400 font-light leading-relaxed pt-3 pl-1">
-                        Absolument. Nous accompagnons une importante clientèle internationale pour des "destination weddings" en France. Nos équipes sont parfaitement bilingues et habituées à fédérer des publics multi-générationnels venus du monde entier.
+                    <p class="text-xs text-gray-400 font-light leading-loose pt-2 pl-1 max-w-3xl">
+                        Absolument. Si notre ancrage historique se situe à Biarritz et Hossegor, nous nous déplaçons partout en France et à l’international pour suivre nos clients sur leurs événements de prestige.
                     </p>
                 </details>
             </div>
         </div>
     </section>
 
-    <footer class="w-full bg-black pt-16 pb-8 border-t border-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 text-xs font-light text-gray-400 leading-relaxed pb-12 border-b border-white/5">
+    <section class="py-32 bg-[#050505] border-t border-white/[0.04] text-center px-4 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(175,148,83,0.03)_0%,transparent_50%)] pointer-events-none"></div>
+        <div class="max-w-3xl mx-auto space-y-8 relative z-10 reveal">
+            <h2 class="text-xs tracking-[0.4em] text-[#af9453] uppercase font-semibold">Inscrivez votre événement dans l'histoire</h2>
+            <p class="serif-accent text-3xl sm:text-4xl font-light text-gray-200 leading-relaxed">
+                Prêt à matérialiser votre vision sonore exclusive ?
+            </p>
+            <div class="pt-4">
+                <a href="devis.html" class="premium-btn-gold px-12 py-5 text-xs tracking-[0.25em] uppercase font-medium inline-block">
+                    Initier un projet &rarr;
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="w-full bg-black pt-20 pb-10 border-t border-white/[0.06]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 text-xs font-light text-gray-400 pb-16 border-b border-white/[0.04]">
+            
             <div class="space-y-4">
                 <div class="flex items-center space-x-3">
                     <img src="https://floralwhite-snail-128206.hostingersite.com/wp-content/uploads/2026/01/logo-GC-mdq-noirorfd-512px.png" alt="Groove Caviar" class="w-10 h-10 object-contain">
-                    <span class="text-xs tracking-widest font-medium uppercase text-white">Groove Caviar</span>
+                    <span class="text-xs tracking-[0.2em] font-medium uppercase text-white">Groove Caviar</span>
                 </div>
-                <p class="text-[11px] text-gray-500">
-                    Création et direction artistique d'événements sonores haut de gamme sur la Côte Basque et à l'international.
+                <p class="text-[11px] text-gray-500 leading-relaxed">
+                    Création, ingénierie et direction sonore d'événements exclusifs. Standard haut de gamme.
                 </p>
             </div>
-            <div class="space-y-3">
-                <h5 class="text-white tracking-widest uppercase text-[11px] font-medium">Zones d'Intervention</h5>
+
+            <div class="space-y-4">
+                <h5 class="text-white tracking-widest uppercase text-[11px] font-medium">Territoires</h5>
                 <ul class="space-y-2 text-[11px] text-gray-500">
-                    <li>Biarritz &bull; Anglet &bull; St-Jean-de-Luz</li>
+                    <li>Biarritz &bull; Anglet &bull; Saint-Jean-de-Luz</li>
                     <li>Landes &bull; Hossegor &bull; Capbreton</li>
-                    <li>Bordeaux &bull; Nouvelle-Aquitaine</li>
-                    <li>France &bull; International</li>
+                    <li>Bordeaux &bull; Paris &bull; International</li>
                 </ul>
             </div>
-            <div class="space-y-3">
-                <h5 class="text-white tracking-widest uppercase text-[11px] font-medium">Contact & Confidentialité</h5>
-                <p class="text-[11px] text-gray-500">
+
+            <div class="space-y-4">
+                <h5 class="text-white tracking-widest uppercase text-[11px] font-medium">Correspondance</h5>
+                <p class="text-[11px] text-gray-500 leading-relaxed">
                     Biarritz, France<br>
-                    Téléphone : +33 6 23 62 57 04<br>
-                    Email : hello@groovecaviar.com
+                    Tél : +33 6 23 62 57 04<br>
+                    Mails : hello@groovecaviar.com
                 </p>
             </div>
-            <div class="space-y-3">
-                <h5 class="text-white tracking-widest uppercase text-[11px] font-medium">Suivre l'Agence</h5>
-                <div class="flex flex-col space-y-2">
+
+            <div class="space-y-4">
+                <h5 class="text-white tracking-widest uppercase text-[11px] font-medium">Médias</h5>
+                <div class="flex flex-col space-y-2 text-[11px]">
                     <a href="https://www.instagram.com/groove.caviar" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Instagram</a>
-                    <a href="devis.html" class="text-[#af9453] hover:underline">Faire une demande de devis &rarr;</a>
+                    <a href="devis.html" class="text-[#af9453] hover:underline tracking-wider font-medium">Demande de cotation &rarr;</a>
                 </div>
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 flex flex-col sm:flex-row justify-between items-center text-[10px] tracking-widest text-gray-600 uppercase gap-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 flex flex-col sm:flex-row justify-between items-center text-[10px] tracking-[0.25em] text-gray-600 uppercase gap-4">
             <div>
                 &copy; 2026 Groove Caviar. Tous droits réservés.
             </div>
-            <div class="space-x-4">
+            <div class="space-x-6">
                 <a href="#" class="hover:text-white transition-colors">Mentions Légales</a>
-                <span>•</span>
                 <a href="#" class="hover:text-white transition-colors">Confidentialité</a>
             </div>
         </div>
     </footer>
+
+    <script>
+        /* --- 1. Moteur du Carrousel des Lieux --- */
+        const track = document.getElementById('carousel-track');
+        const nextBtn = document.getElementById('carousel-next');
+        const prevBtn = document.getElementById('carousel-prev');
+        let currentIndex = 0;
+
+        function updateCarouselPosition() {
+            if (!track.children.length) return;
+            const cardWidth = track.children[0].getBoundingClientRect().width;
+            const gap = 24; // correspond à gap-6 (24px)
+            const displacement = (cardWidth + gap) * currentIndex;
+            track.style.transform = `translateX(-${displacement}px)`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            const totalItems = track.children.length;
+            let itemsPerView = 1;
+            if (window.innerWidth >= 1024) itemsPerView = 3;
+            else if (window.innerWidth >= 640) itemsPerView = 2;
+
+            if (currentIndex < totalItems - itemsPerView) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; // Boucle infinie, revient au départ
+            }
+            updateCarouselPosition();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            const totalItems = track.children.length;
+            let itemsPerView = 1;
+            if (window.innerWidth >= 1024) itemsPerView = 3;
+            else if (window.innerWidth >= 640) itemsPerView = 2;
+
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = totalItems - itemsPerView; // Va à la fin
+            }
+            updateCarouselPosition();
+        });
+
+        window.addEventListener('resize', updateCarouselPosition);
+
+        /* --- 2. Système d'apparition On-Scroll (Scroll Reveal) --- */
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.08, rootMargin: "0px 0px -50px 0px" });
+
+        revealElements.forEach(element => revealObserver.observe(element));
+    </script>
 
 </body>
 </html>
