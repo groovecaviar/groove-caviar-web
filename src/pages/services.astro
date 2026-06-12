@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Nos Services" description="Une expertise musicale & technique au service de l’émotion.">
+    
+    <section class="relative h-[calc(100vh-76px)] w-full flex items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('/images/SERVICES-hero.webp');">
+        <div class="absolute inset-0 bg-black/45"></div>
+        <div class="relative z-10 text-center px-4 reveal active">
+            <span class="text-xs sm:text-sm tracking-[0.4em] text-[#AF9453] uppercase font-semibold block mb-9">L’excellence artistique</span>
+            <h1 class="title text-5xl sm:text-7xl md:text-8xl font-bold tracking-[0.05em] leading-none space-x-2 sm:space-x-4">
+                <span class="text-white">Nos</span><span class="text-[#AF9453] italic">Services</span>
+            </h1>
+        </div>
+    </section>
+
+    <main class="w-full space-y-32 py-32 overflow-hidden">
+        </main>
+
+    <section class="relative h-[50vh] min-h-[380px] w-full flex items-center justify-center bg-black text-center border-t border-white/[0.05] overflow-hidden">
+        <div class="relative z-10 max-w-4xl mx-auto px-4 space-y-6 reveal">
+            <h2 class="section-title text-3xl sm:text-4xl md:text-5xl text-white font-bold tracking-[0.1em] uppercase leading-tight">
+                Votre événement <br><span class="text-[#AF9453]">commence ici</span>
+            </h2>
+            <p class="text-sm sm:text-base font-light text-neutral-400 max-w-2xl mx-auto leading-relaxed tracking-wide">
+                Prêt à transformer votre vision en une réalité sonore et visuelle exceptionnelle ? Nous sommes à votre écoute pour concevoir l’inattendu.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                <a href="/links" class="w-full sm:w-auto inline-flex items-center justify-center h-[46px] text-[11px] tracking-[0.2em] uppercase font-bold bg-[#AF9453] text-black px-8 rounded-md shadow-lg transform hover:scale-105 hover:bg-white hover:text-black transition-all duration-300">
+                    Demander un devis
+                </a>
+                <a href="/links" class="w-full sm:w-auto inline-flex items-center justify-center h-[46px] text-[11px] tracking-[0.2em] uppercase font-bold border border-white/40 text-white px-8 rounded-md transform hover:scale-105 hover:bg-white hover:text-black transition-all duration-300">
+                    Contacter l’agence
+                </a>
+            </div>
+        </div>
+    </section>
+</BaseLayout>
