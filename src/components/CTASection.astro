@@ -1,0 +1,43 @@
+---
+import Button from './Button.astro';
+
+interface Props {
+  titleWhite: string;
+  titleGold: string;
+  description: string;
+  primaryBtnText: string;
+  primaryBtnHref: string;
+  secondaryBtnText: string;
+  secondaryBtnHref: string;
+}
+
+const {
+  titleWhite,
+  titleGold,
+  description,
+  primaryBtnText,
+  primaryBtnHref,
+  secondaryBtnText,
+  secondaryBtnHref
+} = Astro.props;
+---
+
+<section class="relative h-[50vh] min-h-[380px] w-full flex items-center justify-center bg-black text-center border-t border-white/[0.05] overflow-hidden">
+  <div class="relative z-10 max-w-4xl mx-auto px-4 space-y-6 scroll-reveal">
+      <h2 class="font-title text-3xl sm:text-4xl md:text-5xl text-white font-bold tracking-[0.1em] uppercase leading-tight">
+          {titleWhite} <br><span class="text-gold">{titleGold}</span>
+      </h2>
+      <p class="text-sm sm:text-base font-light text-neutral-400 max-w-2xl mx-auto leading-relaxed tracking-wide">
+          {description}
+      </p>
+      
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+          <Button href={primaryBtnHref} variant="primary">
+              {primaryBtnText}
+          </Button>
+          <Button href={secondaryBtnHref} variant="outline">
+              {secondaryBtnText}
+          </Button>
+      </div>
+  </div>
+</section>
