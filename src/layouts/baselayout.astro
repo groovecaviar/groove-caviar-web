@@ -21,34 +21,46 @@ const { title = "Groove Caviar", description = "" } = Astro.props;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Josefin+Sans:wght@300;400;600;700&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="min-h-screen flex flex-col justify-between">
+  <body class="min-h-screen flex flex-col justify-between bg-white text-black antialiased">
     
     <Navbar />
     
-    <slot />
+    <main class="flex-grow">
+      <slot />
+    </main>
 
     <style is:global>
       body { 
         font-family: 'Montserrat', sans-serif; 
-        background-color: #ffffff; 
-        color: #1c1c1c; 
-        -webkit-font-smoothing: antialiased; 
+        background-color: #ffffff;
+        color: #000000;
       }
       .serif-title { font-family: 'Cormorant Garamond', serif; }
       .title { font-family: 'Josefin Sans', sans-serif; text-transform: uppercase; letter-spacing: 0.08em; }
       .section-title { font-family: 'Josefin Sans', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
       
+      /* Animation de la ligne sous le H1 */
+      .animated-line {
+        width: 0;
+        height: 2px;
+        background-color: #AF9453;
+        margin: 24px auto 0 auto;
+        transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal.active .animated-line {
+        width: 100px;
+      }
+
       .reveal { 
         opacity: 0; 
-        transform: translateY(50px); 
-        transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); 
+        transform: translateY(40px); 
+        transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); 
         will-change: transform, opacity; 
       }
       .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 
     <script>
-      // Script d'apparition au défilement (Scroll Reveal)
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
