@@ -2,8 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout>
-  <section class="relative h-[60vh] w-full flex items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('/images/SERVICES-hero.webp');">
+<BaseLayout title="Nos Services" description="Découvrez les prestations de Groove Caviar : DJ, Speaker, Sonorisation, Design Sonore et Production Événementielle.">
+  
+  <section class="relative h-screen w-full flex items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('/images/SERVICES-hero.webp');">
     <div class="absolute inset-0 bg-black/40"></div>
     <div class="relative z-10 text-center px-4 reveal active">
       <span class="text-xs sm:text-sm tracking-[0.4em] text-[#AF9453] uppercase font-semibold block mb-4">L'excellence artistique</span>
@@ -17,7 +18,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     
     <div class="lg:px-8 reveal">
       <div class="flex flex-col lg:flex-row gap-12 items-center">
-        <div class="w-full lg:w-1/2 bg-neutral-100 aspect-[4/3] group overflow-hidden rounded-md">
+        <div class="w-full lg:w-1/2 bg-neutral-100 aspect-square group overflow-hidden rounded-md">
           <img src="/images/SERVICES-prestation-dj.webp" alt="Prestation DJ" class="w-full h-full object-cover transition duration-500 ease-in-out transform group-hover:scale-105" />
         </div>
         <div class="w-full lg:w-1/2 space-y-4">
@@ -42,7 +43,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <div class="lg:px-8 reveal">
       <div class="flex flex-col lg:flex-row-reverse gap-12 items-center">
-        <div class="w-full lg:w-1/2 bg-neutral-100 aspect-[4/3] group overflow-hidden rounded-md">
+        <div class="w-full lg:w-1/2 bg-neutral-100 aspect-square group overflow-hidden rounded-md">
           <img src="/images/SERVICES-prestation-speaker.webp" alt="Prestation Speaker MC" class="w-full h-full object-cover transition duration-500 ease-in-out transform group-hover:scale-105" />
         </div>
         <div class="w-full lg:w-1/2 space-y-4">
@@ -70,7 +71,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <div class="lg:px-8 reveal">
       <div class="flex flex-col lg:flex-row gap-12 items-center">
-        <div class="w-full lg:w-1/2 bg-neutral-100 aspect-[4/3] group overflow-hidden rounded-md">
+        <div class="w-full lg:w-1/2 bg-neutral-100 aspect-square group overflow-hidden rounded-md">
           <img src="/images/SERVICES-sonorisation.webp" alt="Sonorisation et Éclairage" class="w-full h-full object-cover transition duration-500 ease-in-out transform group-hover:scale-105" />
         </div>
         <div class="w-full lg:w-1/2 space-y-4">
@@ -91,7 +92,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <div class="lg:px-8 reveal">
       <div class="flex flex-col lg:flex-row-reverse gap-12 items-center">
-        <div class="w-full lg:w-1/2 bg-neutral-100 aspect-[4/3] group overflow-hidden rounded-md">
+        <div class="w-full lg:w-1/2 bg-neutral-100 aspect-square group overflow-hidden rounded-md">
           <img src="/images/SERVICES-design-sonore.webp" alt="Design Sonore" class="w-full h-full object-cover transition duration-500 ease-in-out transform group-hover:scale-105" />
         </div>
         <div class="w-full lg:w-1/2 space-y-4">
@@ -116,7 +117,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <div class="lg:px-8 reveal">
       <div class="flex flex-col lg:flex-row gap-12 items-center">
-        <div class="w-full lg:w-1/2 bg-neutral-100 aspect-[4/3] group overflow-hidden rounded-md">
+        <div class="w-full lg:w-1/2 bg-neutral-100 aspect-square group overflow-hidden rounded-md">
           <img src="/images/SERVICES-prod-event.webp" alt="Production Événementielle" class="w-full h-full object-cover transition duration-500 ease-in-out transform group-hover:scale-105" />
         </div>
         <div class="w-full lg:w-1/2 space-y-4">
