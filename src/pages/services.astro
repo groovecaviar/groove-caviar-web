@@ -4,36 +4,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout title="Nos Services" description="Découvrez les prestations de Groove Caviar.">
   
-  <section class="relative h-[60vh] w-full flex items-center justify-center bg-black overflow-hidden">
-    <div class="absolute inset-0 bg-black/60 z-10"></div>
-    <div class="relative z-20 text-center px-4">
-      <span class="text-xs tracking-[0.4em] text-[#AF9453] uppercase font-semibold block mb-3">L'excellence artistique</span>
+  <section class="relative h-[50vh] min-h-[400px] w-full flex items-center justify-center bg-black overflow-hidden">
+    <div class="absolute inset-0 bg-black/50 z-10"></div>
+    <div class="relative z-20 text-center px-4 scroll-reveal">
+      <span class="text-[11px] tracking-[0.4em] text-[#AF9453] uppercase font-bold block mb-3">L'excellence artistique</span>
       <h1 class="title text-4xl sm:text-6xl font-bold tracking-[0.05em] uppercase text-white">
         Nos <span class="text-[#AF9453] italic font-light">Services</span>
       </h1>
-      <div class="w-20 h-[2px] bg-[#AF9453] mx-auto mt-6"></div>
+      <div class="w-16 h-[2px] bg-[#AF9453] mx-auto mt-6"></div>
     </div>
   </section>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-28 bg-white text-black">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-32 bg-white text-black">
     
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      <div class="w-full aspect-[4/3] lg:aspect-square bg-neutral-100 overflow-hidden rounded-sm group">
-        <img src="/images/SERVICES-prestation-dj.webp" alt="Prestation DJ" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 ease-in-out transform group-hover:scale-102" />
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center scroll-reveal">
+      <div class="w-full aspect-[4/3] lg:aspect-square bg-neutral-900 overflow-hidden rounded-xl group relative shadow-md">
+        <img 
+          src="/images/SERVICES-prestation-dj.webp" 
+          alt="Prestation DJ" 
+          class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out" 
+        />
       </div>
-      <div class="space-y-4">
-        <span class="text-xs tracking-[0.3em] text-[#AF9453] uppercase font-semibold block">01 / LA MEILLEURE MUSIQUE, BIEN MIXÉE</span>
+      <div class="space-y-5">
+        <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">01 / LA MEILLEURE MUSIQUE, BIEN MIXÉE</span>
         <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">PRESTATION DJ</h2>
-        <h3 class="text-sm tracking-wide text-neutral-400 uppercase font-medium italic">Booking DJ & Direction Artistique</h3>
-        <p class="text-black font-light text-[15px] leading-relaxed text-justify">
-          <strong class="font-semibold text-black">GROOVE CAVIAR</strong> accompagne vos projets en musique et propose des DJ professionnels pour tout type d’événements privés ou publics. Nous sommes là pour répondre à vos besoins en vous apportant notre savoir-faire dans l’animation musicale de vos manifestations ou de vos établissements.
+        <h3 class="text-xs tracking-[0.15em] text-neutral-400 uppercase font-semibold italic">Booking DJ & Direction Artistique</h3>
+        <p class="text-neutral-800 font-normal text-[15px] leading-relaxed text-justify tracking-wide">
+          <strong class="font-bold text-black">GROOVE CAVIAR</strong> accompagne vos projets en musique et propose des DJ professionnels pour tout type d’événements privés ou publics. Nous sommes là pour répondre à vos besoins en vous apportant notre savoir-faire dans l’animation musicale de vos manifestations ou de vos établissements.
           <br /><br />
           Basés à Biarritz, nous intervenons dans toute l’Aquitaine (Pays Basque, Landes, Gironde, Béarn…) et au-delà pour offrir une signature musicale unique à vos événements.
           <br /><br />
-          <strong class="font-semibold text-black">Styles & Culture Musicale :</strong> Notre culture musicale éclectique (Pop, Soul, Funk, Disco, House, Hip-hop, Electro…) nous permet de construire des sets sur-mesure. Notre différence réside dans la lecture de la foule : nous adaptons l’énergie en temps réel.
+          <strong class="font-bold text-black">Styles & Culture Musicale :</strong> Notre culture musicale éclectique (Pop, Soul, Funk, Disco, House, Hip-hop, Electro…) nous permet de construire des sets sur-mesure. Notre différence réside dans la lecture de la foule : nous adaptons l’énergie en temps réel.
         </p>
-        <div class="pt-4">
-          <a href="/devis" class="inline-flex items-center text-xs tracking-[0.2em] uppercase font-bold text-[#AF9453] hover:text-black transition-colors duration-300 border-b border-[#AF9453] pb-1">
+        <div class="pt-2">
+          <a href="/devis" class="inline-flex items-center text-[11px] tracking-[0.2em] uppercase font-bold text-[#AF9453] hover:text-black transition-colors duration-300 border-b-2 border-[#AF9453] pb-1">
             BOOKER UN DJ →
           </a>
         </div>
