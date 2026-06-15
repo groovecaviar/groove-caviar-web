@@ -4,14 +4,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout title="Nos Services" description="Découvrez les prestations de Groove Caviar : DJ, Speaker, Sonorisation, Design Sonore et Production Événementielle.">
   
-  <section class="relative h-screen w-full flex items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('/images/SERVICES-hero.webp');">
+  <section class="relative h-screen w-full flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('/images/SERVICES-hero.webp');">
     <div class="absolute inset-0 bg-black/50 z-10"></div>
     <div class="relative z-20 text-center px-4 scroll-reveal">
       <span class="text-xs sm:text-sm tracking-[0.4em] text-[#AF9453] uppercase font-semibold block mb-4">L'excellence artistique</span>
       <h1 class="title text-5xl sm:text-7xl font-bold tracking-[0.05em] leading-none text-white uppercase">
         Nos <span class="text-[#AF9453] italic font-light">Services</span>
       </h1>
-      <div class="w-20 h-[2px] bg-[#AF9453] mx-auto mt-6"></div>
+      <div class="w-24 h-[2px] bg-[#AF9453] mx-auto mt-8 transition-all duration-1000"></div>
     </div>
   </section>
 
@@ -25,12 +25,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">01 / LA MEILLEURE MUSIQUE, BIEN MIXÉE</span>
         <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">Prestation DJ</h2>
         <h3 class="text-sm font-medium text-neutral-400 italic">Booking DJ & Direction Artistique</h3>
-        <p class="text-black font-light leading-relaxed text-justify text-[15px]">
-          <strong class="font-semibold">GROOVE CAVIAR</strong> accompagne vos projets en musique et propose des DJ professionnels pour tout type d’événements privés ou publics. Nous sommes là pour répondre à vos besoins en vous apportant notre savoir-faire dans l’animation musicale de vos manifestations ou de vos établissements.
+        <p class="text-neutral-800 font-light leading-relaxed text-justify text-[15px]">
+          <strong class="font-semibold text-black">GROOVE CAVIAR</strong> accompagne vos projets en musique et propose des DJ professionnels pour tout type d’événements privés ou publics. Nous sommes là pour répondre à vos besoins en vous apportant notre savoir-faire dans l’animation musicale de vos manifestations ou de vos établissements.
           <br /><br />
           Basés à Biarritz, nous intervenons dans toute l’Aquitaine (Pays Basque, Landes, Gironde, Béarn…) et au-delà pour offrir une signature musicale unique à vos événements.
           <br /><br />
-          <strong class="font-semibold">Styles & Culture Musicale :</strong> Notre culture musicale éclectique (Pop, Soul, Funk, Disco, House, Hip-hop, Electro…) nous permet de construire des sets sur-mesure. Notre différence réside dans la lecture de la foule : nous adaptons l’énergie en temps réel.
+          <strong class="font-semibold text-black">Styles & Culture Musicale :</strong> Notre culture musicale éclectique (Pop, Soul, Funk, Disco, House, Hip-hop, Electro…) nous permet de construire des sets sur-mesure. Notre différence réside dans la lecture de la foule : nous adaptons l’énergie en temps réel.
         </p>
         <div class="pt-2">
           <a href="/devis" class="inline-flex items-center text-[11px] tracking-[0.25em] uppercase font-bold text-[#AF9453] hover:text-black transition-colors duration-300 border-b-2 border-[#AF9453] pb-1">
@@ -48,14 +48,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">02 / DONNEZ DE LA VOIX À VOS ÉVÉNEMENTS</span>
         <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">Prestation Speaker/MC</h2>
         <h3 class="text-sm font-medium text-neutral-400 italic">L’Art de l’Éloquence</h3>
-        <div class="text-black font-light leading-relaxed text-justify text-[15px]">
-          La dimension sonore d’un événement ne s’arrête pas à la musique. La voix est l’élément conducteur qui lie vos invités à votre message. Chez <strong class="font-semibold">GROOVE CAVIAR</strong>, nous comprenons que l’animation d’un micro est un exercice de haute précision.
-          <ul class="space-y-3 mt-4 text-sm pl-1 text-black">
-            <li class="flex items-start"><span class="text-[#AF9453] mr-2">▶</span> <span><strong class="font-medium">Journalistes & Présentateurs :</strong> Idéals pour vos conférences et salons professionnels.</span></li>
-            <li class="flex items-start"><span class="text-[#AF9453] mr-2">▶</span> <span><strong class="font-medium">Commentateurs Sportifs :</strong> Spécialistes du direct pour vos compétitions.</span></li>
-            <li class="flex items-start"><span class="text-[#AF9453] mr-2">▶</span> <span><strong class="font-medium">Maîtres de Cérémonie :</strong> Des voix élégantes pour dynamiser vos lancements de produits.</span></li>
-          </ul>
-        </div>
+        <p class="text-neutral-800 font-light leading-relaxed text-justify text-[15px]">
+          La dimension sonore d’un permanent ne s’arrête pas à la musique. La voix est l’élément conducteur qui lie vos invités à votre message. Chez <strong class="font-semibold text-black">GROOVE CAVIAR</strong>, nous comprenons que l’animation d’un micro est un exercice de haute précision. C’est pourquoi nous mettons à votre disposition des profils d'animateurs chevronnés et adaptés à la dynamique de votre projet :
+        </p>
+        <ul class="space-y-3 mt-4 text-[15px] pl-1 text-neutral-800 font-light">
+          <li class="flex items-start"><span class="text-[#AF9453] mr-2">▶</span> <span><strong class="font-medium text-black">Journalistes & Présentateurs :</strong> Idéals pour structurer vos conférences, tables rondes et salons professionnels avec rigueur et clarté.</span></li>
+          <li class="flex items-start"><span class="text-[#AF9453] mr-2">▶</span> <span><strong class="font-medium text-black">Commentateurs Sportifs :</strong> Des spécialistes du direct capables de faire grimper l’adrénaline et de faire vibrer le public lors de vos compétitions.</span></li>
+          <li class="flex items-start"><span class="text-[#AF9453] mr-2">▶</span> <span><strong class="font-medium text-black">Maîtres de Cérémonie (MC) :</strong> Des voix élégantes et percutantes pour dynamiser vos lancements de produits, galas ou soirées d'entreprise.</span></li>
+        </ul>
         <div class="pt-2">
           <a href="/contact" class="inline-flex items-center text-[11px] tracking-[0.25em] uppercase font-bold text-[#AF9453] hover:text-black transition-colors duration-300 border-b-2 border-[#AF9453] pb-1">
             Réserver un speaker →
@@ -72,12 +72,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">03 / HAUTE-FIDÉLITÉ & MISE EN LUMIÈRE ADAPTÉE</span>
         <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">Sonorisation & éclairage</h2>
         <h3 class="text-sm font-medium text-neutral-400 italic">L’excellence technique au service de l’émotion</h3>
-        <p class="text-black font-light leading-relaxed text-justify text-[15px]">
-          La réussite d’un événement d’exception repose sur une synergie parfaite entre l’art et la technique. Pour éviter tout imprévu technique, nous investissons exclusivement dans des parcs matériels de pointe.
+        <p class="text-neutral-800 font-light leading-relaxed text-justify text-[15px]">
+          La réussite d’un événement d’exception repose sur une synergie parfaite entre l’art et la technique. Pour éviter tout imprévu technique, nous investissons exclusivement dans des parcs matériels de pointe, rigoureusement entretenus et issus des plus grandes marques professionnelles du marché de l’audiovisuel.
+          <br /><br />
+          <strong class="font-semibold text-black">Notre obsession : l’esthétique.</strong> Au-delà de la performance pure, nous accordons une importance capitale à l'intégration visuelle de notre matériel sur le lieu de votre événement. Câblage dissimulé, structures habillées, couleurs sobres, régies discrètes : la technique doit se faire oublier pour laisser place à la magie du moment.
         </p>
-        <blockquote class="border-l-2 border-[#AF9453] pl-4 italic text-neutral-500 my-4 text-sm">
-          "Notre obsession : l’esthétique. Câblage dissimulé, couleurs sobres, régies discrètes."
-        </blockquote>
       </div>
     </section>
 
@@ -86,10 +85,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <img src="/images/SERVICES-design-sonore.webp" alt="Design Sonore" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out" />
       </div>
       <div class="space-y-5 lg:order-1">
-        <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">04 / IDENTITÉ AUDITIVE</span>
+        <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">04 / IDENTITÉ AUDITIVE SUBLIMÉE</span>
         <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">Design sonore</h2>
-        <p class="text-black font-light leading-relaxed text-justify text-[15px]">
-          Vous gérez une boutique, un restaurant ou un hôtel ? Nous vous aidons à définir l’ambiance musicale de votre établissement et élaborer sa programmation sur-mesure.
+        <h3 class="text-sm font-medium text-neutral-400 italic">Donnez une voix et une âme à votre marque</h3>
+        <p class="text-neutral-800 font-light leading-relaxed text-justify text-[15px]">
+          Vous gérez une boutique haut de gamme, un restaurant branché, un hôtel de luxe ou un espace accueillant du public ? L'ambiance musicale est un pilier de votre expérience client. Nous vous aidons à définir l’identité sonore de votre établissement et élaborer sa programmation sur-mesure.
+          <br /><br />
+          Le design sonore influence directement le comportement de vos visiteurs : il prolonge le temps de visite, renforce l'attachement à la marque et crée une atmosphère unique en parfaite adéquation avec votre architecture d'intérieur et vos valeurs. Nous concevons des playlists évolutives selon les heures de la journée pour harmoniser l'énergie de votre lieu.
         </p>
         <div class="pt-2">
           <a href="/contact" class="inline-flex items-center text-[11px] tracking-[0.25em] uppercase font-bold text-[#AF9453] hover:text-black transition-colors duration-300 border-b-2 border-[#AF9453] pb-1">
@@ -104,11 +106,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <img src="/images/SERVICES-prod-event.webp" alt="Production Événementielle" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out" />
       </div>
       <div class="space-y-5">
-        <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">05 / DIRECTION ARTISTIQUE ET TECHNIQUE</span>
+        <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">05 / DIRECTION ARTISTIQUE ET TECHNIQUE GLOBALE</span>
         <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">Production événementielle</h2>
-        <h3 class="text-sm font-medium text-neutral-400 italic">Créateurs de moments d’exception</h3>
-        <p class="text-black font-light leading-relaxed text-justify text-[15px]">
-          Au-delà du booking, <strong class="font-semibold">GROOVE CAVIAR</strong> est un moteur de création événementielle. Nous concevons, produisons et gérons des concepts de soirées et des événements innovants.
+        <h3 class="text-sm font-medium text-neutral-400 italic">Créateurs de moments d’exception de A à Z</h3>
+        <p class="text-neutral-800 font-light leading-relaxed text-justify text-[15px]">
+          Au-delà du simple booking artistique, <strong class="font-semibold text-black">GROOVE CAVIAR</strong> se positionne comme un véritable moteur de création événementielle. Nous concevons, produisons et gérons des concepts de soirées et des événements innovants clé en main pour le compte de marques, d'entreprises ou de collectivités publiques.
+          <br /><br />
+          De la scénographie initiale à la coordination technique le jour J, en passant par la sélection des artistes, la gestion de la lumière et la mise en place du système sonore, notre équipe prend tout en charge. Nous transformons vos idées en expériences immersives mémorables, avec une rigueur logistique absolue.
         </p>
         <div class="pt-2">
           <a href="/contact" class="inline-flex items-center text-[11px] tracking-[0.25em] uppercase font-bold text-[#AF9453] hover:text-black transition-colors duration-300 border-b-2 border-[#AF9453] pb-1">
@@ -124,7 +128,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="max-w-4xl mx-auto px-4 space-y-6">
       <span class="text-xs tracking-[0.3em] text-neutral-400 uppercase font-medium block">VOTRE ÉVÉNEMENT COMMENCE ICI</span>
       <h2 class="section-title text-3xl sm:text-4xl font-bold text-black tracking-[0.1em] uppercase">
-        Prêt à transformer <br /><span class="text-[#AF9453]">votre vision</span>
+        Prêt à transformer <br /><span class="text-[#AF9453]">votre vision</span> en réalité ?
       </h2>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
         <a href="/devis" class="w-full sm:w-auto inline-block text-[11px] tracking-[0.2em] uppercase font-semibold bg-black text-white px-8 py-4 rounded-md hover:bg-[#AF9453] transition-colors duration-300">
