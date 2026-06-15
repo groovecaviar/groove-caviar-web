@@ -85,12 +85,19 @@
     @apply absolute inset-0 bg-black/45;
   }
 
+  /* Correction ici : retrait du 'group' de l'apply */
   .card-image-wrapper {
-    @apply overflow-hidden bg-neutral-100 aspect-square group rounded-md;
+    @apply overflow-hidden bg-neutral-100 aspect-square rounded-md;
   }
 
+  /* Correction ici : retrait des variantes group-hover de l'apply */
   .card-image {
-    @apply w-full h-full object-cover grayscale contrast-110 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105;
+    @apply w-full h-full object-cover grayscale contrast-110 transition-all duration-1000;
+  }
+  
+  /* Alternative robuste au group-hover de Tailwind pour le CSS natif */
+  .card-image-wrapper:hover .card-image {
+    @apply grayscale-0 scale-105;
   }
 
   .text-link {
