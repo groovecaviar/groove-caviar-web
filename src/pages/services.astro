@@ -2,47 +2,135 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Nos Services" description="Découvrez les prestations de Groove Caviar.">
+<BaseLayout title="Nos Services" description="Découvrez les prestations de Groove Caviar : DJ, Speaker, Sonorisation, Design Sonore et Production Événementielle.">
   
-  <section class="relative h-[50vh] min-h-[400px] w-full flex items-center justify-center bg-black overflow-hidden">
+  <section class="relative h-screen w-full flex items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('/images/SERVICES-hero.webp');">
     <div class="absolute inset-0 bg-black/50 z-10"></div>
     <div class="relative z-20 text-center px-4 scroll-reveal">
-      <span class="text-[11px] tracking-[0.4em] text-[#AF9453] uppercase font-bold block mb-3">L'excellence artistique</span>
-      <h1 class="title text-4xl sm:text-6xl font-bold tracking-[0.05em] uppercase text-white">
+      <span class="text-xs sm:text-sm tracking-[0.4em] text-[#AF9453] uppercase font-semibold block mb-4">L'excellence artistique</span>
+      <h1 class="title text-5xl sm:text-7xl font-bold tracking-[0.05em] leading-none text-white uppercase">
         Nos <span class="text-[#AF9453] italic font-light">Services</span>
       </h1>
-      <div class="w-16 h-[2px] bg-[#AF9453] mx-auto mt-6"></div>
+      <div class="w-20 h-[2px] bg-[#AF9453] mx-auto mt-6"></div>
     </div>
   </section>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-32 bg-white text-black">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-32 py-32 overflow-hidden bg-white text-black">
     
     <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center scroll-reveal">
-      <div class="w-full aspect-[4/3] lg:aspect-square bg-neutral-900 overflow-hidden rounded-xl group relative shadow-md">
-        <img 
-          src="/images/SERVICES-prestation-dj.webp" 
-          alt="Prestation DJ" 
-          class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out" 
-        />
+      <div class="w-full aspect-[4/3] lg:aspect-square bg-neutral-100 overflow-hidden rounded-xl group relative shadow-md">
+        <img src="/images/SERVICES-prestation-dj.webp" alt="Prestation DJ" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out" />
       </div>
       <div class="space-y-5">
         <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">01 / LA MEILLEURE MUSIQUE, BIEN MIXÉE</span>
-        <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">PRESTATION DJ</h2>
-        <h3 class="text-xs tracking-[0.15em] text-neutral-400 uppercase font-semibold italic">Booking DJ & Direction Artistique</h3>
-        <p class="text-neutral-800 font-normal text-[15px] leading-relaxed text-justify tracking-wide">
-          <strong class="font-bold text-black">GROOVE CAVIAR</strong> accompagne vos projets en musique et propose des DJ professionnels pour tout type d’événements privés ou publics. Nous sommes là pour répondre à vos besoins en vous apportant notre savoir-faire dans l’animation musicale de vos manifestations ou de vos établissements.
+        <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">Prestation DJ</h2>
+        <h3 class="text-sm font-medium text-neutral-400 italic">Booking DJ & Direction Artistique</h3>
+        <p class="text-black font-light leading-relaxed text-justify text-[15px]">
+          <strong class="font-semibold">GROOVE CAVIAR</strong> accompagne vos projets en musique et propose des DJ professionnels pour tout type d’événements privés ou publics. Nous sommes là pour répondre à vos besoins en vous apportant notre savoir-faire dans l’animation musicale de vos manifestations ou de vos établissements.
           <br /><br />
           Basés à Biarritz, nous intervenons dans toute l’Aquitaine (Pays Basque, Landes, Gironde, Béarn…) et au-delà pour offrir une signature musicale unique à vos événements.
           <br /><br />
-          <strong class="font-bold text-black">Styles & Culture Musicale :</strong> Notre culture musicale éclectique (Pop, Soul, Funk, Disco, House, Hip-hop, Electro…) nous permet de construire des sets sur-mesure. Notre différence réside dans la lecture de la foule : nous adaptons l’énergie en temps réel.
+          <strong class="font-semibold">Styles & Culture Musicale :</strong> Notre culture musicale éclectique (Pop, Soul, Funk, Disco, House, Hip-hop, Electro…) nous permet de construire des sets sur-mesure. Notre différence réside dans la lecture de la foule : nous adaptons l’énergie en temps réel.
         </p>
         <div class="pt-2">
-          <a href="/devis" class="inline-flex items-center text-[11px] tracking-[0.2em] uppercase font-bold text-[#AF9453] hover:text-black transition-colors duration-300 border-b-2 border-[#AF9453] pb-1">
-            BOOKER UN DJ →
+          <a href="/devis" class="inline-flex items-center text-[11px] tracking-[0.25em] uppercase font-bold text-[#AF9453] hover:text-black transition-colors duration-300 border-b-2 border-[#AF9453] pb-1">
+            Booker un DJ →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center scroll-reveal">
+      <div class="w-full aspect-[4/3] lg:aspect-square bg-neutral-100 overflow-hidden rounded-xl group relative shadow-md lg:order-2">
+        <img src="/images/SERVICES-prestation-speaker.webp" alt="Prestation Speaker MC" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out" />
+      </div>
+      <div class="space-y-5 lg:order-1">
+        <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">02 / DONNEZ DE LA VOIX À VOS ÉVÉNEMENTS</span>
+        <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">Prestation Speaker/MC</h2>
+        <h3 class="text-sm font-medium text-neutral-400 italic">L’Art de l’Éloquence</h3>
+        <div class="text-black font-light leading-relaxed text-justify text-[15px]">
+          La dimension sonore d’un événement ne s’arrête pas à la musique. La voix est l’élément conducteur qui lie vos invités à votre message. Chez <strong class="font-semibold">GROOVE CAVIAR</strong>, nous comprenons que l’animation d’un micro est un exercice de haute précision.
+          <ul class="space-y-3 mt-4 text-sm pl-1 text-black">
+            <li class="flex items-start"><span class="text-[#AF9453] mr-2">▶</span> <span><strong class="font-medium">Journalistes & Présentateurs :</strong> Idéals pour vos conférences et salons professionnels.</span></li>
+            <li class="flex items-start"><span class="text-[#AF9453] mr-2">▶</span> <span><strong class="font-medium">Commentateurs Sportifs :</strong> Spécialistes du direct pour vos compétitions.</span></li>
+            <li class="flex items-start"><span class="text-[#AF9453] mr-2">▶</span> <span><strong class="font-medium">Maîtres de Cérémonie :</strong> Des voix élégantes pour dynamiser vos lancements de produits.</span></li>
+          </ul>
+        </div>
+        <div class="pt-2">
+          <a href="/contact" class="inline-flex items-center text-[11px] tracking-[0.25em] uppercase font-bold text-[#AF9453] hover:text-black transition-colors duration-300 border-b-2 border-[#AF9453] pb-1">
+            Réserver un speaker →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center scroll-reveal">
+      <div class="w-full aspect-[4/3] lg:aspect-square bg-neutral-100 overflow-hidden rounded-xl group relative shadow-md">
+        <img src="/images/SERVICES-sonorisation.webp" alt="Sonorisation et Éclairage" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out" />
+      </div>
+      <div class="space-y-5">
+        <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">03 / HAUTE-FIDÉLITÉ & MISE EN LUMIÈRE ADAPTÉE</span>
+        <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">Sonorisation & éclairage</h2>
+        <h3 class="text-sm font-medium text-neutral-400 italic">L’excellence technique au service de l’émotion</h3>
+        <p class="text-black font-light leading-relaxed text-justify text-[15px]">
+          La réussite d’un événement d’exception repose sur une synergie parfaite entre l’art et la technique. Pour éviter tout imprévu technique, nous investissons exclusivement dans des parcs matériels de pointe.
+        </p>
+        <blockquote class="border-l-2 border-[#AF9453] pl-4 italic text-neutral-500 my-4 text-sm">
+          "Notre obsession : l’esthétique. Câblage dissimulé, couleurs sobres, régies discrètes."
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center scroll-reveal">
+      <div class="w-full aspect-[4/3] lg:aspect-square bg-neutral-100 overflow-hidden rounded-xl group relative shadow-md lg:order-2">
+        <img src="/images/SERVICES-design-sonore.webp" alt="Design Sonore" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out" />
+      </div>
+      <div class="space-y-5 lg:order-1">
+        <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">04 / IDENTITÉ AUDITIVE</span>
+        <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">Design sonore</h2>
+        <p class="text-black font-light leading-relaxed text-justify text-[15px]">
+          Vous gérez une boutique, un restaurant ou un hôtel ? Nous vous aidons à définir l’ambiance musicale de votre établissement et élaborer sa programmation sur-mesure.
+        </p>
+        <div class="pt-2">
+          <a href="/contact" class="inline-flex items-center text-[11px] tracking-[0.25em] uppercase font-bold text-[#AF9453] hover:text-black transition-colors duration-300 border-b-2 border-[#AF9453] pb-1">
+            Évaluer vos besoins →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center scroll-reveal">
+      <div class="w-full aspect-[4/3] lg:aspect-square bg-neutral-100 overflow-hidden rounded-xl group relative shadow-md">
+        <img src="/images/SERVICES-prod-event.webp" alt="Production Événementielle" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out" />
+      </div>
+      <div class="space-y-5">
+        <span class="text-[11px] tracking-[0.3em] text-[#AF9453] uppercase font-bold block">05 / DIRECTION ARTISTIQUE ET TECHNIQUE</span>
+        <h2 class="section-title text-3xl font-bold text-black tracking-wide uppercase">Production événementielle</h2>
+        <h3 class="text-sm font-medium text-neutral-400 italic">Créateurs de moments d’exception</h3>
+        <p class="text-black font-light leading-relaxed text-justify text-[15px]">
+          Au-delà du booking, <strong class="font-semibold">GROOVE CAVIAR</strong> est un moteur de création événementielle. Nous concevons, produisons et gérons des concepts de soirées et des événements innovants.
+        </p>
+        <div class="pt-2">
+          <a href="/contact" class="inline-flex items-center text-[11px] tracking-[0.25em] uppercase font-bold text-[#AF9453] hover:text-black transition-colors duration-300 border-b-2 border-[#AF9453] pb-1">
+            Faisons la fête ! →
           </a>
         </div>
       </div>
     </section>
 
   </div>
+
+  <section class="py-24 w-full bg-neutral-50 text-center border-t border-neutral-100 scroll-reveal">
+    <div class="max-w-4xl mx-auto px-4 space-y-6">
+      <span class="text-xs tracking-[0.3em] text-neutral-400 uppercase font-medium block">VOTRE ÉVÉNEMENT COMMENCE ICI</span>
+      <h2 class="section-title text-3xl sm:text-4xl font-bold text-black tracking-[0.1em] uppercase">
+        Prêt à transformer <br /><span class="text-[#AF9453]">votre vision</span>
+      </h2>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+        <a href="/devis" class="w-full sm:w-auto inline-block text-[11px] tracking-[0.2em] uppercase font-semibold bg-black text-white px-8 py-4 rounded-md hover:bg-[#AF9453] transition-colors duration-300">
+          Demander un devis
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
