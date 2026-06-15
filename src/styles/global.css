@@ -58,7 +58,7 @@
   }
 
   .btn-primary {
-    @apply btn text-black px-8 shadow-lg hover:bg-white hover:text-black;
+    @apply inline-flex items-center justify-center h-[46px] text-[11px] tracking-[0.2em] uppercase font-bold rounded-md transform hover:scale-105 transition-all duration-300 ease-out text-black px-8 shadow-lg hover:bg-white hover:text-black;
     background-color: var(--color-gold);
   }
   
@@ -67,7 +67,7 @@
   }
 
   .btn-outline {
-    @apply btn border border-white/40 text-white px-8 hover:bg-white hover:text-black;
+    @apply inline-flex items-center justify-center h-[46px] text-[11px] tracking-[0.2em] uppercase font-bold rounded-md transform hover:scale-105 transition-all duration-300 ease-out border border-white/40 text-white px-8 hover:bg-white hover:text-black;
   }
 
   .btn-nav {
@@ -85,17 +85,15 @@
     @apply absolute inset-0 bg-black/45;
   }
 
-  /* Correction ici : retrait du 'group' de l'apply */
   .card-image-wrapper {
     @apply overflow-hidden bg-neutral-100 aspect-square rounded-md;
   }
 
-  /* Correction ici : retrait des variantes group-hover de l'apply */
   .card-image {
-    @apply w-full h-full object-cover grayscale contrast-110 transition-all duration-1000;
+    /* CORRECTION ICI : contrast-[1.1] est la syntaxe arbitraire officielle attendue par Tailwind */
+    @apply w-full h-full object-cover grayscale contrast-[1.1] transition-all duration-1000;
   }
   
-  /* Alternative robuste au group-hover de Tailwind pour le CSS natif */
   .card-image-wrapper:hover .card-image {
     @apply grayscale-0 scale-105;
   }
