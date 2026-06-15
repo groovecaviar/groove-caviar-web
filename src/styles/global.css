@@ -2,62 +2,110 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========================================================
+   1. FICHIER DE TOKENS GLOBAL
+   ======================================================== */
 :root {
   --color-gold: #AF9453;
-  --color-gold-glow: rgba(175, 148, 83, 0.45);
+  --color-gold-glow: rgba(175, 148, 83, 0.35);
   --color-dark: #1c1c1c;
 }
 
 @layer base {
   body {
-    @apply font-sans bg-white text-dark antialiased min-h-screen flex flex-col justify-between;
+    color: var(--color-dark);
+    background-color: #ffffff;
+    @apply font-sans antialiased min-h-screen flex flex-col justify-between;
   }
 }
 
+/* ========================================================
+   2. CLASSES UTILITAIRES RÉUTILISABLES VIA @LAYER
+   ======================================================== */
 @layer components {
-  /* Système Typographique Événementiel Premium */
+
+  /* --- TYPOGRAPHIE & TITRES PREMIUM --- */
   .heading-hero {
-    @apply font-title font-bold text-5xl sm:text-7xl md:text-8xl tracking-[0.05em] leading-none uppercase space-x-2 sm:space-x-4;
+    @apply font-title font-bold text-5xl sm:text-7xl md:text-8xl tracking-[0.05em] leading-none uppercase;
   }
-  
+
   .section-title {
-    @apply font-title font-bold text-3xl text-black uppercase tracking-[0.05em];
+    color: var(--color-dark);
+    @apply font-title font-bold text-3xl uppercase tracking-[0.05em];
   }
-  
+
   .section-subtitle {
     @apply text-sm font-medium tracking-widest text-neutral-500 uppercase;
   }
-  
+
   .section-label {
-    @apply text-xs tracking-widest text-gold font-semibold block uppercase;
+    color: var(--color-gold);
+    @apply text-xs tracking-widest font-semibold block uppercase;
   }
-  
+
   .section-body {
     @apply space-y-4 text-sm text-neutral-900 font-normal leading-relaxed tracking-wide text-justify;
   }
-  
+
   .serif-title {
     @apply font-serif italic text-amber-950 border-b border-neutral-100 pb-4 text-lg;
   }
 
-  /* Composants Boutons Reconditionnés */
+
+  /* --- BOUTONS --- */
   .btn {
     @apply inline-flex items-center justify-center h-[46px] text-[11px] tracking-[0.2em] uppercase font-bold rounded-md transform hover:scale-105 transition-all duration-300 ease-out;
   }
-  
-  .btn-nav {
-    @apply inline-flex items-center justify-center h-[38px] text-[11px] tracking-[0.2em] uppercase font-bold bg-gold text-black px-6 rounded-md shadow-lg transform hover:scale-105 hover:bg-white hover:text-black hover:shadow-[0_0_25px_var(--color-gold-glow)] transition-all duration-300 ease-out;
-  }
-  
+
   .btn-primary {
-    @apply btn bg-gold text-black px-8 shadow-lg hover:bg-white hover:text-black hover:shadow-[0_0_25px_var(--color-gold-glow)];
+    @apply btn text-black px-8 shadow-lg hover:bg-white hover:text-black;
+    background-color: var(--color-gold);
   }
   
+  .btn-primary:hover {
+    box-shadow: 0 0 25px var(--color-gold-glow);
+  }
+
   .btn-outline {
     @apply btn border border-white/40 text-white px-8 hover:bg-white hover:text-black;
   }
+
+  .btn-nav {
+    @apply inline-flex items-center justify-center h-[38px] text-[11px] tracking-[0.2em] uppercase font-bold text-black px-6 rounded-md shadow-lg transform hover:scale-105 hover:bg-white hover:text-black transition-all duration-300 ease-out;
+    background-color: var(--color-gold);
+  }
   
-  /* Ligne Éditoriale & Éléments Graphiques */
+  .btn-nav:hover {
+    box-shadow: 0 0 25px var(--color-gold-glow);
+  }
+
+
+  /* --- STRUCTURES & ÉLÉMENTS GRAPHIQUES --- */
+  .hero-overlay {
+    @apply absolute inset-0 bg-black/45;
+  }
+
+  .card-image-wrapper {
+    @apply overflow-hidden bg-neutral-100 aspect-square group rounded-md;
+  }
+
+  .card-image {
+    @apply w-full h-full object-cover grayscale contrast-110 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105;
+  }
+
+  .text-link {
+    @apply inline-block text-[10px] tracking-widest uppercase font-semibold border-b border-black pb-1 transition-colors;
+  }
+  
+  .text-link:hover {
+    color: var(--color-gold);
+    border-color: var(--color-gold);
+  }
+
+  .callout-box {
+    @apply p-4 bg-neutral-50 border-l-2 border-neutral-800 text-neutral-800 italic text-xs rounded-md;
+  }
+
   .editorial-line {
     height: 1px;
     width: 420px;
@@ -70,30 +118,15 @@
     animation-delay: 1s;
   }
 
-  .card-image-wrapper {
-    @apply overflow-hidden bg-neutral-100 aspect-square group rounded-md;
-  }
-  
-  .card-image {
-    @apply w-full h-full object-cover grayscale contrast-110 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105;
-  }
 
-  .text-link {
-    @apply inline-block text-[10px] tracking-widest uppercase font-semibold border-b border-black pb-1 hover:text-gold hover:border-gold transition-colors;
-  }
-
-  .callout-box {
-    @apply p-4 bg-neutral-50 border-l-2 border-neutral-800 text-neutral-800 italic text-xs rounded-md;
-  }
-
-  /* Gestion Core des Scroll Animations */
+  /* --- LOGIQUE DE SCROLL REVEAL --- */
   .scroll-reveal {
     opacity: 0;
     transform: translateY(50px);
     transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform, opacity;
   }
-  
+
   .scroll-reveal.active {
     opacity: 1;
     transform: translateY(0);
