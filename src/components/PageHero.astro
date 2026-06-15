@@ -1,0 +1,23 @@
+---
+interface Props {
+  eyebrow: string;
+  titleWhite: string;
+  titleGoldItalic: string;
+  bgImage: string;
+}
+
+const { eyebrow, titleWhite, titleGoldItalic, bgImage } = Astro.props;
+---
+
+<section class="relative min-h-screen w-full flex items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed" style={`background-image: url('${bgImage}');`}>
+  <div class="absolute inset-0 bg-black/45"></div>
+  
+  <div class="relative z-10 text-center px-4 scroll-reveal active">
+      <span class="text-xs sm:text-sm tracking-[0.4em] text-gold uppercase font-semibold block mb-9">{eyebrow}</span>
+      <h1 class="heading-hero">
+          <span class="text-white">{titleWhite}</span>
+          <span class="text-gold italic">{titleGoldItalic}</span>
+      </h1>
+      <div class="editorial-line"></div>
+  </div>
+</section>
