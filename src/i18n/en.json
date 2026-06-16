@@ -1,27 +1,66 @@
 {
-  "baseline": "Quality animation, DJ, and music for flawless events!",
+  "baseline": "Quality entertainment, DJ and music for seamless events!",
+  "nav": {
+    "home": "Home",
+    "services": "Our Services",
+    "music": "Music & Mixes",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "cta_phone": "Call us !"
+  },
   "services": {
-    "title": "DJ PERFORMANCE",
-    "subtitle": "DJ BOOKING & ARTISTIC DIRECTION",
-    "book_btn": "BOOK A DJ"
+    "hero_label": "ARTISTIC EXCELLENCE",
+    "hero_title": "OUR SERVICES",
+    
+    "s1_label": "01 / THE BEST MUSIC, WELL MIXED",
+    "s1_title": "DJ PERFORMANCE",
+    "s1_subtitle": "DJ BOOKING & ARTISTIC DIRECTION",
+    "s1_p1": "GROOVE CAVIAR accompanies your projects in music and offers professional DJs for all types of private or public events. We are here to meet your needs by bringing our expertise to the musical animation of your events or venues.",
+    "s1_p2": "Based in Biarritz, we operate throughout Aquitaine (Basque Country, Landes, Gironde, Béarn...) and beyond to offer a unique musical signature to your events.",
+    "s1_p3_title": "Styles & Musical Culture: ",
+    "s1_p3_text": "Our eclectic musical culture (Pop, Soul, Funk, Disco, House, Hip-hop, Electro...) allows us to build tailor-made sets. Our difference lies in reading the crowd: we adapt the energy in real time.",
+    "s1_cta": "BOOK A DJ",
+
+    "s2_label": "02 / GIVE VOICE TO YOUR EVENTS",
+    "s2_title": "SPEAKER/MC PERFORMANCE",
+    "s2_subtitle": "THE ART OF ELOQUENCE",
+    "s2_p1": "The sound dimension of an event does not stop at music. The voice is the guiding thread that connects your guests to your message. At GROOVE CAVIAR, we understand that microphone hosting is a high-precision exercise.",
+    "s2_b1": "Journalists & Presenters: Ideal for your conferences and trade shows.",
+    "s2_b2": "Sports Commentators: Specialists in live commentary for your competitions.",
+    "s2_b3": "Masters of Ceremonies: Elegant voices to energize your product launches.",
+    "s2_b4": "Bilingual Speakers (FR/EN): An indispensable asset for your international events.",
+    "s2_p2": "Rhythm, sobriety, and charisma: Our speakers act with charisma but above all with sobriety, avoiding the clichés of traditional hosting to focus on the essential.",
+    "s2_cta": "BOOK A SPEAKER",
+
+    "s3_label": "03 / HIGH-FIDELITY & ADAPTED LIGHTING",
+    "s3_title": "SOUND & LIGHTING",
+    "s3_subtitle": "TECHNICAL EXCELLENCE AT THE SERVICE OF EMOTION",
+    "s3_p1": "The success of an exceptional event relies on a perfect synergy between art and technique. To avoid any technical unforeseen circumstances, we invest exclusively in state-of-the-art equipment fleets (leading brands in the audio and light market).",
+    "s3_p2": "Clarity above all: Crystalline and discreet broadcast for your outdoor cocktails, dynamics management for speeches, and controlled power for total “Club” style immersion on the dance floor.",
+    "s3_callout": "“Our obsession: aesthetics. Concealed wiring, sober colors, discreet setups. Technique must fade away to leave room for the magic of the moment.”",
+    "s3_cta": "REQUEST A QUOTE",
+
+    "s4_label": "04 / AUDITORY IDENTITY",
+    "s4_title": "SOUND DESIGN",
+    "s4_subtitle": "“Your brand's sonic DNA is just as important as its visual identity.”",
+    "s4_p1": "Do you manage a boutique, a restaurant, or a hotel? We help you define the musical ambiance of your venue and develop its tailor-made programming.",
+    "s4_p2": "Sound design is a powerful marketing lever. We design audio charts and original soundtracks that embody your values and reinforce your sensory positioning.",
+    "s4_cta": "ASSESS YOUR NEEDS",
+
+    "s5_label": "05 / ARTISTIC AND TECHNICAL DIRECTION",
+    "s5_title": "EVENT PRODUCTION",
+    "s5_subtitle": "CREATORS OF EXCEPTIONAL MOMENTS",
+    "s5_p1": "Beyond booking, GROOVE CAVIAR is a engine of event creation. We design, produce, and manage innovative party concepts and events that mark the cultural identity of the Basque Country.",
+    "s5_p2": "A “Full Service” approach: Feasibility study, global logistics, talent selection, deployment of sound systems, communication, and real-time branding.",
+    "s5_cta": "LET'S PARTY!"
   },
   "footer": {
-    "nav_title": "Navigation",
-    "contact_title": "Contact & Offices",
-    "newsletter_title": "Club Newsletter",
-    "newsletter_placeholder": "Your email address",
-    "newsletter_btn": "Subscribe"
-  }
-}
-{
-  "services": {
-    "label": "01 / THE BEST MUSIC, WELL MIXED",
-    "title": "DJ PERFORMANCE",
-    "subtitle": "DJ BOOKING & ARTISTIC DIRECTION",
-    "p1": "GROOVE CAVIAR accompanies your projects in music and offers professional DJs for all types of private or public events. We are here to meet your needs by bringing our expertise to the musical animation of your events or venues.",
-    "p2": "Based in Biarritz, we operate throughout Aquitaine (Basque Country, Landes, Gironde, Béarn...) and beyond to offer a unique musical signature to your events.",
-    "p3_title": "Styles & Musical Culture: ",
-    "p3_text": "Our eclectic musical culture (Pop, Soul, Funk, Disco, House, Hip-hop, Electro...) allows us to build tailor-made sets. Our difference lies in reading the crowd: we adapt the energy in real time.",
-    "cta": "BOOK A DJ"
+    "title": "YOUR EVENT STARTS HERE",
+    "subtitle": "Ready to transform your vision into an exceptional sonic and visual reality? We are at your service to design the unexpected.",
+    "cta_quote": "REQUEST A QUOTE",
+    "cta_agency": "CONTACT THE AGENCY",
+    "rights": "© 2026 Groove Caviar. All rights reserved.",
+    "legal": "Legal Notice",
+    "privacy": "Privacy Policy"
   }
 }
