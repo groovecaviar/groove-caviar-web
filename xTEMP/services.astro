@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ServiceBlock from '../components/ServiceBlock.astro';
+import CTASection from '../components/CTASection.astro';
+
+// Note: Pour l'internationalisation finale, ces chaînes seront mappées via t('key')
+---
+
+<BaseLayout title="Nos Services – Groove Caviar" description="Une expertise musicale & technique au service de l’émotion. Découvrez les prestations sur-mesure de l'agence Groove Caviar à Biarritz.">
+  
+  <PageHero 
+    eyebrow="L’excellence artistique" 
+    titleWhite="Nos" 
+    titleGoldItalic="Services" 
+    bgImage="/images/SERVICES-hero.webp" 
+  />
+
+  <main class="w-full space-y-32 py-32 overflow-hidden bg-white">
+
+      <ServiceBlock
+        label="01 / La meilleure musique, bien mixée"
+        title="Prestation DJ"
+        subtitle="Booking DJ & Direction Artistique"
+        imgSrc="/images/SERVICES-prestation-dj.webp"
+        imgAlt="Prestation DJ"
+        linkHref="/links.html"
+        linkText="Booker un DJ"
+      >
+        <p><strong class="text-black font-semibold">GROOVE CAVIAR</strong> accompagne vos projets en musique et propose des DJ professionnels pour tout type d’événements privés ou publics. Nous sommes là pour répondre à vos besoins en vous apportant notre savoir-faire dans l’animation musicale de vos manifestations ou de vos établissements.</p>
+        <p>Basés à Biarritz, nous intervenons dans toute l’Aquitaine (Pays Basque, Landes, Gironde, Béarn…) et au-delà pour offrir une signature musicale unique à vos événements.</p>
+        <p><strong class="text-black font-semibold">Styles & Culture Musicale :</strong> Notre culture musicale éclectique (Pop, Soul, Funk, Disco, House, Hip-hop, Electro…) nous permet de construire des sets sur-mesure. Notre différence réside dans la lecture de la foule : nous adaptons l’énergie en temps réel.</p>
+      </ServiceBlock>
+
+      <ServiceBlock
+        label="02 / Donnez de la voix à vos événements"
+        title="Prestation Speaker/MC"
+        subtitle="L’Art de l’Éloquence"
+        imgSrc="/images/SERVICES-prestation-speaker.webp"
+        imgAlt="Prestation Speaker MC"
+        isReversed={true}
+        linkHref="/links.html"
+        linkText="Réserver un speaker"
+      >
+        <p>La dimension sonore d’un événement ne s’arrête pas à la musique. La voix est l’élément conducteur qui lie vos invités à votre message. Chez <strong class="text-black font-semibold">GROOVE CAVIAR</strong>, nous comprenons que l’animation d’un micro est un exercice de haute précision.</p>
+        
+        <ul class="space-y-3 my-4 text-sm font-normal text-neutral-900">
+            <li class="flex items-start space-x-3">
+                <span class="text-gold text-[11px] mt-[4px] flex-shrink-0">▶</span>
+                <span><strong class="text-black font-semibold">Journalistes & Présentateurs :</strong> Idéals pour vos conférences et salons professionnels.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+                <span class="text-gold text-[11px] mt-[4px] flex-shrink-0">▶</span>
+                <span><strong class="text-black font-semibold">Commentateurs Sportifs :</strong> Spécialistes du direct pour vos compétitions.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+                <span class="text-gold text-[11px] mt-[4px] flex-shrink-0">▶</span>
+                <span><strong class="text-black font-semibold">Maîtres de Cérémonie :</strong> Des voix élégantes pour dynamiser vos lancements de produits.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+                <span class="text-gold text-[11px] mt-[4px] flex-shrink-0">▶</span>
+                <span><strong class="text-black font-semibold">Speakers Bilingues (FR/EN) :</strong> Un atout indispensable pour vos événements internationaux.</span>
+            </li>
+        </ul>
+        
+        <p><strong class="text-black font-semibold">Rythme, sobriété et charisme :</strong> Nos speakers agissent avec charisme mais surtout avec sobriété, évitant les clichés de l’animation traditionnelle pour se concentrer sur l’essentiel.</p>
+      </ServiceBlock>
+
+      <ServiceBlock
+        label="03 / Haute-fidélité & mise en lumière adaptée"
+        title="Sonorisation & éclairage"
+        subtitle="L’excellence technique au service de l’émotion"
+        imgSrc="/images/SERVICES-sonorisation.webp"
+        imgAlt="Sonorisation et Éclairage"
+        callout='"Notre obsession : l’esthétique. Câblage dissimulé, couleurs sobres, régies discrètes. La technique doit s’effacer pour laisser place à la magie de l’instant."'
+      >
+        <p>La réussite d’un événement d’exception repose sur une synergie parfaite entre l’art et la technique. Pour éviter tout imprévu technique, nous investissons exclusivement dans des parcs matériels de pointe (marques leaders du marché audio et light).</p>
+        <p><strong class="text-black font-semibold">La clarté avant tout :</strong> Diffusion cristalline et discrète pour vos cocktails en extérieur, gestion de la dynamique pour les discours, et puissance maîtrisée pour une immersion totale façon "Club" sur le dancefloor.</p>
+      </ServiceBlock>
+
+      <ServiceBlock
+        label="04 / Identité auditive"
+        title="Design sonore"
+        imgSrc="/images/SERVICES-design-sonore.webp"
+        imgAlt="Design Sonore"
+        isReversed={true}
+        serifQuote="“L’ADN sonore de votre marque est aussi important que son identité visuelle.”"
+        linkHref="/links.html"
+        linkText="Évaluer vos besoins"
+      >
+        <p>Vous gérez une boutique, un restaurant ou un hôtel ? Nous vous adoptons à définir l’ambiance musicale de votre établissement et élaborer sa programmation sur-mesure.</p>
+        <p>Le design sonore est un levier marketing puissant. Nous concevons des chartes audio et des bandes-son originales qui incarnent vos valeurs et renforcent votre positionnement sensoriel.</p>
+      </ServiceBlock>
+
+      <ServiceBlock
+        label="05 / Direction artistique et technique"
+        title="Production événementielle"
+        subtitle="Créateurs de moments d’exception"
+        imgSrc="/images/SERVICES-prod-event.webp"
+        imgAlt="Production Événementielle"
+        linkHref="/links.html"
+        linkText="Faisons la fête !"
+      >
+        <p>Au-delà du booking, <strong class="text-black font-semibold">GROOVE CAVIAR</strong> est un moteur de création événementielle. Nous concevons, produisons et gérons des concepts de soirées et des événements innovants qui marquent l’identité culturelle du Pays Basque.</p>
+        <p><strong class="text-black font-semibold">Une approche “Full Service” :</strong> Étude de faisabilité, logistique globale, sélection des talents, déploiement des systèmes de sonorisation, communication, et branding en temps réel.</p>
+      </ServiceBlock>
+
+  </main>
+
+  <CTASection
+    titleWhite="Votre événement"
+    titleGold="commence ici"
+    description="Prêt à transformer votre vision en une réalité sonore et visuelle exceptionnelle ? Nous sommes à votre écoute pour concevoir l’inattendu."
+    primaryBtnText="Demander un devis"
+    primaryBtnHref="/links.html"
+    secondaryBtnText="Contacter l’agence"
+    secondaryBtnHref="/links.html"
+  />
+
+</BaseLayout>
+
+<script>
+  // Script d'animation unifié et optimisé pour le cycle de vie Astro
+  const initReveal = () => {
+    const revealElements = document.querySelectorAll('.scroll-reveal:not(.active)');
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('active');
+                }, 150);
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { 
+        rootMargin: '0px 0px -100px 0px',
+        threshold: 0.1 
+    });
+    revealElements.forEach(element => revealObserver.observe(element));
+  };
+
+  document.addEventListener('DOMContentLoaded', initReveal);
+  document.addEventListener('astro:page-load', initReveal); // Support natif des View Transitions Astro
+</script>
