@@ -1,27 +1,85 @@
 ---
-// src/components/Navbar.astro
----
-<header class="w-full sticky top-0 z-50 bg-black/95 backdrop-blur-xl border-b border-white/[0.06]">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[76px] flex justify-between items-center">
-      
-      <a href="/" class="flex items-center space-x-3 group">
-          <img src="/assets/logo-circulaire.webp" alt="Logo Groove Caviar" class="w-[38px] h-[38px] object-contain transition-transform duration-500 group-hover:scale-105">
-          <span class="text-xl sm:text-2xl font-bold tracking-[0.02em] uppercase text-[#AF9453] align-middle" style="font-family: 'Josefin Sans', sans-serif;">Groove Caviar</span>
-      </a>
-      
-      <nav class="hidden lg:flex items-center space-x-8 text-[12px] tracking-[0.2em] uppercase font-semibold text-gray-400 h-full" style="font-family: 'Montserrat', sans-serif;">
-          <a href="/" class="hover:text-white transition-colors duration-300">Home</a>
-          <a href="/services" class="text-white font-bold border-b-2 border-[#AF9453] pb-1">Services</a>
-          <a href="/musique" class="hover:text-white transition-colors duration-300">Musique</a>
-          <a href="/dj-soirees" class="hover:text-white transition-colors duration-300">DJ Soirées</a>
-          <a href="/faq" class="hover:text-white transition-colors duration-300">FAQ</a>
-          <a href="/contact" class="hover:text-white transition-colors duration-300">Contact</a>
-      </nav>
+import { useTranslations } from '../i18n/utils';
 
-      <div class="flex items-center">
-          <a href="tel:+33623625704" class="inline-flex items-center justify-center h-[38px] text-[11px] tracking-[0.2em] uppercase font-bold bg-[#AF9453] text-black px-6 rounded-md shadow-lg transform hover:scale-105 hover:bg-white hover:text-black hover:shadow-[0_0_25px_rgba(175,148,83,0.45)] transition-all duration-300 ease-out">
-              Appelez-nous !
+// 1. Détection de la langue actuelle
+const lang = (Astro.currentLocale as 'fr' | 'en') || 'fr';
+const t = useTranslations(lang);
+const pathname = Astro.url.pathname;
+
+// 2. Configuration des liens de navigation (Centralisé et propre)
+const navItems = [
+  { labelFr: 'Accueil', labelEn: 'Home', path: '/' },
+  { labelFr: 'Nos Services', labelEn: 'Services', path: '/services' },
+  { labelFr: 'Mixes & Univers', labelEn: 'Music & Mixes', path: '/musique' },
+  { labelFr: 'FAQ', labelEn: 'FAQ', path: '/faq' },
+  { labelFr: 'Contact', labelEn: 'Contact', path: '/contact' }
+];
+
+// 3. Logique dynamique pour calculer les destinations de bascule des drapeaux
+let cleanPath = pathname;
+if (pathname.startsWith('/en')) {
+  cleanPath = pathname.replace(/^\/en/, '');
+}
+if (cleanPath === '') cleanPath = '/';
+
+const frUrl = cleanPath;
+const enUrl = cleanPath === '/' ? '/en' : `/en${cleanPath}`;
+---
+
+<header class="w-full bg-white border-b border-neutral-100 sticky top-0 z-50 font-sans backdrop-blur-md bg-white/90">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    
+    <a href={lang === 'fr' ? '/' : '/en'} class="flex items-center space-x-2 group">
+      <span class="font-title font-bold text-xl tracking-[0.15em] text-neutral-900 transition-colors group-hover:text-neutral-700">
+        GROOVE <span class="text-gold">CAVIAR</span>
+      </span>
+    </a>
+
+    <nav class="hidden md:flex items-center space-x-8 text-[11px] font-bold tracking-[0.2em] uppercase">
+      {navItems.map((item) => {
+        // Résolution dynamique de l'URL selon la langue
+        const targetUrl = lang === 'fr' ? item.path : (item.path === '/' ? '/en' : `/en${item.path}`);
+        
+        // Vérification précise si l'onglet courant est actif
+        const isActive = pathname === targetUrl || (item.path !== '/' && pathname.includes(item.path));
+        
+        return (
+          <a 
+            href={targetUrl} 
+            class={`transition-colors duration-300 ${isActive ? 'text-gold' : 'text-neutral-800 hover:text-gold'}`}
+          >
+            {lang === 'fr' ? item.labelFr : item.labelEn}
           </a>
+        );
+      })}
+    </nav>
+
+    <div class="flex items-center">
+      
+      <a href="tel:+33623625704" class="btn-nav hidden sm:inline-flex whitespace-nowrap">
+        {lang === 'fr' ? 'Appelez-nous !' : 'Call us !'}
+      </a>
+
+      <div class="flex items-center space-x-3 ml-4 border-l border-neutral-200 pl-4">
+        
+        <a href={frUrl} title="Version Française" class="transition-transform hover:scale-110 block">
+          <img 
+            src="/assets/FR-flag.svg" 
+            alt="Français" 
+            class={`w-5 h-3.5 object-cover rounded-sm shadow-sm transition-all duration-300 ${lang === 'fr' ? 'grayscale-0 opacity-100' : 'grayscale opacity-35 hover:opacity-80'}`}
+          />
+        </a>
+
+        <a href={enUrl} title="English Version" class="transition-transform hover:scale-110 block">
+          <img 
+            src="/assets/EN-flag.svg" 
+            alt="English" 
+            class={`w-5 h-3.5 object-cover rounded-sm shadow-sm transition-all duration-300 ${lang === 'en' ? 'grayscale-0 opacity-100' : 'grayscale opacity-35 hover:opacity-80'}`}
+          />
+        </a>
+
       </div>
+    </div>
+
   </div>
 </header>
