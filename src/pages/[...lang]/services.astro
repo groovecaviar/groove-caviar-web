@@ -1,12 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { useTranslations } from '../../i18n/utils';
+import { useTranslations } from '../../i18n/utils'; // Chemin corrigé ici !
 
-// Astro a besoin de savoir quelles versions générer
 export function getStaticPaths() {
   return [
-    { params: { lang: undefined } }, // Français par défaut (ex: /services)
-    { params: { lang: 'en' } },      // Anglais (ex: /en/services)
+    { params: { lang: undefined } },
+    { params: { lang: 'en' } },
   ];
 }
 
@@ -26,15 +25,15 @@ const t = useTranslations(lang as 'fr' | 'en');
     </div>
 
     <div class="space-y-6">
-      <span class="text-xs uppercase tracking-widest text-neutral-500 font-medium block">
+      <span class="section-label">
         {t('services.label')}
       </span>
       
-      <h1 class="text-4xl font-bold text-black uppercase tracking-tight">
+      <h1 class="section-title">
         {t('services.title')}
       </h1>
       
-      <h2 class="text-xs italic uppercase tracking-wider text-neutral-400">
+      <h2 class="section-subtitle">
         {t('services.subtitle')}
       </h2>
 
@@ -47,7 +46,7 @@ const t = useTranslations(lang as 'fr' | 'en');
       </p>
 
       <p class="text-neutral-700 leading-relaxed text-justify">
-        <strong>{t('services.p3_title')}</strong>{t('services.p3_text')}
+        <strong class="text-neutral-900">{t('services.p3_title')}</strong>{t('services.p3_text')}
       </p>
 
       <div class="pt-4">
