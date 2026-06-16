@@ -1,27 +1,66 @@
 {
   "baseline": "Animation, DJ et musique de qualité pour des événements sans fausse note !",
+  "nav": {
+    "home": "Accueil",
+    "services": "Nos Services",
+    "music": "Mixes & Univers",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "cta_phone": "Appelez-nous !"
+  },
   "services": {
-    "title": "PRESTATION DJ",
-    "subtitle": "BOOKING DJ & DIRECTION ARTISTIQUE",
-    "book_btn": "BOOKER UN DJ"
+    "hero_label": "L'EXCELLENCE ARTISTIQUE",
+    "hero_title": "NOS SERVICES",
+    
+    "s1_label": "01 / LA MEILLEURE MUSIQUE, BIEN MIXÉE",
+    "s1_title": "PRESTATION DJ",
+    "s1_subtitle": "BOOKING DJ & DIRECTION ARTISTIQUE",
+    "s1_p1": "GROOVE CAVIAR accompagne vos projets en musique et propose des DJ professionnels pour tout type d'événements privés ou publics. Nous sommes là pour répondre à vos besoins en vous apportant notre savoir-faire dans l'animation musicale de vos manifestations ou de vos établissements.",
+    "s1_p2": "Basés à Biarritz, nous intervenons dans toute l'Aquitaine (Pays Basque, Landes, Gironde, Béarn...) et au-delà pour offrir une signature musicale unique à vos événements.",
+    "s1_p3_title": "Styles & Culture Musicale : ",
+    "s1_p3_text": "Notre culture musicale éclectique (Pop, Soul, Funk, Disco, House, Hip-hop, Electro...) nous permet de construire des sets sur-mesure. Notre différence réside dans la lecture de la foule : nous adaptons l'énergie en temps réel.",
+    "s1_cta": "BOOKER UN DJ",
+
+    "s2_label": "02 / DONNEZ DE LA VOIX À VOS ÉVÉNEMENTS",
+    "s2_title": "PRESTATION SPEAKER/MC",
+    "s2_subtitle": "L'ART DE L'ÉLOQUENCE",
+    "s2_p1": "La dimension sonore d'un événement ne s'arrête pas à la musique. La voix est l'élément conducteur qui lie vos invités à votre message. Chez GROOVE CAVIAR, nous comprenons que l'animation d'un micro est un exercice de haute précision.",
+    "s2_b1": "Journalistes & Présentateurs : Idéals pour vos conférences et salons professionnels.",
+    "s2_b2": "Commentateurs Sportifs : Spécialistes du direct pour vos compétitions.",
+    "s2_b3": "Maîtres de Cérémonie : Des voix élégantes pour dynamiser vos lancements de produits.",
+    "s2_b4": "Speakers Bilingues (FR/EN) : Un atout indispensable pour vos événements internationaux.",
+    "s2_p2": "Rythme, sobriété et charisme : Nos speakers agissent avec charisme mais surtout avec sobriété, évitant les clichés de l'animation traditionnelle pour se concentrer sur l'essentiel.",
+    "s2_cta": "RÉSERVER UN SPEAKER",
+
+    "s3_label": "03 / HAUTE-FIDÉLITÉ & MISE EN LUMIÈRE ADAPTÉE",
+    "s3_title": "SONORISATION & ÉCLAIRAGE",
+    "s3_subtitle": "L'EXCELLENCE TECHNIQUE AU SERVICE DE L'ÉMOTION",
+    "s3_p1": "La réussite d'un événement d'exception repose sur une synergie parfaite entre l'art et la technique. Pour éviter tout imprévu technique, nous investissons exclusivement dans des parcs matériels de pointe (marques leaders du marché audio et light).",
+    "s3_p2": "La clarté avant tout : Diffusion cristalline et discrète pour vos cocktails en extérieur, gestion de la dynamique pour les discours, et puissance maîtrisée pour une immersion totale façon “Club” sur le dancefloor.",
+    "s3_callout": "“Notre obsession : l'esthétique. Câblage dissimulé, couleurs sobres, régies discrètes. La technique doit s'effacer pour laisser place à la magie de l'instant.”",
+    "s3_cta": "DEMANDER UN DEVIS",
+
+    "s4_label": "04 / IDENTITÉ AUDITIVE",
+    "s4_title": "DESIGN SONORE",
+    "s4_subtitle": "“L'ADN sonore de votre marque est aussi important que son identité visuelle.”",
+    "s4_p1": "Vous gérez une boutique, un restaurant ou un hôtel ? Nous vous aidons à définir l'ambiance musicale de votre établissement et élaborer sa programmation sur-mesure.",
+    "s4_p2": "Le design sonore est un levier marketing puissant. Nous concevons des chartes audio et des bandes-son originales qui incarnent vos valeurs et renforcent votre positionnement sensoriel.",
+    "s4_cta": "ÉVALUER VOS BESOINS",
+
+    "s5_label": "05 / DIRECTION ARTISTIQUE ET TECHNIQUE",
+    "s5_title": "PRODUCTION ÉVÉNEMENTIELLE",
+    "s5_subtitle": "CRÉATEURS DE MOMENTS D'EXCEPTION",
+    "s5_p1": "Au-delà du booking, GROOVE CAVIAR est un moteur de création événementielle. Nous concevons, produisons et gérons des concepts de soirées et des événements innovants qui marquent l'identité culturelle du Pays Basque.",
+    "s5_p2": "Une approche “Full Service” : Étude de faisabilité, logistique globale, sélection des talents, déploiement des systèmes de sonorisation, communication, et branding en temps réel.",
+    "s5_cta": "FAISONS LA FÊTE !"
   },
   "footer": {
-    "nav_title": "Navigation",
-    "contact_title": "Contact & Bureaux",
-    "newsletter_title": "Newsletter Club",
-    "newsletter_placeholder": "Votre adresse email",
-    "newsletter_btn": "S'abonner"
-  }
-}
-{
-  "services": {
-    "label": "01 / LA MEILLEURE MUSIQUE, BIEN MIXÉE",
-    "title": "PRESTATION DJ",
-    "subtitle": "BOOKING DJ & DIRECTION ARTISTIQUE",
-    "p1": "GROOVE CAVIAR accompagne vos projets en musique et propose des DJ professionnels pour tout type d'événements privés ou publics. Nous sommes là pour répondre à vos besoins en vous apportant notre savoir-faire dans l'animation musicale de vos manifestations ou de vos établissements.",
-    "p2": "Basés à Biarritz, nous intervenons dans toute l'Aquitaine (Pays Basque, Landes, Gironde, Béarn...) et au-delà pour offrir une signature musicale unique à vos événements.",
-    "p3_title": "Styles & Culture Musicale : ",
-    "p3_text": "Notre culture musicale éclectique (Pop, Soul, Funk, Disco, House, Hip-hop, Electro...) nous permet de construire des sets sur-mesure. Notre différence réside dans la lecture de la foule : nous adaptons l'énergie en temps réel.",
-    "cta": "BOOKER UN DJ"
+    "title": "VOTRE ÉVÉNEMENT COMMENCE ICI",
+    "subtitle": "Prêt à transformer votre vision en une réalité sonore et visuelle exceptionnelle ? Nous sommes à votre écoute pour concevoir l'inattendu.",
+    "cta_quote": "DEMANDER UN DEVIS",
+    "cta_agency": "CONTACTER L'AGENCE",
+    "rights": "© 2026 Groove Caviar. Tous droits réservés.",
+    "legal": "Mentions Légales",
+    "privacy": "Confidentialité"
   }
 }
