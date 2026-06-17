@@ -1,0 +1,2363 @@
+diff --git a/astro.config.ts b/astro.config.ts
+index ef38291..2b5930f 100755
+--- a/astro.config.ts
++++ b/astro.config.ts
+@@ -26,8 +26,19 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
+ export default defineConfig({
+   output: 'static',
+ 
++  i18n: {
++    defaultLocale: 'fr',
++    locales: ['fr', 'en'],
++    routing: { prefixDefaultLocale: false, redirectToDefaultLocale: false },
++  },
++
+   integrations: [
+-    sitemap(),
++    sitemap({
++      i18n: {
++        defaultLocale: 'fr',
++        locales: { fr: 'fr-FR', en: 'en-US' },
++      },
++    }),
+     mdx(),
+     icon({
+       include: {
+diff --git a/package.json b/package.json
+index 7449416..9cf34fb 100755
+--- a/package.json
++++ b/package.json
+@@ -25,6 +25,8 @@
+     "@astrojs/rss": "^4.0.18",
+     "@astrojs/sitemap": "^3.7.3",
+     "@fontsource-variable/inter": "^5.2.8",
++    "@fontsource-variable/josefin-sans": "^5.2.8",
++    "@fontsource/rock-salt": "^5.2.8",
+     "astro": "^6.4.2",
+     "astro-embed": "^0.13.0",
+     "astro-icon": "^1.1.5",
+diff --git a/public/decapcms/config.yml b/public/decapcms/config.yml
+deleted file mode 100755
+index 841a67b..0000000
+--- a/public/decapcms/config.yml
++++ /dev/null
+@@ -1,29 +0,0 @@
+-backend:
+-  name: git-gateway
+-  branch: main
+-
+-media_folder: 'src/assets/images'
+-public_folder: '/_astro'
+-
+-collections:
+-  - name: 'post'
+-    label: 'Post'
+-    folder: 'src/content/post'
+-    create: true
+-    fields:
+-      - { label: 'Title', name: 'title', widget: 'string' }
+-      - { label: 'Excerpt', name: 'excerpt', widget: 'string' }
+-      - { label: 'Category', name: 'category', widget: 'string' }
+-      - {
+-          label: 'Tags',
+-          name: 'tags',
+-          widget: 'list',
+-          allow_add: true,
+-          allow_delete: true,
+-          collapsed: false,
+-          field: { label: 'Tag', name: 'tag', widget: 'string' },
+-        }
+-      - { label: 'Image', name: 'image', widget: 'string' }
+-      - { label: 'Publish Date', name: 'publishDate', widget: 'datetime', required: false }
+-      - { label: 'Author', name: 'author', widget: 'string' }
+-      - { label: 'Content', name: 'body', widget: 'markdown' }
+diff --git a/public/decapcms/index.html b/public/decapcms/index.html
+deleted file mode 100755
+index baab0e4..0000000
+--- a/public/decapcms/index.html
++++ /dev/null
+@@ -1,14 +0,0 @@
+-<!doctype html>
+-<html>
+-  <head>
+-    <meta charset="utf-8" />
+-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <meta name="robots" content="noindex" />
+-    <title>Content Manager</title>
+-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+-  </head>
+-  <body>
+-    <!-- Include the script that builds the page and powers Decap CMS -->
+-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+-  </body>
+-</html>
+diff --git a/public/robots.txt b/public/robots.txt
+index 6f27bb6..21ecbdd 100755
+--- a/public/robots.txt
++++ b/public/robots.txt
+@@ -1,2 +1,6 @@
+ User-agent: *
+-Disallow:
+\ No newline at end of file
++Allow: /
++Disallow: /instagram/
++Disallow: /prestataires-recommandes/
++
++Sitemap: https://www.groovecaviar.com/sitemap-index.xml
+diff --git a/src/assets/styles/tailwind.css b/src/assets/styles/tailwind.css
+index 0b05cd5..e1dcb30 100755
+--- a/src/assets/styles/tailwind.css
++++ b/src/assets/styles/tailwind.css
+@@ -115,3 +115,7 @@
+ .dd *:first-child {
+   margin-top: 0;
+ }
++
++@utility font-quote {
++  font-family: 'Rock Salt', cursive;
++}
+diff --git a/src/components/CustomStyles.astro b/src/components/CustomStyles.astro
+index 2b27954..383655d 100755
+--- a/src/components/CustomStyles.astro
++++ b/src/components/CustomStyles.astro
+@@ -1,62 +1,48 @@
+ ---
+-import '@fontsource-variable/inter';
+-
+-// 'DM Sans'
+-// Nunito
+-// Dosis
+-// Outfit
+-// Roboto
+-// Literata
+-// 'IBM Plex Sans'
+-// Karla
+-// Poppins
+-// 'Fira Sans'
+-// 'Libre Franklin'
+-// Inconsolata
+-// Raleway
+-// Oswald
+-// 'Space Grotesk'
+-// Urbanist
++import '@fontsource-variable/inter'; // corps de texte (lisibilité)
++import '@fontsource-variable/josefin-sans'; // titres / logo
++import '@fontsource/rock-salt'; // citations uniquement (décoratif)
+ ---
+ 
+ <style is:inline>
+   :root {
+     --aw-font-sans: 'Inter Variable';
+     --aw-font-serif: 'Inter Variable';
+-    --aw-font-heading: 'Inter Variable';
++    --aw-font-heading: 'Josefin Sans Variable';
+ 
+-    --aw-color-primary: rgb(1 97 239);
+-    --aw-color-secondary: rgb(1 84 207);
+-    --aw-color-accent: rgb(109 40 217);
++    /* Palette Groove Caviar — or & noir */
++    --aw-color-primary: rgb(175 148 83); /* #AF9453 */
++    --aw-color-secondary: rgb(138 116 64); /* #8A7440 (hover) */
++    --aw-color-accent: rgb(202 172 102); /* #CAAC66 */
+ 
+-    --aw-color-text-heading: rgb(0 0 0);
+-    --aw-color-text-default: rgb(16 16 16);
+-    --aw-color-text-muted: rgb(16 16 16 / 66%);
++    --aw-color-text-heading: rgb(13 13 13); /* #0D0D0D */
++    --aw-color-text-default: rgb(26 26 26);
++    --aw-color-text-muted: rgb(13 13 13 / 66%);
+     --aw-color-bg-page: rgb(255 255 255);
+ 
+-    --aw-color-bg-page-dark: rgb(3 6 32);
++    --aw-color-bg-page-dark: rgb(13 13 13); /* #0D0D0D sections sombres */
+ 
+     ::selection {
+-      background-color: lavender;
++      background-color: rgb(175 148 83 / 30%);
+     }
+   }
+ 
+   .dark {
+     --aw-font-sans: 'Inter Variable';
+     --aw-font-serif: 'Inter Variable';
+-    --aw-font-heading: 'Inter Variable';
++    --aw-font-heading: 'Josefin Sans Variable';
+ 
+-    --aw-color-primary: rgb(1 97 239);
+-    --aw-color-secondary: rgb(1 84 207);
+-    --aw-color-accent: rgb(109 40 217);
++    --aw-color-primary: rgb(202 172 102); /* or plus clair sur fond sombre */
++    --aw-color-secondary: rgb(175 148 83);
++    --aw-color-accent: rgb(226 209 164); /* #E2D1A4 */
+ 
+-    --aw-color-text-heading: rgb(247, 248, 248);
++    --aw-color-text-heading: rgb(247 248 248);
+     --aw-color-text-default: rgb(229 236 246);
+     --aw-color-text-muted: rgb(229 236 246 / 66%);
+-    --aw-color-bg-page: rgb(3 6 32);
++    --aw-color-bg-page: rgb(13 13 13);
+ 
+     ::selection {
+-      background-color: black;
++      background-color: rgb(175 148 83 / 40%);
+       color: snow;
+     }
+   }
+diff --git a/src/config.yaml b/src/config.yaml
+index 7498267..2e02513 100755
+--- a/src/config.yaml
++++ b/src/config.yaml
+@@ -1,72 +1,72 @@
+ site:
+-  name: AstroWind
+-  site: 'https://astrowind.vercel.app'
++  name: Groove Caviar
++  site: 'https://www.groovecaviar.com'
+   base: '/'
+   trailingSlash: false
+ 
+-  googleSiteVerificationId: orcPxI47GSa-cRvY11tUe6iGg2IO_RPvnA1q95iEM3M
++  googleSiteVerificationId: ''
+ 
+ # Default SEO metadata
+ metadata:
+   title:
+-    default: AstroWind
+-    template: '%s — AstroWind'
+-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
++    default: 'Groove Caviar — DJ & événementiel haut de gamme à Biarritz'
++    template: '%s — Groove Caviar'
++  description: "Agence de DJ et d'événementiel haut de gamme basée à Biarritz. Mariages premium, internationaux et soirées d'exception au Pays Basque, dans les Landes et à l'international."
+   robots:
+     index: true
+     follow: true
+   openGraph:
+-    site_name: AstroWind
++    site_name: Groove Caviar
+     images:
+-      - url: '~/assets/images/default.png'
++      - url: '~/assets/images/og-groove-caviar.png'
+         width: 1200
+         height: 628
+     type: website
+   twitter:
+-    handle: '@arthelokyo'
+-    site: '@arthelokyo'
++    handle: '@groovecaviar'
++    site: '@groovecaviar'
+     cardType: summary_large_image
+ 
+ i18n:
+-  language: en
++  language: fr
+   textDirection: ltr
+ 
+ apps:
+   blog:
+-    isEnabled: true
++    isEnabled: false
+     postsPerPage: 6
+ 
+     post:
+-      isEnabled: true
+-      permalink: '/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
++      isEnabled: false
++      permalink: '/%slug%'
+       robots:
+         index: true
+ 
+     list:
+-      isEnabled: true
+-      pathname: 'blog' # Blog main path, you can change this to "articles" (/articles)
++      isEnabled: false
++      pathname: 'journal'
+       robots:
+         index: true
+ 
+     category:
+-      isEnabled: true
+-      pathname: 'category' # Category main path /category/some-category, you can change this to "group" (/group/some-category)
++      isEnabled: false
++      pathname: 'category'
+       robots:
+         index: true
+ 
+     tag:
+-      isEnabled: true
+-      pathname: 'tag' # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
++      isEnabled: false
++      pathname: 'tag'
+       robots:
+         index: false
+ 
+-    isRelatedPostsEnabled: true
++    isRelatedPostsEnabled: false
+     relatedPostsCount: 4
+ 
+ analytics:
+   vendors:
+     googleAnalytics:
+-      id: null # or "G-XXXXXXXXXX"
++      id: 'G-JNP77GV0GC' # configuré mais DORMANT tant que hasExternalScripts=false (RGPD)
+ 
+ ui:
+-  theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
++  theme: 'light:only'
+diff --git a/src/i18n/en.ts b/src/i18n/en.ts
+new file mode 100644
+index 0000000..bfe892b
+--- /dev/null
++++ b/src/i18n/en.ts
+@@ -0,0 +1,22 @@
++export const en = {
++  locale: 'en',
++  nav: {
++    home: 'Home',
++    services: 'Services',
++    weddings: 'Weddings',
++    parties: 'Parties',
++    events: 'Events',
++    music: 'Music',
++    faq: 'FAQ',
++    contact: 'Contact',
++  },
++  cta: {
++    quote: 'Request a quote',
++    call: 'Call us',
++    booking: 'Book a DJ',
++  },
++  footer: {
++    newsletter: 'Newsletter',
++    rights: 'All rights reserved',
++  },
++} as const;
+diff --git a/src/i18n/fr.ts b/src/i18n/fr.ts
+new file mode 100644
+index 0000000..477af90
+--- /dev/null
++++ b/src/i18n/fr.ts
+@@ -0,0 +1,22 @@
++export const fr = {
++  locale: 'fr',
++  nav: {
++    home: 'Accueil',
++    services: 'Services',
++    weddings: 'Mariages',
++    parties: 'Soirées',
++    events: 'Événements',
++    music: 'Musique',
++    faq: 'FAQ',
++    contact: 'Contact',
++  },
++  cta: {
++    quote: 'Demander un devis',
++    call: 'Appelez-nous',
++    booking: 'Booker un DJ',
++  },
++  footer: {
++    newsletter: 'Newsletter',
++    rights: 'Tous droits réservés',
++  },
++} as const;
+diff --git a/src/i18n/routes.ts b/src/i18n/routes.ts
+new file mode 100644
+index 0000000..fcf6562
+--- /dev/null
++++ b/src/i18n/routes.ts
+@@ -0,0 +1,45 @@
++// Table de correspondance des slugs FR ↔ EN.
++// Source de vérité pour le sélecteur de langue et les balises hreflang.
++export type Locale = 'fr' | 'en';
++
++export const routeMap: Record<string, string> = {
++  '/': '/en/',
++  '/services': '/en/services',
++  '/services/prestation-dj': '/en/services/dj-services',
++  '/services/speaker-mc': '/en/services/speaker-mc',
++  '/services/sonorisation-eclairage': '/en/services/sound-lighting',
++  '/services/design-sonore': '/en/services/sound-design',
++  '/services/production-evenementielle': '/en/services/event-production',
++  '/mariages': '/en/weddings',
++  '/mariages/pays-basque': '/en/weddings/basque-country',
++  '/mariages/landes': '/en/weddings/landes',
++  '/mariages/international': '/en/weddings/international',
++  '/mariages/lgbt': '/en/weddings/lgbtq',
++  '/soirees': '/en/parties',
++  '/soirees/entreprise': '/en/parties/corporate',
++  '/soirees/seminaire': '/en/parties/seminars',
++  '/soirees/bars-restaurants': '/en/parties/bars-restaurants',
++  '/soirees/clubs-discotheques': '/en/parties/clubs',
++  '/soirees/privees': '/en/parties/private',
++  '/soirees/privees/anniversaire': '/en/parties/private/birthday',
++  '/soirees/privees/bar-mitzvah': '/en/parties/private/bar-mitzvah',
++  '/soirees/reveillons': '/en/parties/new-years-eve',
++  '/evenements': '/en/events',
++  '/evenements/cocktail': '/en/events/cocktails',
++  '/evenements/vernissage': '/en/events/exhibition-openings',
++  '/evenements/lancement-produit': '/en/events/product-launches',
++  '/evenements/defile-mode': '/en/events/fashion-shows',
++  '/evenements/evenement-sportif': '/en/events/sporting-events',
++  '/evenements/fetes-festivals': '/en/events/festivals',
++  '/musique': '/en/music',
++  '/a-propos': '/en/about',
++  '/faq': '/en/faq',
++  '/contact': '/en/contact',
++  '/devis/mariages': '/en/quote/wedding',
++  '/devis/booking-dj': '/en/quote/dj-booking',
++};
++
++// Correspondance inverse EN -> FR.
++export const reverseRouteMap: Record<string, string> = Object.fromEntries(
++  Object.entries(routeMap).map(([fr, en]) => [en, fr])
++);
+diff --git a/src/i18n/ui.ts b/src/i18n/ui.ts
+new file mode 100644
+index 0000000..6b6747d
+--- /dev/null
++++ b/src/i18n/ui.ts
+@@ -0,0 +1,22 @@
++import type { Locale } from './routes';
++import { routeMap, reverseRouteMap } from './routes';
++import { fr } from './fr';
++import { en } from './en';
++
++export const dictionaries = { fr, en } as const;
++
++/** Détecte la locale à partir de l'URL (EN si préfixe /en, sinon FR par défaut). */
++export function getLocale(url: URL): Locale {
++  return url.pathname === '/en' || url.pathname.startsWith('/en/') ? 'en' : 'fr';
++}
++
++/** Renvoie le dictionnaire de libellés pour une locale. */
++export function useTranslations(locale: Locale) {
++  return dictionaries[locale];
++}
++
++/** Donne l'URL équivalente dans l'autre langue (pour le sélecteur de langue). */
++export function getAlternateUrl(pathname: string, locale: Locale): string | undefined {
++  const clean = pathname.replace(/\/$/, '') || '/';
++  return locale === 'fr' ? routeMap[clean] : reverseRouteMap[clean];
++}
+diff --git a/src/pages/homes/mobile-app.astro b/src/pages/homes/mobile-app.astro
+deleted file mode 100755
+index 0b7897b..0000000
+--- a/src/pages/homes/mobile-app.astro
++++ /dev/null
+@@ -1,297 +0,0 @@
+----
+-import Layout from '~/layouts/PageLayout.astro';
+-
+-import Header from '~/components/widgets/Header.astro';
+-
+-import Hero2 from '~/components/widgets/Hero2.astro';
+-import CallToAction from '~/components/widgets/CallToAction.astro';
+-import Features3 from '~/components/widgets/Features3.astro';
+-import Content from '~/components/widgets/Content.astro';
+-import Testimonials from '~/components/widgets/Testimonials.astro';
+-import FAQs from '~/components/widgets/FAQs.astro';
+-import Stats from '~/components/widgets/Stats.astro';
+-
+-import Button from '~/components/ui/Button.astro';
+-import Image from '~/components/common/Image.astro';
+-
+-const appStoreImg = '~/assets/images/app-store.png';
+-const appStoreDownloadLink = 'https://github.com/arthelokyo/astrowind';
+-
+-const googlePlayImg = '~/assets/images/google-play.png';
+-const googlePlayDownloadLink = 'https://github.com/arthelokyo/astrowind';
+-
+-const metadata = {
+-  title: 'Mobile App Homepage',
+-};
+----
+-
+-<Layout metadata={metadata}>
+-  <Fragment slot="announcement"></Fragment>
+-  <Fragment slot="header">
+-    <Header
+-      position="left"
+-      links={[
+-        { text: 'Services', href: '#' },
+-        { text: 'Features', href: '#' },
+-        { text: 'About', href: '#' },
+-      ]}
+-      actions={[
+-        {
+-          text: 'Download',
+-          href: '#download',
+-        },
+-      ]}
+-      isSticky
+-      showToggleTheme
+-    />
+-  </Fragment>
+-
+-  <!-- Hero2 Widget ******************* -->
+-
+-  <Hero2
+-    tagline="Mobile App Web Demo"
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1535303311164-664fc9ec6532?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
+-      alt: 'AstroWind Hero Image',
+-    }}
+-  >
+-    <Fragment slot="title">
+-      <span class="text-accent dark:text-white">AstroWind App</span>: <br /> professional websites <span
+-        class="hidden xl:inline">made easy</span
+-      >
+-    </Fragment>
+-
+-    <Fragment slot="subtitle">
+-      <span class="hidden sm:inline">
+-        Unlock boundless creativity at your fingertips: your gateway to innovative design.
+-      </span>
+-      Download now and embark on a journey to elevate your projects like never before.
+-    </Fragment>
+-
+-    <div slot="actions" class="flex max-w-sm gap-4">
+-      <Button variant="link" href={appStoreDownloadLink}>
+-        <Image src={appStoreImg} alt="App Store Image" width={200} format="webp" />
+-      </Button>
+-
+-      <Button variant="link" href={googlePlayDownloadLink}>
+-        <Image src={googlePlayImg} alt="Google Play Image" width={200} format="webp" />
+-      </Button>
+-    </div>
+-  </Hero2>
+-
+-  <!-- Features3 Widget ************** -->
+-
+-  <Features3
+-    id="features"
+-    title="How to use our app?"
+-    subtitle="Tired of spending hours crafting documents from scratch? Our app offers an innovative solution. With a wide array of professionally designed templates, you can now create stunning documents in minutes. Explore our templates now and experience the difference."
+-    tagline="Step-by-step guide"
+-    columns={2}
+-    items={[
+-      {
+-        title: 'Download and install the app',
+-        description: `Begin your journey by downloading our user-friendly app from your device's app store or our official website.`,
+-        icon: 'tabler:square-number-1',
+-      },
+-      {
+-        title: 'Sign up',
+-        description:
+-          'Create your account by providing the necessary information, enabling you to access our full range of features.',
+-        icon: 'tabler:square-number-2',
+-      },
+-      {
+-        title: 'Browse templates',
+-        description: 'Explore our diverse collection of website templates, categorized for easy navigation.',
+-        icon: 'tabler:square-number-3',
+-      },
+-      {
+-        title: 'Preview and select a template',
+-        description: `Visualize the potential of each template through previews, then choose the one that aligns best with your project's needs.`,
+-        icon: 'tabler:square-number-4',
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1521517407911-565264e7d82d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+-      alt: 'Colorful Image',
+-    }}
+-  />
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    isReversed
+-    items={[
+-      {
+-        title: 'User-friendly interface',
+-        description:
+-          'An intuitive and easy-to-navigate interface that allows users to quickly browse and find the templates they need.',
+-        icon: 'tabler:wand',
+-      },
+-      {
+-        title: 'Personalization options',
+-        description:
+-          'Include basic customization tools that let users modify text, colors, images, and other elements within the templates.',
+-        icon: 'tabler:settings',
+-      },
+-      {
+-        title: 'Ready-to-use components',
+-        description:
+-          'Enhance your designs with ready-to-use elements like graphics, icons, and layouts, saving you time and boosting visual appeal.',
+-        icon: 'tabler:template',
+-      },
+-      {
+-        title: 'Preview Mode',
+-        description: 'Provide a preview of each template, allowing users to see how it looks before making a purchase.',
+-        icon: 'tabler:carousel-horizontal',
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1576153192621-7a3be10b356e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1674&q=80',
+-      alt: 'Colorful Image',
+-    }}
+-  >
+-    <Fragment slot="content">
+-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Main Features</h3>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    isAfterContent
+-    items={[
+-      {
+-        title: 'Offline Access',
+-        description: 'Offer the option for users to download purchased templates for offline use.',
+-        icon: 'tabler:wifi-off',
+-      },
+-      {
+-        title: 'Secure Cloud Storage',
+-        description:
+-          'Provide cloud storage for purchased templates, ensuring users can access and back up their templates from anywhere securely.',
+-        icon: 'tabler:file-download',
+-      },
+-      {
+-        title: 'Regular Updates',
+-        description: 'Continuously add new templates and features to keep the app fresh and engaging for users.',
+-        icon: 'tabler:refresh',
+-      },
+-      {
+-        title: 'Wishlist',
+-        description: `Allow users to create a wishlist of templates they're interested in, making it easier for them to revisit and potentially purchase later.`,
+-        icon: 'tabler:heart',
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1453738773917-9c3eff1db985?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+-      alt: 'Vintage Image',
+-    }}
+-  >
+-    <Fragment slot="content">
+-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Other features</h3>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Stats Widget ****************** -->
+-
+-  <Stats
+-    title="Statistics of our app"
+-    stats={[
+-      { amount: '20K', icon: 'tabler:download' },
+-      { amount: '18.5K', icon: 'tabler:users' },
+-      { amount: '4.7', icon: 'tabler:user-star' },
+-    ]}
+-  />
+-
+-  <!-- Testimonials Widget *********** -->
+-
+-  <Testimonials
+-    title="What our users say?"
+-    testimonials={[
+-      {
+-        testimonial: `It's made exploring and downloading website templates a breeze. The interface is intuitive, and I had no trouble finding the perfect template for my project. It's an app that truly empowers users.`,
+-        name: 'Cary Kennedy',
+-        job: 'Film director',
+-        image: {
+-          src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+-          alt: 'Cary Kennedy Image',
+-        },
+-      },
+-      {
+-        testimonial: `The app's seamless download process and intuitive layout have made selecting templates an enjoyable experience. Being able to preview and experiment with different designs before committing has saved me time and ensured I get the perfect look for my website.`,
+-        name: 'Josh Wilkinson',
+-        job: 'Product Manager',
+-        image: {
+-          src: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+-          alt: 'Josh Wilkinson Image',
+-        },
+-      },
+-      {
+-        testimonial:
+-          'I was able to download and use a professional website template within minutes. The step-by-step process and user-friendly interface made it easy for me to create a website that looks as if it was designed by a pro.',
+-        name: 'Sidney Hansen',
+-        job: 'Decorator',
+-        image: {
+-          src: 'https://images.unsplash.com/photo-1512361436605-a484bdb34b5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+-          alt: 'Sidney Hansen Image',
+-        },
+-      },
+-    ]}
+-    callToAction={{
+-      target: '_blank',
+-      text: 'Read more testimonials',
+-      href: 'https://github.com/arthelokyo/astrowind',
+-      icon: 'tabler:chevron-right',
+-    }}
+-  />
+-
+-  <!-- FAQs Widget ******************* -->
+-
+-  <FAQs
+-    title="Still have some doubts?"
+-    items={[
+-      {
+-        title: 'What does this app do?',
+-        description:
+-          'This app provides a platform for you to easily browse, purchase, download, and use a wide range of website templates for your projects.',
+-      },
+-      {
+-        title: 'How can this app solve my problem?',
+-        description:
+-          'This app streamlines the process of finding and implementing professional website designs, saving you time and effort in creating visually appealing and functional websites.',
+-      },
+-      {
+-        title: 'Is it available for my device?',
+-        description: `Our app is designed for compatibility across various devices and platforms, ensuring accessibility whether you're using a smartphone, tablet, or computer.`,
+-      },
+-      {
+-        title: 'What makes this app different from others?',
+-        description:
+-          'Our app stands out for its user-friendly interface, extensive template collection, and seamless integration of the purchasing and downloading process, making it highly efficient.',
+-      },
+-      {
+-        title: 'Are there any costs involved?',
+-        description:
+-          'While the app itself may be free to download, there may be costs associated with purchasing specific templates based on your preferences and project requirements.',
+-      },
+-    ]}
+-  />
+-
+-  <!-- CallToAction Widget *********** -->
+-
+-  <CallToAction
+-    id="download"
+-    title="Download our app now!"
+-    subtitle="Access a variety of stunning templates, simplify your creative process, and elevate your online presence."
+-  >
+-    <div slot="actions" class="flex max-w-sm gap-4">
+-      <Button variant="link" href={appStoreDownloadLink}>
+-        <Image src={appStoreImg} alt="App Store Image" width={200} format="webp" />
+-      </Button>
+-
+-      <Button variant="link" href={googlePlayDownloadLink}>
+-        <Image src={googlePlayImg} alt="Google Play Image" width={200} format="webp" />
+-      </Button>
+-    </div>
+-  </CallToAction>
+-</Layout>
+diff --git a/src/pages/homes/personal.astro b/src/pages/homes/personal.astro
+deleted file mode 100755
+index 23584f6..0000000
+--- a/src/pages/homes/personal.astro
++++ /dev/null
+@@ -1,405 +0,0 @@
+----
+-import Layout from '~/layouts/PageLayout.astro';
+-
+-import Header from '~/components/widgets/Header.astro';
+-import Hero from '~/components/widgets/Hero.astro';
+-import Content from '~/components/widgets/Content.astro';
+-import CallToAction from '~/components/widgets/CallToAction.astro';
+-import Features3 from '~/components/widgets/Features3.astro';
+-import Testimonials from '~/components/widgets/Testimonials.astro';
+-import Steps from '~/components/widgets/Steps.astro';
+-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
+-import { getPermalink } from '~/utils/permalinks';
+-
+-const metadata = {
+-  title: 'Personal Homepage Demo',
+-};
+----
+-
+-<Layout metadata={metadata}>
+-  <Fragment slot="announcement"></Fragment>
+-  <Fragment slot="header">
+-    <Header
+-      links={[
+-        { text: 'Home', href: '#' },
+-        { text: 'About', href: '#about' },
+-        { text: 'Resume', href: '#resume' },
+-        { text: 'Porfolio', href: '#porfolio' },
+-        { text: 'Blog', href: '#blog' },
+-        { text: 'Github', href: 'https://github.com/arthelokyo' },
+-      ]}
+-      actions={[
+-        {
+-          text: 'Hire me',
+-          href: '#',
+-        },
+-      ]}
+-      isSticky
+-      showToggleTheme
+-    />
+-  </Fragment>
+-
+-  <!-- Hero2 Widget ******************* -->
+-
+-  <Hero
+-    id="hero"
+-    title="Sarah Johnson"
+-    tagline="Personal Web Demo"
+-    actions={[{ variant: 'primary', text: 'Hire me', href: getPermalink('/contact#form') }]}
+-  >
+-    <Fragment slot="subtitle">
+-      I'm a Graphic Designer passionate about crafting visual stories. <br /> With 5 years of experience and a degree from
+-      New York University's School of Design. I infuse vitality into brands and designs, transforming concepts into captivating
+-      realities.
+-    </Fragment>
+-  </Hero>
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    id="about"
+-    columns={3}
+-    items={[
+-      {
+-        icon: 'tabler:brand-dribbble',
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Dribbble',
+-          href: '#',
+-        },
+-      },
+-      {
+-        icon: 'tabler:brand-behance',
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Behance',
+-          href: '#',
+-        },
+-      },
+-      {
+-        icon: 'tabler:brand-pinterest',
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Pinterest',
+-          href: '#',
+-        },
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1491349174775-aaafddd81942?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+-      alt: 'Colorful Image',
+-      loading: 'eager',
+-    }}
+-  >
+-    <Fragment slot="content">
+-      <h2 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">About me</h2>
+-      <p>
+-        Welcome to my creative journey. My work is a testament to my commitment to bringing ideas to life, where each
+-        pixel becomes a brushstroke in the canvas of imagination.
+-      </p>
+-      <br />
+-      <p>
+-        I find inspiration in the world around me, whether through the pages of a captivating novel, the intricate
+-        details of typography, or the vibrant hues of nature during my outdoor escapades.
+-      </p>
+-      <br />
+-      <p>If you're curious to dive deeper into my work, you can follow me:</p>
+-    </Fragment>
+-
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Steps Widget ****************** -->
+-
+-  <Steps
+-    id="resume"
+-    title="Work experience"
+-    items={[
+-      {
+-        title:
+-          'Graphic Designer <br /> <span class="font-normal">ABC Design Studio, New York, NY</span> <br /> <span class="text-sm font-normal">2021 - Present</span>',
+-        description: `Collaborate with clients to understand design requirements and objectives. <br /> Develop branding solutions, including logos, color palettes, and brand guidelines. <br /> Design marketing materials such as brochures, posters, and digital assets. <br /> Create visually appealing user interfaces for websites and applications.`,
+-        icon: 'tabler:briefcase',
+-      },
+-      {
+-        title:
+-          'Junior Graphic Designer <br /> <span class="font-normal">XYZ Creative Agency, Los Angeles, CA</span> <br /> <span class="text-sm font-normal">2018 - 2021</span>',
+-        description: `Assisted senior designers in creating design concepts and visual assets. <br /> Contributed to the development of brand identities and marketing collateral. <br /> Collaborated with the marketing team to ensure consistent design across campaigns. <br /> Gained hands-on experience in various design software and tools.`,
+-        icon: 'tabler:briefcase',
+-      },
+-    ]}
+-    classes={{ container: 'max-w-3xl' }}
+-  />
+-
+-  <!-- Steps Widget ****************** -->
+-
+-  <Steps
+-    id="resume"
+-    title="Education"
+-    items={[
+-      {
+-        title: `Master of Fine Arts in Graphic Design <br /> <span class="font-normal">New York University's School of Design</span> <br /> <span class="text-sm font-normal">2018 - 2020</span>`,
+-        icon: 'tabler:school',
+-      },
+-      {
+-        title: `Bachelor of Arts in Graphic Design <br /> <span class="font-normal">New York University's School of Design</span> <br /> <span class="text-sm font-normal">2014 - 2018</span>`,
+-        icon: 'tabler:school',
+-      },
+-    ]}
+-    classes={{ container: 'max-w-3xl' }}
+-  />
+-
+-  <!-- Features3 Widget ************** -->
+-
+-  <Features3
+-    title="Skills"
+-    subtitle="Discover the proficiencies that allow me to bring imagination to life through design."
+-    columns={3}
+-    defaultIcon="tabler:point-filled"
+-    items={[
+-      {
+-        title: 'Graphic design',
+-        description: 'Proficient in crafting visually appealing designs that convey messages effectively.',
+-      },
+-      {
+-        title: 'Branding and identity',
+-        description: 'Skilled at developing cohesive brand identities, including logos and brand guidelines.',
+-      },
+-      {
+-        title: 'User-centered design',
+-        description: 'Experienced in creating user-friendly interfaces and optimizing user experiences.',
+-      },
+-      {
+-        title: 'Adobe Creative Suite',
+-        description: 'Skilled in using Photoshop, Illustrator, and InDesign to create and edit visual elements.',
+-      },
+-      {
+-        title: 'Typography',
+-        description: 'Adept in selecting and manipulating typefaces to enhance design aesthetics.',
+-      },
+-      {
+-        title: 'Color theory',
+-        description: 'Proficient in using color to evoke emotions and enhance visual harmony.',
+-      },
+-      {
+-        title: 'Print and digital design',
+-        description: 'Knowledgeable in designing for both print materials and digital platforms.',
+-      },
+-      {
+-        title: 'Attention to detail',
+-        description: 'Diligent in maintaining precision and quality in all design work.',
+-      },
+-      {
+-        title: 'Adaptability',
+-        description: 'Quick to adapt to new design trends, technologies, and client preferences.',
+-      },
+-    ]}
+-  />
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    id="porfolio"
+-    title="Elevating visual narratives"
+-    subtitle="Embark on a design journey that surpasses pixels, entering a realm of imagination. Explore my portfolio, where passion and creativity converge to shape enthralling visual narratives."
+-    isReversed
+-    items={[
+-      {
+-        title: 'Description:',
+-        description:
+-          'Developed a comprehensive brand identity for a tech startup, Tech Innovators, specializing in disruptive innovations. The goal was to convey a modern yet approachable image that resonated with both corporate clients and tech enthusiasts.',
+-      },
+-      {
+-        title: 'Role:',
+-        description:
+-          'Led the entire branding process from concept to execution. Created a dynamic logo that symbolized innovation, selected a vibrant color palette, and I designed corporate stationery, website graphics, and social media assets.',
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1658248165252-71e116af1b34?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=928&q=80',
+-      alt: 'Tech Design Image',
+-    }}
+-    callToAction={{
+-      target: '_blank',
+-      text: 'Go to the project',
+-      icon: 'tabler:chevron-right',
+-      href: '#',
+-    }}
+-  >
+-    <Fragment slot="content">
+-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+-        Project 1: <br /><span class="text-2xl">Brand identity for tech innovators</span>
+-      </h3>
+-    </Fragment>
+-
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    isReversed
+-    isAfterContent={true}
+-    items={[
+-      {
+-        title: 'Description:',
+-        description:
+-          'Designed a captivating event poster for an art and music festival, "ArtWave Fusion," aiming to showcase the synergy between visual art and music genres.',
+-      },
+-      {
+-        title: 'Role:',
+-        description: `Translated the festival's creative theme into a visually striking poster. Used bold typography, vibrant colors, and abstract elements to depict the fusion of art and music. Ensured the design captured the festival's vibrant atmosphere.`,
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1619983081563-430f63602796?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+-      alt: 'Art and Music Poster Image',
+-    }}
+-    callToAction={{
+-      target: '_blank',
+-      text: 'Go to the project',
+-      icon: 'tabler:chevron-right',
+-      href: '#',
+-    }}
+-  >
+-    <Fragment slot="content">
+-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+-        Project 2: <br /><span class="text-2xl">Event poster for art & music festival</span>
+-      </h3>
+-    </Fragment>
+-
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    isReversed
+-    isAfterContent={true}
+-    items={[
+-      {
+-        title: 'Description:',
+-        description: `Redesigned the e-commerce website for an eco-conscious fashion brand, GreenVogue. The objective was to align the brand's online presence with its sustainable ethos and improve user experience.`,
+-      },
+-      {
+-        title: 'Role:',
+-        description: `Conducted a thorough analysis of the brand's values and customer base to inform the design direction. Created a visually appealing interface with intuitive navigation, highlighting sustainable materials, and integrating a user-friendly shopping experience.`,
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1664455340023-214c33a9d0bd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
+-      alt: 'Fashion e-commerce Image',
+-    }}
+-    callToAction={{
+-      target: '_blank',
+-      text: 'Go to the project',
+-      icon: 'tabler:chevron-right',
+-      href: '#',
+-    }}
+-  >
+-    <Fragment slot="content">
+-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+-        Project 3: <br /><span class="text-2xl">E-commerce website redesign for fashion brand</span>
+-      </h3>
+-    </Fragment>
+-
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Testimonials Widget *********** -->
+-
+-  <Testimonials
+-    title="Client testimonials"
+-    subtitle="Discover what clients have to say about their experiences working with me."
+-    testimonials={[
+-      {
+-        testimonial: `She took our vague concept and turned it into a visual masterpiece that perfectly aligned with our goals. Her attention to detail and ability to translate ideas into compelling visuals exceeded our expectations.`,
+-        name: 'Mark Thompson',
+-        job: 'Creative director',
+-        image: {
+-          src: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+-          alt: 'Mark Thompson Image',
+-        },
+-      },
+-      {
+-        testimonial: `She transformed our brand identity with her creative finesse, capturing our essence in every element. Her dedication and talent truly shine through her work.`,
+-        name: 'Emily Martinez',
+-        job: 'CEO',
+-        image: {
+-          src: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=772&q=80',
+-          alt: 'Emily Martinez Image',
+-        },
+-      },
+-      {
+-        testimonial: `She has an uncanny ability to communicate emotions and stories. She crafted a logo for our NGO that not only represents our cause but also evokes empathy. Her professionalism and commitment make her a designer of exceptional caliber.`,
+-        name: 'Laura Simmons',
+-        job: 'Founder of an NGO',
+-        image: {
+-          src: 'https://images.unsplash.com/photo-1554727242-741c14fa561c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+-          alt: 'Laura Simmons Image',
+-        },
+-      },
+-      {
+-        testimonial: `We entrusted Sarah with revamping our website's user interface, and the results were astounding. Her intuitive design sense enhanced user experience, leading to a significant increase in engagement. She's a designer who truly understands the synergy of aesthetics and functionality.`,
+-        name: 'Alex Foster',
+-        job: 'Director of web services',
+-        image: {
+-          src: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+-          alt: 'Alex Foster Image',
+-        },
+-      },
+-      {
+-        testimonial: `She took our vision and elevated it beyond imagination. Her ability to capture brand essence and translate it into design is nothing short of remarkable. Working with her has been an inspiring journey.`,
+-        name: 'Jessica Collins',
+-        job: 'Product Manager',
+-        image: {
+-          src: 'https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=778&q=80',
+-          alt: 'Jessica Collins Image',
+-        },
+-      },
+-      {
+-        testimonial: `Her ability to transform concepts into captivating visuals is nothing short of extraordinary. She took our event poster idea and turned it into a visual masterpiece that perfectly captured the essence of our festival. Sarah's dedication, creativity, and knack for delivering beyond expectations make her an invaluable asset to any project.`,
+-        name: 'Michael Carter',
+-        job: 'Event Coordinator',
+-        image: {
+-          src: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+-          alt: 'Michael Carter Image',
+-        },
+-      },
+-    ]}
+-  />
+-
+-  <!-- CallToAction Widget *********** -->
+-
+-  <CallToAction
+-    title="Let's create together"
+-    subtitle="Ready to transform your vision into captivating designs?"
+-    actions={[
+-      {
+-        variant: 'primary',
+-        text: 'Hire me',
+-        href: '/',
+-      },
+-    ]}
+-  />
+-
+-  <!-- BlogLatestPost Widget **************** -->
+-
+-  <BlogLatestPosts
+-    id="blog"
+-    title="Explore my insightful articles on my blog"
+-    information={`Dive into a realm of design wisdom and creative inspiration, where you'll find invaluable insights, practical tips, and captivating narratives that elevate and enrich your creative journey.`}
+-  >
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </BlogLatestPosts>
+-</Layout>
+diff --git a/src/pages/homes/saas.astro b/src/pages/homes/saas.astro
+deleted file mode 100755
+index f3bf894..0000000
+--- a/src/pages/homes/saas.astro
++++ /dev/null
+@@ -1,348 +0,0 @@
+----
+-import Layout from '~/layouts/PageLayout.astro';
+-
+-import Header from '~/components/widgets/Header.astro';
+-import Hero2 from '~/components/widgets/Hero2.astro';
+-import Features from '~/components/widgets/Features.astro';
+-import Steps2 from '~/components/widgets/Steps2.astro';
+-import Content from '~/components/widgets/Content.astro';
+-import Pricing from '~/components/widgets/Pricing.astro';
+-
+-import { headerData } from '~/navigation';
+-import FAQs from '~/components/widgets/FAQs.astro';
+-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
+-
+-const metadata = {
+-  title: 'SaaS Landing Page',
+-};
+----
+-
+-<Layout metadata={metadata}>
+-  <Fragment slot="header">
+-    <Header
+-      {...headerData}
+-      actions={[
+-        {
+-          variant: 'secondary',
+-          text: 'Login',
+-          href: '#',
+-        },
+-        {
+-          variant: 'primary',
+-          text: 'Sign Up',
+-          href: '#',
+-        },
+-      ]}
+-      isSticky
+-    />
+-  </Fragment>
+-
+-  <!-- Hero2 Widget ******************* -->
+-
+-  <Hero2
+-    tagline="SaaS Web Demo"
+-    actions={[
+-      { variant: 'primary', target: '_blank', text: 'Get Started', href: 'https://github.com/arthelokyo/astrowind' },
+-      { text: 'Learn more', href: '#features' },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+-      alt: 'AstroWind Hero Image',
+-    }}
+-  >
+-    <Fragment slot="title">
+-      Simplify web design with Astrowind: <br /> your ultimate <span class="text-accent dark:text-white">SaaS</span> companion<br
+-      />
+-    </Fragment>
+-
+-    <Fragment slot="subtitle">
+-      <span class="hidden sm:inline">
+-        Elevate your website creation process with <span class="font-semibold">AstroWind</span>'s SaaS solutions.</span
+-      >
+-      Seamlessly blend the power of Astro v6 and Tailwind CSS v4 to craft websites that resonate with your brand and audience.
+-    </Fragment>
+-  </Hero2>
+-
+-  <!-- Features Widget *************** -->
+-
+-  <Features
+-    id="features"
+-    title="Why choose AstroWind?"
+-    subtitle="Each of the following features enhances AstroWind's value proposition."
+-    columns={2}
+-    items={[
+-      {
+-        title: 'Integration of Astro v6 and Tailwind CSS v4',
+-        description:
+-          'Offers a powerful combination that enhances both the development process and the end-user experience. Also, allows to build dynamic and visually stunning websites with optimized performance.',
+-        icon: 'tabler:layers-union',
+-      },
+-      {
+-        title: 'Versatile design for startups, small businesses, and more',
+-        description: `Easily customize AstroWind to harmonize with the unique branding and identity of your venture. AstroWind's versatile design adapts to suit your needs.`,
+-        icon: 'tabler:artboard',
+-      },
+-      {
+-        title: 'Effortless customization for portfolios and marketing sites',
+-        description:
+-          'With intuitive customization, easily showcase portfolio pieces, case studies, project highlights, and relevant content. Ideal for creative professionals and businesses looking to highlight their expertise.',
+-        icon: 'tabler:writing',
+-      },
+-      {
+-        title: 'Optimized landing pages and engaging blogs',
+-        description: `Landing pages are strategically designed to captivate visitors and prompt specific actions. Additionally, the blog creation feature empowers sharing insights, engaging the audience.`,
+-        icon: 'tabler:podium',
+-      },
+-      {
+-        title: 'Fast loading times and production-ready code',
+-        description: `Using Astro v6 ensures fast loading and seamless rendering, enhancing browsing. The code follows best practices, improving user experience, SEO, and reducing bounce rates.`,
+-        icon: 'tabler:rocket',
+-      },
+-      {
+-        title: 'SEO-optimized structure for enhanced visibility',
+-        description: `Follows SEO best practices with clean code, semantic HTML markup, and fast loading, enhancing search engine rankings. AstroWind's SEO structure ensures visibility to potential customers and clients.`,
+-        icon: 'tabler:eyeglass',
+-      },
+-    ]}
+-  />
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    title="Use cases"
+-    subtitle="Discover how AstroWind's versatile template serves as the ideal solution for various use cases, providing tailored solutions to drive success."
+-    isReversed
+-    items={[
+-      {
+-        title: 'Description:',
+-        description:
+-          'Are you a startup with big dreams? AstroWind propels your success. Our template forges a seamless online presence, attracting investors and customers from day one. Astro v6 and Tailwind CSS v4 ensure striking, responsive sites, leaving lasting impressions. Countless startups leverage AstroWind to kickstart their journey and resonate with audiences.',
+-      },
+-      {
+-        title: 'Benefits:',
+-        description: `Allow startups to quickly create professional websites without investing extensive time and resources. <br /> Make a memorable first impression with visually appealing design elements that highlight your startup's unique value proposition. <br /> Ensures your website looks stunning and works well on all devices. <br /> Engage potential investors and customers with engaging content, clear messaging, and intuitive navigation.`,
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1620558138198-cfb9b4f3c294?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1671&q=80',
+-      alt: 'Startup Image',
+-    }}
+-  >
+-    <Fragment slot="content">
+-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+-        Startup success stories: <br /><span class="text-2xl">Launching with AstroWind</span>
+-      </h3>
+-    </Fragment>
+-
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    isAfterContent={true}
+-    items={[
+-      {
+-        title: 'Description:',
+-        description: `For SaaS businesses, user experience is key. AstroWind enhances showcasing SaaS solutions intuitively. The template's Astro v6 and Tailwind CSS v4 integration guarantees user-friendly experience, mirroring your software's efficiency. Customize pages to communicate SaaS value and solutions for your audience.`,
+-      },
+-      {
+-        title: 'Benefits:',
+-        description: `Ensuring a cohesive and user-centric design for your SaaS website. <br /> Effectively communicate complex SaaS features through visual aids, animations, and interactive elements. <br /> Prioritize user needs and pain points through well-structured layouts and clear navigation. <br /> Encourage visitors to take action with strategically placed CTAs. <br /> Ensures your SaaS website works seamlessly across all devices.`,
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1531973486364-5fa64260d75b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1658&q=80',
+-      alt: 'SaaS Businesses Image',
+-    }}
+-  >
+-    <Fragment slot="content">
+-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+-        SaaS showcase: <br /><span class="text-2xl">Streamlining user experience</span>
+-      </h3>
+-    </Fragment>
+-
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    isReversed
+-    isAfterContent={true}
+-    items={[
+-      {
+-        title: 'Description:',
+-        description: `Your portfolio is your masterpiece, and AstroWind is your canvas. Whether you're a designer, photographer, artist, or any other creative professional, AstroWind empowers you to showcase your work with elegance and sophistication. Tailored to highlight your creative projects, AstroWind's templates offer a visually immersive experience that lets your portfolio shine.`,
+-      },
+-      {
+-        title: 'Benefits:',
+-        description: `Serve as a captivating backdrop to showcase your creative work, capturing attention and leaving a lasting impression. <br /> Tailor your portfolio to reflect your unique style and artistic vision. <br /> Prioritizes visuals, allowing you to present your work in high-resolution detail that draws viewers into your creations. <br /> Enables seamless navigation for effortless portfolio exploration.`,
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+-      alt: 'Portfolio Image',
+-    }}
+-  >
+-    <Fragment slot="content">
+-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+-        Creative portfolios: <br /><span class="text-2xl">Highlighting your work</span>
+-      </h3>
+-    </Fragment>
+-
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    items={[
+-      {
+-        title: 'Description:',
+-        description: `For small businesses, a well-crafted website can be a game-changer. AstroWind empowers small businesses to not only establish a credible online presence but also convert visitors into loyal customers. The template's thoughtful design and optimization features ensure that your website doesn't just attract attention but also guides visitors through a seamless journey, ultimately leading to conversions.`,
+-      },
+-      {
+-        title: 'Benefits:',
+-        description: `Present your small business with a professional and polished website that instills confidence and trust among visitors. <br /> Strategically placed CTAs, user-friendly forms, and optimized layouts work together to drive user engagement and conversions. <br /> Ensure a smooth browsing experience, reducing bounce rates and encouraging interaction.`,
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1514621166532-aa7eb1a3a2f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+-      alt: 'Small Business Image',
+-    }}
+-  >
+-    <Fragment slot="content">
+-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+-        Small business growth: <br /><span class="text-2xl">Converting visitors into customers</span>
+-      </h3>
+-    </Fragment>
+-
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Pricing Widget ******************* -->
+-
+-  <Pricing
+-    title="Flexible pricing plans"
+-    prices={[
+-      {
+-        title: 'free',
+-        subtitle: 'Access to core features and a wide range of templates',
+-        price: '0',
+-        period: '/ month',
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Get Started for Free',
+-          href: '#',
+-        },
+-      },
+-      {
+-        title: 'pro',
+-        subtitle: 'Premium templates and advanced customization',
+-        price: 15,
+-        period: '/ Month',
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Upgrade to Pro',
+-          href: '#',
+-        },
+-        hasRibbon: true,
+-        ribbonTitle: 'popular',
+-      },
+-      {
+-        title: 'Enterprise',
+-        subtitle: 'Tailored solutions for large-scale projects',
+-        price: 45,
+-        period: '/ Month',
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Unlock Enterprise Features',
+-          href: '#',
+-        },
+-      },
+-    ]}
+-  />
+-
+-  <!-- FAQs Widget ******************* -->
+-
+-  <FAQs
+-    title="Frequently Asked Questions"
+-    items={[
+-      {
+-        title: 'Is AstroWind compatible with the latest versions of Astro and Tailwind CSS?',
+-        description:
+-          'Yes, AstroWind is designed to be compatible with the latest versions of both Astro and Tailwind CSS v4. This ensures that you can harness the full capabilities of these technologies while benefiting from the features offered by AstroWind.',
+-        icon: 'tabler:chevrons-right',
+-      },
+-      {
+-        title: 'Can I use AstroWind for both personal and commercial projects?',
+-        description: `Certainly! AstroWind is versatile and can be used for a wide range of projects, including both personal and commercial endeavors. Whether you're building a professional portfolio, launching a startup, or creating a marketing website, AstroWind has you covered.`,
+-        icon: 'tabler:chevrons-right',
+-      },
+-      {
+-        title: 'What level of coding knowledge is required to use AstroWind?',
+-        description:
+-          'While some familiarity with HTML, CSS, and web development concepts is helpful, the user-friendly interface and customization options allow those with limited coding experience to create impressive websites. For more advanced users, AstroWind offers extensive customization capabilities.',
+-        icon: 'tabler:chevrons-right',
+-      },
+-      {
+-        title: 'Is customer support available for AstroWind users seeking guidance?',
+-        description: `Absolutely, our dedicated customer support team is here to assist you with any questions or challenges you may encounter. Feel free to reach out to us through our support channels, and we'll be happy to provide the help you need.`,
+-        icon: 'tabler:chevrons-right',
+-      },
+-    ]}
+-  >
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </FAQs>
+-
+-  <!-- Steps2 Widget ****************** -->
+-
+-  <Steps2
+-    title="Reach out to us"
+-    subtitle="Have questions? Feel free to contact us using the form below. We're here to help!"
+-    callToAction={{
+-      text: 'Contact us',
+-      href: '/',
+-    }}
+-    items={[
+-      {
+-        title: 'Email us',
+-        description: 'contact@support.com',
+-        icon: 'tabler:mail',
+-      },
+-      {
+-        title: 'Call us',
+-        description: '+1 (234) 567-890',
+-        icon: 'tabler:headset',
+-      },
+-      {
+-        title: 'Follow us',
+-        description: '@example',
+-        icon: 'tabler:brand-twitter',
+-      },
+-    ]}
+-  />
+-
+-  <!-- BlogLatestPost Widget **************** -->
+-
+-  <BlogLatestPosts
+-    id="blog"
+-    title="Stay informed with AstroWind's blog"
+-    information={`Explore our collection of articles, guides, and tutorials on web development, design trends, and using AstroWind effectively for your projects.`}
+-  >
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </BlogLatestPosts>
+-</Layout>
+diff --git a/src/pages/homes/startup.astro b/src/pages/homes/startup.astro
+deleted file mode 100755
+index 4d5dc72..0000000
+--- a/src/pages/homes/startup.astro
++++ /dev/null
+@@ -1,317 +0,0 @@
+----
+-import Layout from '~/layouts/PageLayout.astro';
+-
+-import Hero from '~/components/widgets/Hero.astro';
+-import CallToAction from '~/components/widgets/CallToAction.astro';
+-
+-import Features2 from '~/components/widgets/Features2.astro';
+-import Features from '~/components/widgets/Features.astro';
+-import Stats from '~/components/widgets/Stats.astro';
+-import Features3 from '~/components/widgets/Features3.astro';
+-import FAQs from '~/components/widgets/FAQs.astro';
+-import Brands from '~/components/widgets/Brands.astro';
+-
+-import { YouTube } from 'astro-embed';
+-
+-const metadata = {
+-  title: 'Startup Landing Page',
+-};
+----
+-
+-<Layout metadata={metadata}>
+-  <!-- Hero Widget ******************* -->
+-
+-  <Hero
+-    tagline="Startup Web Demo"
+-    actions={[
+-      {
+-        variant: 'primary',
+-        target: '_blank',
+-        text: 'Get templates',
+-        href: 'https://github.com/arthelokyo/astrowind',
+-        icon: 'tabler:download',
+-      },
+-      { text: 'Learn more', href: '#features' },
+-    ]}
+-  >
+-    <Fragment slot="title">
+-      Improve <span class="hidden sm:inline">the online presence of</span> your <span
+-        class="text-accent dark:text-white">Startup</span
+-      > with Astrowind templates
+-    </Fragment>
+-
+-    <Fragment slot="subtitle">
+-      Step into the spotlight with <span class="font-semibold">Astrowind</span> templates, your pathway to fortifying your
+-      startup's digital footprint, fostering credibility, and expanding your reach.
+-    </Fragment>
+-
+-    <Fragment slot="image">
+-      <YouTube id="gxBkghlglTg" title="Astro just Launched.... Could it be the ultimate web framework?" />
+-      <style is:inline>
+-        lite-youtube {
+-          margin: 0 auto;
+-          max-width: 100%;
+-        }
+-      </style>
+-    </Fragment>
+-  </Hero>
+-
+-  <!-- Features2 Widget ************** -->
+-
+-  <Features2
+-    title="About us"
+-    subtitle="We believe in the magic of turning dreams into stunning realities. Founded by passionate developers with a shared vision, we set out to simplify the website creation process. Our templates bring together the innovation of Astro v6 and the versatility of Tailwind CSS v4, enabling you to express your unique brand identity like never before."
+-  >
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Features2>
+-
+-  <!-- Stats Widget ****************** -->
+-
+-  <Stats
+-    title="Discover the impressive impact of Astrowind"
+-    subtitle="The numbers below reflect the trust our users have placed in us and the remarkable outcomes we've helped them achieve."
+-    stats={[
+-      { title: 'Downloads', amount: '182K' },
+-      { title: 'Websites Launched', amount: '87' },
+-      { title: 'User Ratings', amount: '4.8' },
+-      { title: 'Satisfied Clients', amount: '116K' },
+-    ]}
+-  />
+-
+-  <!-- Brands Widget ****************** -->
+-
+-  <Brands
+-    title="Partnerships & Collaborations"
+-    subtitle="At Astrowind, we believe in the power of collaboration to drive innovation and create exceptional experiences."
+-    icons={[]}
+-    images={[
+-      {
+-        src: 'https://cdn.pixabay.com/photo/2015/05/26/09/37/paypal-784404_1280.png',
+-        alt: 'Paypal',
+-      },
+-      {
+-        src: 'https://cdn.pixabay.com/photo/2021/12/06/13/48/visa-6850402_1280.png',
+-        alt: 'Visa',
+-      },
+-      {
+-        src: 'https://cdn.pixabay.com/photo/2013/10/01/10/29/ebay-189064_1280.png',
+-        alt: 'Ebay',
+-      },
+-
+-      {
+-        src: 'https://cdn.pixabay.com/photo/2015/04/13/17/45/icon-720944_1280.png',
+-        alt: 'Youtube',
+-      },
+-      {
+-        src: 'https://cdn.pixabay.com/photo/2013/02/12/09/07/microsoft-80658_1280.png',
+-        alt: 'Microsoft',
+-      },
+-      {
+-        src: 'https://cdn.pixabay.com/photo/2015/04/23/17/41/node-js-736399_1280.png',
+-        alt: 'Node JS',
+-      },
+-      {
+-        src: 'https://cdn.pixabay.com/photo/2015/10/31/12/54/google-1015751_1280.png',
+-        alt: 'Google',
+-      },
+-      {
+-        src: 'https://cdn.pixabay.com/photo/2021/12/06/13/45/meta-6850393_1280.png',
+-        alt: 'Meta',
+-      },
+-      {
+-        src: 'https://cdn.pixabay.com/photo/2013/01/29/22/53/yahoo-76684_1280.png',
+-        alt: 'Yahoo',
+-      },
+-    ]}
+-  />
+-
+-  <!-- Features2 Widget ************** -->
+-
+-  <Features2
+-    title="What services do we provide?"
+-    subtitle="We offer a wide range of website templates that suit various industries and purposes such as business, portfolio, e-commerce, blog, etc."
+-    items={[
+-      {
+-        title: 'Installation Instructions',
+-        description:
+-          'Offer clear instructions on how to download the purchased templates and install them on various website platforms or content management systems.',
+-        icon: 'flat-color-icons:document',
+-      },
+-      {
+-        title: 'Demo and Previews',
+-        description:
+-          'Provide interactive demos and previews that allow customers to see how their chosen template will look and function before making a purchase.',
+-        icon: 'flat-color-icons:template',
+-      },
+-      {
+-        title: 'Technical Support',
+-        description:
+-          'Providing customer support for any technical issues related to the templates or their implementation.',
+-        icon: 'flat-color-icons:voice-presentation',
+-      },
+-    ]}
+-  >
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Features2>
+-
+-  <!-- Features Widget *************** -->
+-
+-  <Features
+-    id="features"
+-    title="Main features of our templates"
+-    subtitle="Possess several key characteristics to effectively cater to the needs of startups and entrepreneurs."
+-    columns={3}
+-    items={[
+-      {
+-        title: 'Modern and Professional Design',
+-        description:
+-          'Have a contemporary design that reflects current design trends and gives a professional impression.',
+-        icon: 'tabler:artboard',
+-      },
+-      {
+-        title: 'Responsive and Mobile-Friendly',
+-        description: 'Adapt seamlessly to different screen sizes and devices to ensure a consistent experience.',
+-        icon: 'tabler:picture-in-picture',
+-      },
+-      {
+-        title: 'Customizability',
+-        description:
+-          'Easily customizable, allowing users to adapt the design, colors, typography, and content to match their brand identity.',
+-        icon: 'tabler:adjustments-horizontal',
+-      },
+-      {
+-        title: 'Fast Loading Times',
+-        description: 'Optimized for speed to ensure a smooth user experience and favorable search engine rankings.',
+-        icon: 'tabler:rocket',
+-      },
+-      {
+-        title: 'Search Engine Optimization (SEO)',
+-        description:
+-          'Incorporate SEO best practices in template structure and code to improve visibility in search engine results.',
+-        icon: 'tabler:arrows-right-left',
+-      },
+-      {
+-        title: 'Compatibility',
+-        description: 'The templates work seamlessly across various content management systems and website builders.',
+-        icon: 'tabler:plug-connected',
+-      },
+-    ]}
+-  />
+-
+-  <!-- FAQs Widget ******************* -->
+-
+-  <FAQs
+-    title="Frequently Asked Questions"
+-    items={[
+-      {
+-        title: 'What are landing page templates?',
+-        description:
+-          'Landing page templates are pre-designed web page layouts that are specifically created to serve as a foundation for building effective landing pages. These templates are designed to capture the attention of visitors and guide them towards a specific action or goal, such as signing up for a newsletter, making a purchase, or downloading a resource.',
+-      },
+-      {
+-        title: 'Why should I use a template?',
+-        description:
+-          'Some of the advantages are that they provide a ready-to-use structure,  saving you significant time. Are designed with user-friendliness in mind and provide a cost-effective alternative, saving you money while still delivering a quality result.',
+-      },
+-      {
+-        title: 'Can I preview templates before buying?',
+-        description:
+-          'Yes, the templates allow you to preview them before making a purchase. There is a "Demo" button associated with each template.',
+-      },
+-      {
+-        title: 'Do I need technical skills to use a template?',
+-        description:
+-          'Advanced technical skills are not required to use a template, but having a basic understanding of web navigation and familiarity with using online tools can still be beneficial. If you have more specific customization needs, you might need to consult guides or reach out to customer support for assistance.',
+-      },
+-      {
+-        title: 'Can I use the template on multiple websites?',
+-        description:
+-          'No, the template comes with a single-use license, meaning you can use the template on one website or project only. Using the template on additional websites would require purchasing additional licenses.',
+-      },
+-      {
+-        title: 'What if I need help with customization?',
+-        description:
+-          "The templates provides a comprehensive step-by-step guide that walk you through the customization process. If you still have doubts, you can reach out to our customer support team. They can answer your questions, provide guidance on customization, and address any issues you're facing.",
+-      },
+-    ]}
+-  >
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </FAQs>
+-
+-  <!-- Features3 Widget ************** -->
+-
+-  <Features3
+-    title="Let us know how we can help"
+-    subtitle="We’re here to help and answer any question you might have."
+-    columns={4}
+-    items={[
+-      {
+-        title: 'Phone',
+-        icon: 'tabler:phone',
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Call us',
+-          href: '/',
+-          variant: 'link',
+-        },
+-      },
+-      {
+-        title: 'Email',
+-        icon: 'tabler:mail',
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Write to us',
+-          href: '/',
+-          variant: 'link',
+-        },
+-      },
+-      {
+-        title: 'Chat with sales',
+-        icon: 'tabler:message-circle',
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Start chatting',
+-          href: '/',
+-          variant: 'link',
+-        },
+-      },
+-      {
+-        title: 'Chat with support',
+-        icon: 'tabler:message-circle',
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Start chatting',
+-          href: '/',
+-          variant: 'link',
+-        },
+-      },
+-    ]}
+-  />
+-
+-  <!-- CallToAction Widget *********** -->
+-
+-  <CallToAction
+-    actions={[
+-      {
+-        variant: 'primary',
+-        target: '_blank',
+-        text: 'Get templates',
+-        href: 'https://github.com/arthelokyo/astrowind',
+-        icon: 'tabler:download',
+-      },
+-    ]}
+-  >
+-    <Fragment slot="title">Be a part of our vision</Fragment>
+-
+-    <Fragment slot="subtitle">
+-      Discover a dynamic work environment, unparalleled growth opportunities, and the chance to make a meaningful
+-      impact.
+-    </Fragment>
+-  </CallToAction>
+-</Layout>
+diff --git a/src/pages/landing/click-through.astro b/src/pages/landing/click-through.astro
+deleted file mode 100755
+index 4550aa6..0000000
+--- a/src/pages/landing/click-through.astro
++++ /dev/null
+@@ -1,41 +0,0 @@
+----
+-import Layout from '~/layouts/LandingLayout.astro';
+-
+-import Hero2 from '~/components/widgets/Hero2.astro';
+-import CallToAction from '~/components/widgets/CallToAction.astro';
+-
+-const metadata = {
+-  title: 'Click-through Landing Page Demo',
+-};
+----
+-
+-<Layout metadata={metadata}>
+-  <!-- Hero2 Widget ******************* -->
+-
+-  <Hero2
+-    tagline="Click-through Demo"
+-    title="Click-through Landing Page: The Perfect Bridge to Conversion!"
+-    subtitle="Learn how to design a Click-Through Landing Page that seamlessly guides visitors to your main offer."
+-    actions={[
+-      { variant: 'primary', text: 'Call to Action', href: '#', icon: 'tabler:square-rounded-arrow-right' },
+-      { text: 'Learn more', href: '#' },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+-      alt: 'Click-through Landing Page Hero Image',
+-    }}
+-  />
+-
+-  <CallToAction
+-    title="Coming soon"
+-    subtitle="We are working on the content of these demo pages. You will see them very soon. Stay tuned Stay tuned!"
+-    actions={[
+-      {
+-        variant: 'primary',
+-        text: 'Download Template',
+-        href: 'https://github.com/arthelokyo/astrowind',
+-        icon: 'tabler:download',
+-      },
+-    ]}
+-  />
+-</Layout>
+diff --git a/src/pages/landing/lead-generation.astro b/src/pages/landing/lead-generation.astro
+deleted file mode 100755
+index 0c488e4..0000000
+--- a/src/pages/landing/lead-generation.astro
++++ /dev/null
+@@ -1,41 +0,0 @@
+----
+-import Layout from '~/layouts/LandingLayout.astro';
+-
+-import Hero from '~/components/widgets/Hero.astro';
+-import CallToAction from '~/components/widgets/CallToAction.astro';
+-
+-const metadata = {
+-  title: 'Lead Generation Landing Page Demo',
+-};
+----
+-
+-<Layout metadata={metadata}>
+-  <!-- Hero2 Widget ******************* -->
+-
+-  <Hero
+-    tagline="Lead Generation Landing Demo"
+-    title="Effective Lead Generation Landing Page: Unlock the Secrets"
+-    subtitle="Discover the secrets to creating a Landing Page that turns curious visitors into eager leads. (Your Hero should grab attention instantly. Use a powerful headline that speaks directly to your target audience.)"
+-    actions={[
+-      { variant: 'primary', text: 'Call to Action', href: '#', icon: 'tabler:square-rounded-arrow-right' },
+-      { text: 'Learn more', href: '#' },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1597423498219-04418210827d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1674&q=80',
+-      alt: 'Magnet attracting screws. Lead generation landing page demo',
+-    }}
+-  />
+-
+-  <CallToAction
+-    title="Coming soon"
+-    subtitle="We are working on the content of these demo pages. You will see them very soon. Stay tuned Stay tuned!"
+-    actions={[
+-      {
+-        variant: 'primary',
+-        text: 'Download Template',
+-        href: 'https://github.com/arthelokyo/astrowind',
+-        icon: 'tabler:download',
+-      },
+-    ]}
+-  />
+-</Layout>
+diff --git a/src/pages/landing/pre-launch.astro b/src/pages/landing/pre-launch.astro
+deleted file mode 100755
+index 100110d..0000000
+--- a/src/pages/landing/pre-launch.astro
++++ /dev/null
+@@ -1,41 +0,0 @@
+----
+-import Layout from '~/layouts/LandingLayout.astro';
+-
+-import Hero2 from '~/components/widgets/Hero2.astro';
+-import CallToAction from '~/components/widgets/CallToAction.astro';
+-
+-const metadata = {
+-  title: 'Pre-Launch Landing Page',
+-};
+----
+-
+-<Layout metadata={metadata}>
+-  <!-- Hero2 Widget ******************* -->
+-
+-  <Hero2
+-    tagline="Pre-launch Demo"
+-    title="Pre-launch Landing Page: Build the Hype Before the Big Reveal!"
+-    subtitle="Craft a tantalizing Coming Soon or Pre-Launch Landing Page that leaves visitors eagerly awaiting your launch."
+-    actions={[
+-      { variant: 'primary', text: 'Call to Action', href: '#', icon: 'tabler:square-rounded-arrow-right' },
+-      { text: 'Learn more', href: '#' },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1558803116-c1b4ac867b31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+-      alt: 'Store with a Coming Soon sign. Pre-launch Landing Page',
+-    }}
+-  />
+-
+-  <CallToAction
+-    title="Coming soon"
+-    subtitle="We are working on the content of these demo pages. You will see them very soon. Stay tuned Stay tuned!"
+-    actions={[
+-      {
+-        variant: 'primary',
+-        text: 'Download Template',
+-        href: 'https://github.com/arthelokyo/astrowind',
+-        icon: 'tabler:download',
+-      },
+-    ]}
+-  />
+-</Layout>
+diff --git a/src/pages/landing/product.astro b/src/pages/landing/product.astro
+deleted file mode 100755
+index 2b9233c..0000000
+--- a/src/pages/landing/product.astro
++++ /dev/null
+@@ -1,41 +0,0 @@
+----
+-import Layout from '~/layouts/LandingLayout.astro';
+-
+-import Hero from '~/components/widgets/Hero.astro';
+-import CallToAction from '~/components/widgets/CallToAction.astro';
+-
+-const metadata = {
+-  title: 'Product Details Landing Page Demo',
+-};
+----
+-
+-<Layout metadata={metadata}>
+-  <!-- Hero2 Widget ******************* -->
+-
+-  <Hero
+-    tagline="Product Details Demo"
+-    title="Product Landing Page: Showcase with Precision and Passion!"
+-    subtitle="Step-by-step guide to designing a Landing Page that highlights every facet of your product or service."
+-    actions={[
+-      { variant: 'primary', text: 'Call to Action', href: '#', icon: 'tabler:square-rounded-arrow-right' },
+-      { text: 'Learn more', href: '#' },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1473188588951-666fce8e7c68?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2174&q=80',
+-      alt: 'A spotlight on a product. Product Details Landing Page Demo',
+-    }}
+-  />
+-
+-  <CallToAction
+-    title="Coming soon"
+-    subtitle="We are working on the content of these demo pages. You will see them very soon. Stay tuned Stay tuned!"
+-    actions={[
+-      {
+-        variant: 'primary',
+-        text: 'Download Template',
+-        href: 'https://github.com/arthelokyo/astrowind',
+-        icon: 'tabler:download',
+-      },
+-    ]}
+-  />
+-</Layout>
+diff --git a/src/pages/landing/sales.astro b/src/pages/landing/sales.astro
+deleted file mode 100755
+index dc2b96f..0000000
+--- a/src/pages/landing/sales.astro
++++ /dev/null
+@@ -1,41 +0,0 @@
+----
+-import Layout from '~/layouts/LandingLayout.astro';
+-
+-import Hero2 from '~/components/widgets/Hero2.astro';
+-import CallToAction from '~/components/widgets/CallToAction.astro';
+-
+-const metadata = {
+-  title: 'Sales Landing Page Demo',
+-};
+----
+-
+-<Layout metadata={metadata}>
+-  <!-- Hero2 Widget ******************* -->
+-
+-  <Hero2
+-    tagline="Long-form Sales Demo"
+-    title="Long-form Sales: Sell with a Story: The Long-form Way!"
+-    subtitle="Dive deep into crafting a Landing Page that narrates, persuades, and converts."
+-    actions={[
+-      { variant: 'primary', text: 'Call to Action', href: '#', icon: 'tabler:square-rounded-arrow-right' },
+-      { text: 'Learn more', href: '#' },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1621452773781-0f992fd1f5cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1626&q=80',
+-      alt: 'Children telling a story. Long-form Sales Landing Page demo',
+-    }}
+-  />
+-
+-  <CallToAction
+-    title="Coming soon"
+-    subtitle="We are working on the content of these demo pages. You will see them very soon. Stay tuned Stay tuned!"
+-    actions={[
+-      {
+-        variant: 'primary',
+-        text: 'Download Template',
+-        href: 'https://github.com/arthelokyo/astrowind',
+-        icon: 'tabler:download',
+-      },
+-    ]}
+-  />
+-</Layout>
+diff --git a/src/pages/landing/subscription.astro b/src/pages/landing/subscription.astro
+deleted file mode 100755
+index 7a3a50a..0000000
+--- a/src/pages/landing/subscription.astro
++++ /dev/null
+@@ -1,41 +0,0 @@
+----
+-import Layout from '~/layouts/LandingLayout.astro';
+-
+-import Hero2 from '~/components/widgets/Hero2.astro';
+-import CallToAction from '~/components/widgets/CallToAction.astro';
+-
+-const metadata = {
+-  title: 'Subscription Landing Page Demo',
+-};
+----
+-
+-<Layout metadata={metadata}>
+-  <!-- Hero2 Widget ******************* -->
+-
+-  <Hero2
+-    tagline="Subscription Landing Demo"
+-    title="Subscription Landing Page: Turn Casual Browsers into Loyal Subscribers!"
+-    subtitle="Unlock the formula for a Subscription Landing Page that keeps your audience coming back for more."
+-    actions={[
+-      { variant: 'primary', text: 'Call to Action', href: '#', icon: 'tabler:square-rounded-arrow-right' },
+-      { text: 'Learn more', href: '#' },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1593510987046-1f8fcfc512a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+-      alt: 'Ironic image associated with canceling a subscription. Subscription Landing Page Demo',
+-    }}
+-  />
+-
+-  <CallToAction
+-    title="Coming soon"
+-    subtitle="We are working on the content of these demo pages. You will see them very soon. Stay tuned Stay tuned!"
+-    actions={[
+-      {
+-        variant: 'primary',
+-        text: 'Download Template',
+-        href: 'https://github.com/arthelokyo/astrowind',
+-        icon: 'tabler:download',
+-      },
+-    ]}
+-  />
+-</Layout>
+diff --git a/src/pages/pricing.astro b/src/pages/pricing.astro
+deleted file mode 100755
+index 0e7fb1a..0000000
+--- a/src/pages/pricing.astro
++++ /dev/null
+@@ -1,244 +0,0 @@
+----
+-import Layout from '~/layouts/PageLayout.astro';
+-import HeroText from '~/components/widgets/HeroText.astro';
+-import Prices from '~/components/widgets/Pricing.astro';
+-import FAQs from '~/components/widgets/FAQs.astro';
+-import Steps from '~/components/widgets/Steps.astro';
+-import Features3 from '~/components/widgets/Features3.astro';
+-import CallToAction from '~/components/widgets/CallToAction.astro';
+-
+-const metadata = {
+-  title: 'Pricing',
+-};
+----
+-
+-<Layout metadata={metadata}>
+-  <!-- HeroText Widget ******************* -->
+-
+-  <HeroText
+-    tagline="Pricing"
+-    title="Stellar Pricing for Every Journey"
+-    subtitle="Choose the perfect plan that aligns with your cosmic goals."
+-  />
+-
+-  <!-- Pricing Widget ******************* -->
+-
+-  <Prices
+-    title="Our prices"
+-    subtitle="Only pay for what you need"
+-    prices={[
+-      {
+-        title: 'basic',
+-        subtitle: 'Optimal choice for personal use',
+-        price: 29,
+-        period: 'per month',
+-        items: [
+-          {
+-            description: 'Etiam in libero, et volutpat',
+-          },
+-          {
+-            description: 'Aenean ac nunc dolor tristique',
+-          },
+-          {
+-            description: 'Cras scelerisque accumsan lib',
+-          },
+-          {
+-            description: 'In hac habitasse',
+-          },
+-        ],
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Get started',
+-          href: '#',
+-        },
+-      },
+-      {
+-        title: 'standard',
+-        subtitle: 'Optimal choice for small teams',
+-        price: 69,
+-        period: 'Per Month',
+-        items: [
+-          {
+-            description: 'Proin vel laoreet',
+-          },
+-          {
+-            description: 'Ut efficitur habitasse egestas',
+-          },
+-          {
+-            description: 'Volutpat hac curabitur',
+-          },
+-          {
+-            description: 'Pellentesque blandit ut nibh',
+-          },
+-          {
+-            description: 'Donec fringilla sem',
+-          },
+-        ],
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Get started',
+-          href: '#',
+-        },
+-        hasRibbon: true,
+-        ribbonTitle: 'popular',
+-      },
+-      {
+-        title: 'premium',
+-        subtitle: 'Optimal choice for companies',
+-        price: 199,
+-        period: 'Per Month',
+-        items: [
+-          {
+-            description: 'Curabitur suscipit risus',
+-          },
+-          {
+-            description: 'Aliquam habitasse malesuada',
+-          },
+-          {
+-            description: 'Suspendisse sit amet blandit',
+-          },
+-          {
+-            description: 'Suspendisse auctor blandit dui',
+-          },
+-        ],
+-        callToAction: {
+-          target: '_blank',
+-          text: 'Get started',
+-          href: '#',
+-        },
+-      },
+-    ]}
+-  />
+-
+-  <!-- Features3 Widget ************** -->
+-
+-  <Features3
+-    title="Price-related features"
+-    subtitle="Discover the advantages of choosing our plans"
+-    columns={2}
+-    items={[
+-      {
+-        title: 'Tiered Pricing Plans',
+-        description: 'Choose from a range of pricing plans designed to accommodate different budgets and requirements.',
+-        icon: 'tabler:stairs',
+-      },
+-      {
+-        title: 'Transparent Pricing',
+-        description: 'Clearly displayed pricing details for each plan, with no hidden costs or unexpected charges.',
+-        icon: 'tabler:flip-vertical',
+-      },
+-      {
+-        title: 'Secure Payment Methods',
+-        description: 'Secure payment gateways to protect your financial information during transactions.',
+-        icon: 'tabler:shield-lock',
+-      },
+-      {
+-        title: 'Instant Access',
+-        description: `Immediate access to your chosen plan's features and templates upon subscription.`,
+-        icon: 'tabler:accessible',
+-      },
+-      {
+-        title: 'Upgrade Value',
+-        description: 'Upgrade to higher-tier plans to unlock more features and benefits for an enhanced experience.',
+-        icon: 'tabler:chevrons-up',
+-      },
+-      {
+-        title: '24H support',
+-        description: 'Questions answered via live chat, email or phone, every calendar day.',
+-        icon: 'tabler:headset',
+-      },
+-    ]}
+-    classes={{ container: 'max-w-5xl' }}
+-  />
+-
+-  <!-- Steps Widget ****************** -->
+-
+-  <Steps
+-    title="A guided journey from plans to creativity"
+-    tagline="simplified process"
+-    isReversed={true}
+-    items={[
+-      {
+-        title: 'Explore plans',
+-        icon: 'tabler:number-1',
+-      },
+-      {
+-        title: 'Select a plan',
+-        icon: 'tabler:number-2',
+-      },
+-      {
+-        title: 'Sign Up / Log In',
+-        icon: 'tabler:number-3',
+-      },
+-      {
+-        title: 'Review order',
+-        icon: 'tabler:number-4',
+-      },
+-      {
+-        title: 'Enter payment details',
+-        icon: 'tabler:number-5',
+-      },
+-      {
+-        title: 'Confirmation',
+-        icon: 'tabler:number-6',
+-      },
+-      {
+-        title: 'Download and start using the template(s)',
+-        icon: 'tabler:number-7',
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1536816579748-4ecb3f03d72a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
+-      alt: 'Steps image',
+-    }}
+-  />
+-
+-  <!-- FAQs Widget ******************* -->
+-
+-  <FAQs
+-    title="Pricing FAQs"
+-    subtitle="Choosing the right plan is important, and we're here to answer your questions. If you have queries about our pricing options, you're in the right place."
+-    columns={1}
+-    items={[
+-      {
+-        title: 'Do the plans come with customer support?',
+-        description:
+-          'Absolutely, all plans include access to our dedicated customer support to assist you with any queries or concerns.',
+-      },
+-      {
+-        title: 'Is there a trial period for the different plans?',
+-        description:
+-          "Unfortunately, we don't offer trial periods for the plans. However, you can check out our demo section to preview the quality of our templates.",
+-      },
+-      {
+-        title: 'Can I switch between plans?',
+-        description:
+-          'Certainly! You can easily upgrade or downgrade your plan, at any time, to find the one that best suits your evolving requirements.',
+-      },
+-      {
+-        title: 'What payment methods do you accept?',
+-        description:
+-          'We accept major credit cards and online payment methods to ensure a convenient and secure transaction process.',
+-      },
+-      {
+-        title: 'Are there any hidden fees beyond the displayed cost?',
+-        description:
+-          'No, the subscription cost covers all the features and templates listed under each plan. There are no hidden fees or extra charges.',
+-      },
+-    ]}
+-  />
+-
+-  <!-- CallToAction Widget *********** -->
+-
+-  <CallToAction
+-    title="Ready to boost your projects?"
+-    subtitle="Join our community of satisfied customers who have transformed their work with our templates."
+-    actions={[
+-      {
+-        variant: 'primary',
+-        text: 'Get started now',
+-        href: '/',
+-      },
+-    ]}
+-  />
+-</Layout>

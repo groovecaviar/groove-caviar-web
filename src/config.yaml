@@ -1,72 +1,72 @@
 site:
-  name: AstroWind
-  site: 'https://astrowind.vercel.app'
+  name: Groove Caviar
+  site: 'https://www.groovecaviar.com'
   base: '/'
   trailingSlash: false
 
-  googleSiteVerificationId: orcPxI47GSa-cRvY11tUe6iGg2IO_RPvnA1q95iEM3M
+  googleSiteVerificationId: ''
 
 # Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: '%s — AstroWind'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+    default: 'Groove Caviar — DJ & événementiel haut de gamme à Biarritz'
+    template: '%s — Groove Caviar'
+  description: "Agence de DJ et d'événementiel haut de gamme basée à Biarritz. Mariages premium, internationaux et soirées d'exception au Pays Basque, dans les Landes et à l'international."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: AstroWind
+    site_name: Groove Caviar
     images:
-      - url: '~/assets/images/default.png'
+      - url: '~/assets/images/og-groove-caviar.png'
         width: 1200
         height: 628
     type: website
   twitter:
-    handle: '@arthelokyo'
-    site: '@arthelokyo'
+    handle: '@groovecaviar'
+    site: '@groovecaviar'
     cardType: summary_large_image
 
 i18n:
-  language: en
+  language: fr
   textDirection: ltr
 
 apps:
   blog:
-    isEnabled: true
+    isEnabled: false
     postsPerPage: 6
 
     post:
-      isEnabled: true
-      permalink: '/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      isEnabled: false
+      permalink: '/%slug%'
       robots:
         index: true
 
     list:
-      isEnabled: true
-      pathname: 'blog' # Blog main path, you can change this to "articles" (/articles)
+      isEnabled: false
+      pathname: 'journal'
       robots:
         index: true
 
     category:
-      isEnabled: true
-      pathname: 'category' # Category main path /category/some-category, you can change this to "group" (/group/some-category)
+      isEnabled: false
+      pathname: 'category'
       robots:
         index: true
 
     tag:
-      isEnabled: true
-      pathname: 'tag' # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
+      isEnabled: false
+      pathname: 'tag'
       robots:
         index: false
 
-    isRelatedPostsEnabled: true
+    isRelatedPostsEnabled: false
     relatedPostsCount: 4
 
 analytics:
   vendors:
     googleAnalytics:
-      id: null # or "G-XXXXXXXXXX"
+      id: 'G-JNP77GV0GC' # configuré mais DORMANT tant que hasExternalScripts=false (RGPD)
 
 ui:
-  theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
+  theme: 'light:only'

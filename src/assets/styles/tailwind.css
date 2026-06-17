@@ -115,3 +115,7 @@
 .dd *:first-child {
   margin-top: 0;
 }
+
+@utility font-quote {
+  font-family: 'Rock Salt', cursive;
+}

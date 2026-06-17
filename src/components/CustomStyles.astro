@@ -1,62 +1,48 @@
 ---
-import '@fontsource-variable/inter';
-
-// 'DM Sans'
-// Nunito
-// Dosis
-// Outfit
-// Roboto
-// Literata
-// 'IBM Plex Sans'
-// Karla
-// Poppins
-// 'Fira Sans'
-// 'Libre Franklin'
-// Inconsolata
-// Raleway
-// Oswald
-// 'Space Grotesk'
-// Urbanist
+import '@fontsource-variable/inter'; // corps de texte (lisibilité)
+import '@fontsource-variable/josefin-sans'; // titres / logo
+import '@fontsource/rock-salt'; // citations uniquement (décoratif)
 ---
 
 <style is:inline>
   :root {
     --aw-font-sans: 'Inter Variable';
     --aw-font-serif: 'Inter Variable';
-    --aw-font-heading: 'Inter Variable';
+    --aw-font-heading: 'Josefin Sans Variable';
 
-    --aw-color-primary: rgb(1 97 239);
-    --aw-color-secondary: rgb(1 84 207);
-    --aw-color-accent: rgb(109 40 217);
+    /* Palette Groove Caviar — or & noir */
+    --aw-color-primary: rgb(175 148 83); /* #AF9453 */
+    --aw-color-secondary: rgb(138 116 64); /* #8A7440 (hover) */
+    --aw-color-accent: rgb(202 172 102); /* #CAAC66 */
 
-    --aw-color-text-heading: rgb(0 0 0);
-    --aw-color-text-default: rgb(16 16 16);
-    --aw-color-text-muted: rgb(16 16 16 / 66%);
+    --aw-color-text-heading: rgb(13 13 13); /* #0D0D0D */
+    --aw-color-text-default: rgb(26 26 26);
+    --aw-color-text-muted: rgb(13 13 13 / 66%);
     --aw-color-bg-page: rgb(255 255 255);
 
-    --aw-color-bg-page-dark: rgb(3 6 32);
+    --aw-color-bg-page-dark: rgb(13 13 13); /* #0D0D0D sections sombres */
 
     ::selection {
-      background-color: lavender;
+      background-color: rgb(175 148 83 / 30%);
     }
   }
 
   .dark {
     --aw-font-sans: 'Inter Variable';
     --aw-font-serif: 'Inter Variable';
-    --aw-font-heading: 'Inter Variable';
+    --aw-font-heading: 'Josefin Sans Variable';
 
-    --aw-color-primary: rgb(1 97 239);
-    --aw-color-secondary: rgb(1 84 207);
-    --aw-color-accent: rgb(109 40 217);
+    --aw-color-primary: rgb(202 172 102); /* or plus clair sur fond sombre */
+    --aw-color-secondary: rgb(175 148 83);
+    --aw-color-accent: rgb(226 209 164); /* #E2D1A4 */
 
-    --aw-color-text-heading: rgb(247, 248, 248);
+    --aw-color-text-heading: rgb(247 248 248);
     --aw-color-text-default: rgb(229 236 246);
     --aw-color-text-muted: rgb(229 236 246 / 66%);
-    --aw-color-bg-page: rgb(3 6 32);
+    --aw-color-bg-page: rgb(13 13 13);
 
     ::selection {
-      background-color: black;
+      background-color: rgb(175 148 83 / 40%);
       color: snow;
     }
   }

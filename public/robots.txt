@@ -1,2 +1,6 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /instagram/
+Disallow: /prestataires-recommandes/
+
+Sitemap: https://www.groovecaviar.com/sitemap-index.xml
