@@ -1,0 +1,21 @@
+---
+import HeroHome from '~/components/sections/HeroHome.astro';
+import EditorialStatement from '~/components/sections/EditorialStatement.astro';
+import type { HomeContent, Locale } from '~/data/pages/home';
+
+export interface Props {
+  t: HomeContent;
+  locale: Locale;
+}
+
+const { t } = Astro.props;
+---
+
+<HeroHome {...t.hero} />
+
+<EditorialStatement
+  headline={t.editorial.headline}
+  body={t.editorial.body}
+  quote={t.editorial.quote}
+  quoteAuthor={t.editorial.quoteAuthor}
+/>

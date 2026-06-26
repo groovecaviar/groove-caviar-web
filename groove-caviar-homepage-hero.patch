@@ -1,0 +1,2802 @@
+diff --git a/CLAUDE.md b/CLAUDE.md
+index 36e9917..58fde8a 100755
+--- a/CLAUDE.md
++++ b/CLAUDE.md
+@@ -1,3 +1,100 @@
+-# Claude Code Configuration
++# Groove Caviar — Mémoire de projet (CLAUDE.md)
+ 
+-See [AGENTS.md](./AGENTS.md) for all project documentation and AI agent instructions.
++> Lu automatiquement par Claude Code au démarrage. Décrit le projet, les conventions et l'avancement.
++> Pour la doc du framework AstroWind, voir aussi [AGENTS.md](./AGENTS.md).
++
++## Le projet
++
++Site vitrine **bilingue** (français à la racine `/`, anglais sous `/en/`) pour **Groove Caviar**,
++agence de **DJ & direction musicale haut de gamme** à **Biarritz** (Pays Basque), spécialisée dans
++les mariages, soirées et événements d'exception. Fondateur & DJ : **Pierre HENNY DE BASSY**.
++Production : https://www.groovecaviar.com
++
++## Interlocuteur & gouvernance
++
++- Pierre n'est **pas développeur** et est peu à l'aise avec le terminal. Toujours **expliquer simplement,
++  une étape à la fois**, donner le contexte avant d'agir.
++- **Règle d'or** : Claude **explique** → Pierre **valide** → ensuite seulement on **code**.
++- Toute la conversation se déroule **en français**.
++
++## Stack technique
++
++- **AstroWind 1.0.0-beta.63** / **Astro 6** (`output: 'static'`) / **Tailwind v4** (CSS-first, `@theme`).
++- VS Code sur Mac. Dev : `npm run dev` → http://localhost:4321.
++- Déploiement : **GitHub** (`main`) → **Hostinger** (auto-deploy).
++  Dépôt : https://github.com/groovecaviar/groove-caviar-web
++
++### Commandes
++- `npm run dev` — serveur de développement
++- `npm run build` — build de production (doit toujours passer sans erreur)
++- `npx astro check` — vérification (viser 0 erreur / 0 warning / 0 hint)
++
++## Conventions de code (IMPORTANT)
++
++- **CSS 100% en classes sémantiques.** Pas de style inline, pas de prolifération d'utilitaires Tailwind
++  dans le markup. Tout le style (layout, couleurs, tailles, responsive via media queries) vit dans le
++  bloc `<style>` scopé du composant, avec des classes nommées `gc-*`.
++- Les mentions de la marque « Groove Caviar » utilisent la classe **`.brand`** (or, capitales, graisse 800).
++- Composants maison dans `src/components/gc/`.
++
++### Charte
++- **Couleurs** : or `#AF9453`, noir `#0D0D0D` (footer `#0A0A0A`), gris clair `#F2F2F2`.
++- **Typos** : Josefin Sans (titres), Hanken Grotesk (texte), Cormorant Italic (citations).
++  Variables `--aw-font-*` (utilisées SANS guillemets autour des `var()`).
++
++## Internationalisation
++
++- `src/i18n/routes.ts` — correspondance des slugs **FR ↔ EN** (source de vérité du switcher + hreflang).
++  Ajouter chaque nouvelle page ici.
++- `src/i18n/ui.ts` — `getLocale(url)`, `useTranslations(locale)`, `getAlternateUrl(pathname, locale)`.
++- `src/i18n/fr.ts` & `src/i18n/en.ts` — dictionnaires de libellés.
++
++## Architecture
++
++- `src/layouts/PageLayout.astro` — layout principal ; branche `gc/Header.astro` et `gc/Footer.astro`.
++- Accueil : données dans `src/data/pages/home.ts` (bilingue) ; sections dans `src/components/sections/`
++  (`HeroHome.astro`, `EditorialStatement.astro`).
++
++## Avancement
++
++### Fait & validé
++- **Analytics** : GTM + GA4 + Silktide Consent Manager (Consent Mode v2, défaut « refusé »), en français.
++- **Accueil** : Hero plein écran (image `homepage-hero.webp`, N&B → couleur au survol desktop, H1 3 lignes,
++  2 CTA) ; bloc éditorial (fond `#F2F2F2`, citation Cormorant).
++- **Header** (`gc/Header.astro`) : sticky, transparent → noir au scroll ; logo 37px + wordmark `.brand` ;
++  nav 6 items ; switcher FR/EN ; un bouton téléphone ; menu mobile. 100% classes sémantiques.
++- **Footer** (`gc/Footer.astro`) : 3 colonnes (NAP+marque / nav / réseaux+newsletter) ; icônes réseaux ;
++  formulaire **Brevo** réhabillé, `locale` dynamique FR/EN ; liens Politique de confidentialité & CGV ;
++  **JSON-LD LocalBusiness**.
++
++### À faire
++- **Pages internes** (toutes en 404, normal) : Mariages, Soirées, Événements, Musique, À propos, FAQ,
++  Contact, services, devis, et les **pages légales** :
++  `/politique-de-confidentialite` ↔ `/en/privacy-policy` ; `/conditions-generales-de-vente` ↔ `/en/terms-of-sale`.
++- Sections d'accueil restantes : carrousel de lieux, services, témoignages (4 portraits dispo),
++  marquee de logos clients (17 logos dispo), FAQ, CTA final.
++- **À tester au déploiement** : soumission Brevo (échoue en local, probablement origine `localhost`
++  non autorisée par Brevo ; revérifier sur le domaine en ligne).
++
++## Coordonnées & identifiants
++
++- Adresse : 3 allée Gabrielle Doziat, 64200 Biarritz
++- Tél : 06 23 62 57 04 / `tel:+33623625704` — WhatsApp : wa.me/33623625704
++- Email : contact@groovecaviar.com — Maps : https://maps.app.goo.gl/5PteWHKmc19sPByR7
++- SIRET : 503 532 616 00029
++- GA4 : G-JNP77GV0GC · GTM : GTM-K939WRS · Google Tag : GT-NMLTR5K
++
++### Réseaux sociaux
++- Instagram : https://www.instagram.com/groove.caviar
++- Facebook : https://www.facebook.com/groovecaviar
++- Mixcloud : https://www.mixcloud.com/groovecaviar/
++- Spotify : https://open.spotify.com/user/yvc9dh69dsfayamamf07z2p9w
++- LinkedIn : https://www.linkedin.com/company/groovecaviar/about/
++- (YouTube : à venir)
++
++## Façon de travailler
++
++- Proposer l'approche → attendre la validation de Pierre → coder.
++- Après chaque modif : `npm run build` pour vérifier la compilation.
++- Respecter les conventions CSS (classes sémantiques) et la charte.
++- Committer par petites étapes claires une fois le rendu validé à l'écran.
+diff --git a/docs/analytics.md b/docs/analytics.md
+new file mode 100644
+index 0000000..4262207
+--- /dev/null
++++ b/docs/analytics.md
+@@ -0,0 +1,114 @@
++# Analytics & tracking — Groove Caviar
++
++Tout le tracking est centralisé via **Google Tag Manager** (un seul conteneur).
++GA4, Google Tag, et plus tard Meta Pixel / LinkedIn se configurent **dans GTM**, pas dans le code.
++
++## 1. Identifiants (où les changer)
++
++Un seul fichier : **`src/config/analytics.ts`**
++
++| Clé | Valeur |
++|---|---|
++| `gtmId` | `GTM-K939WRS` |
++| `ga4Id` | `G-JNP77GV0GC` (réf. — configuré dans GTM) |
++| `googleTagId` | `GT-NMLTR5K` (réf. — configuré dans GTM) |
++
++## 2. Fichiers
++
++| Fichier | Rôle |
++|---|---|
++| `src/config/analytics.ts` | IDs + mapping `data-track → événement` + flag debug |
++| `src/components/analytics/GoogleTagManager.astro` | Consent Mode + emplacement Silktide + chargeur GTM (idle) + noscript |
++| `src/utils/analytics.ts` | `trackEvent()` + écouteur délégué `data-track` |
++| `src/layouts/Layout.astro` | Injecte GTM (head + body) et initialise l'écouteur |
++
++## 3. Suivre un clic : attribut `data-track`
++
++Ajoute simplement l'attribut sur le CTA :
++
++```html
++<a href="tel:+33623625704" data-track="call-click">Appeler</a>
++<a href="/devis/mariages" data-track="quote-wedding">Demander un devis</a>
++<a href="https://wa.me/33623625704" data-track="whatsapp-click">WhatsApp</a>
++```
++
++Mapping actuel (`src/config/analytics.ts`) :
++
++| `data-track` | Événement GA4 |
++|---|---|
++| `call-click` | `phone_click` |
++| `email-click` | `email_click` |
++| `whatsapp-click` | `whatsapp_click` |
++| `instagram-click` | `contact_click` |
++| `quote-wedding` / `quote-booking` | `quote_request` |
++| `cta-hero` / `cta-final` | `cta_click` |
++
++Optionnel : `data-track-label="hero"` pour ajouter un libellé.
++
++## 4. Suivre un événement manuel (ex. soumission Jotform)
++
++```ts
++import { trackEvent } from '~/utils/analytics';
++trackEvent('form_submit', { form: 'devis-mariage' });
++trackEvent('generate_lead', { value: 1 });
++```
++
++## 5. Ajouter un NOUVEL événement
++
++1. Ajoute une entrée dans `TRACK_EVENT_MAP` (`src/config/analytics.ts`) **ou** appelle `trackEvent('mon_event')`.
++2. Dans GTM : crée un déclencheur **Custom Event** dont le nom = celui poussé dans le dataLayer, puis une balise **GA4 Event** branchée dessus.
++3. Publie le conteneur GTM.
++
++## 6. Téléphone FR / WhatsApp EN
++
++- Pages **FR** : `tel:+33623625704` (appel classique) → `call-click`
++- Pages **EN** : `https://wa.me/33623625704` (WhatsApp) → `whatsapp-click`
++
++Géré dans `src/data/pages/home.ts` (`ctaPhone.type` = `'tel'` ou `'whatsapp'`).
++
++---
++
++## 7. Silktide (CMP / RGPD) — DÉJÀ INTÉGRÉ DANS LE CODE
++
++**Rien à faire pour Pierre.** Le bandeau de consentement **Silktide Consent Manager** (open-source, gratuit, sans compte ni ID) est intégré dans `GoogleTagManager.astro` :
++
++- **Consent Mode v2 en refus par défaut** : aucun tracking tant que le visiteur n'a pas accepté (le défaut est lu depuis `localStorage`, donc un visiteur déjà consentant n'est pas redemandé).
++- **Bandeau en français**, position bas-gauche, bouton « Tout accepter » aux couleurs de la marque (or `#AF9453`).
++- **3 catégories** : *Essentiels* (obligatoires), *Mesure d'audience* (→ `analytics_storage` → GA4), *Marketing* (→ `ad_storage` / `ad_user_data` / `ad_personalization` → futur Pixel/LinkedIn).
++- À l'acceptation, Silktide envoie `gtag('consent','update',…)` **et** pousse l'événement `stcm_consent_update` dans le dataLayer (capté par le déclencheur GTM du même nom, qui relance la balise GA4).
++- Source chargée depuis le CDN jsDelivr avec contrôle d'intégrité (SRI).
++
++> Aucune balise « Custom HTML Silktide » n'est nécessaire dans GTM : l'initialisation vit dans le code du site.
++>
++> Pour modifier les textes / couleurs du bandeau plus tard : éditer les variables `silktideInit` et `stcmStyles` en haut de `GoogleTagManager.astro`.
++
++## 8. Configuration GTM (interface web) — DÉJÀ FAIT ✅
++
++Dans le conteneur **GTM-K939WRS**, déjà en place :
++
++- **Balise `Google Tag - GA4`** (Balise Google, ID `G-JNP77GV0GC`)
++  - Déclencheurs : **Initialization - All Pages** **+** **STCM Consent Update**.
++- **Balise `GA4 - Événements`** (Événement GA4, nom = `{{Event}}`)
++  - Paramètres : `label` = `{{DLV - label}}`, `track_key` = `{{DLV - track_key}}`.
++  - Consentement requis : `analytics_storage`.
++  - Déclencheur : **GC - Événements personnalisés**.
++- **Variables** (couche de données v2) : `DLV - label`, `DLV - track_key`.
++- **Déclencheur `GC - Événements personnalisés`** (Custom Event, regex) :
++  `phone_click|email_click|whatsapp_click|contact_click|quote_request|form_submit|generate_lead|cta_click`.
++- **Déclencheur `STCM Consent Update`** (Custom Event = `stcm_consent_update`).
++
++**Reste à faire :**
++1. **Enhanced Measurement** (dans GA4, pas GTM) : active pages vues, scroll, clics sortants, engagement/temps, interactions formulaires.
++2. **Tester** (section 9) en mode Aperçu GTM + DebugView GA4.
++3. **Marquer `quote_request` et `generate_lead`** comme **événements clés (conversions)** dans GA4 — possible une fois qu'ils se sont déclenchés au moins une fois (ils apparaîtront dans la liste).
++4. **Publier** le conteneur (bouton « Envoyer »).
++
++## 9. Tester
++
++- **Mode debug local** : en `npm run dev`, chaque événement est loggé dans la console (`[analytics] →`).
++- **GTM Preview** : dans GTM, bouton « Aperçu » → entre l'URL du site → vérifie que les balises se déclenchent au clic.
++- **GA4 DebugView** : Admin → DebugView → observe les événements en temps réel (avec l'extension Google Analytics Debugger ou via GTM Preview).
++
++## 10. Évolutions futures (Meta Pixel / LinkedIn)
++
++Aucun changement de code : ajoute les balises **dans GTM**, branchées sur les mêmes déclencheurs, et gate-les par le consentement **Marketing** (Silktide). Les événements du dataLayer sont déjà disponibles.
+diff --git a/package.json b/package.json
+index 9cf34fb..bbca9a4 100755
+--- a/package.json
++++ b/package.json
+@@ -24,9 +24,10 @@
+   "dependencies": {
+     "@astrojs/rss": "^4.0.18",
+     "@astrojs/sitemap": "^3.7.3",
++    "@fontsource-variable/hanken-grotesk": "^5.2.8",
+     "@fontsource-variable/inter": "^5.2.8",
+     "@fontsource-variable/josefin-sans": "^5.2.8",
+-    "@fontsource/rock-salt": "^5.2.8",
++    "@fontsource/cormorant-garamond": "^5.2.11",
+     "astro": "^6.4.2",
+     "astro-embed": "^0.13.0",
+     "astro-icon": "^1.1.5",
+diff --git a/src/assets/images/homepage-hero.webp b/src/assets/images/homepage-hero.webp
+new file mode 100644
+index 0000000000000000000000000000000000000000..41cfdf9a4e75a18bcacfbe3df47bc8b8d8b13628
+GIT binary patch
+literal 29526
+zcmagFbC54V(=PZM+qTcxIAhzkZ5wB7TW4(Bwr$(CXZF1BetTm#Hg4ShqoS)ayECgQ
+zyDKW6rxYbbMP;1;05uUoc~yCKLcxFcv!q~IKvaGZ?4Z1J=9LPioE`NA2_9DV*idG+
+zpO~f|SZ3>OPyRe;FP<M7eEAb8Sv~K68$K|&qM>##&ELTsL1s>7Zk}}Gw+V)lg>8LP
+zyPlte)_i|{9_A;XX@0H-oIXN(`hA~0&0j~p_`bc*-Yy7ux?WDQ^={uhE*6gXZXZaL
+z_2xXHoxFZ_vka90pmD_jC?aV9vS1p3G?)P(0j&>6K<x!0rSt<9|38bHLrwCm%O?ca
+zR8oTLTdV)Zn?ErR3H+y0K?`G|s);^c*+`qLVXj40KijPGAKht8kf;Bshm7N;{>RP?
+z*ED3*`jT9@wE2dS)9XLmD8#4*1GHJk-+OESujl^9#=qB^p8t<yaNfu#)l?1hsR9u5
+zY?qp}G6Tk%WG;!5){%<O`g}9%;>sZ)AOFk2bjt~`vTUtWgr7Djr>XaHFXh*y8C9BX
+zfOX)nop}H<UkD#F%h#I|&#ARmK0j1`CurgY>MmcaYaF$S%FOq_kueFBko!*`>fQ$X
+zp)S?x5R2U#XB3l`vZ19||G49tdGySz+mM~&AEwFBhaDqmuS5jC+mjeBh%Sd7{b!Vf
+z{@bZ_aRS5Pe_o~j25pY8#{+SiV4Q-u8_UtztKll>Ppr=r^60fN*e;p2eBa(%yO2Xf
+zY$Aj9=fi}rcR01yOu6J3LuDg`A|V+3H*t_4u<4hzvRPa<T6|`Y>COb*VL25C9XMA`
+zX3g`Hd&2cL0ASduaWOJSVMqY!-M`66uen|Iahm!XjM%x!+Ye_eF-a)yM?OdmDX2#o
+z+zZsB(z^w?XmDT5*xo&;tq*n5pCa3prQ*?&XIynl3FdJx$JOkw%5O*3Tz}+q7)QQh
+zcgEj<uv5<bei4v>*1H+H)F`?gXt4b0@_JgoZn}G-%!4G7meBTwMAY*v>Vu!vIpG$b
+z8PWeC6@??>UyzEp$2y8=#z;ch*o)vtR$9_HZ;47r?6A#v(eE7o7m>6&-%Vj6xo(&~
+zBp?QRz(^a!d)M45b-XT#_-vEJb_d|#M!b<>ZQf@Fu^%+SDv0D*AyLrS<MF)7QQ{6Y
+zkE)lTGa7TLMjg6$QxC?W8qx7bDk61b;)7kUsE4nK^|RVEC}S_sGqHok;9#n>oQ5*$
+z(=hfI@$=$!7WC9B>aXzSQ3<Aezw;zElg0TGpI8#HQn-?HEr;udc$8?s5%BGC>zO8n
+zA+al&q8a|QC_QdzRD}%Rw`v!T>%kH;OEO9oex%4=sgHfh6O)|K%}?{|uL%5$>|vrU
+zo`2t*sBdO>Q>2vgDPPNUMfm%Zt}2?Xcz7>JSbQfSE?cC7U%dKIjN;K8v+&^<bFB>k
+z1}3vE4WbJlJ1{_v+zx5^t5h9#qiUdtp%VdrK{H6Yv?sYr2RHL?uB1@P&6q$0`gjGC
+zLv{pV$h?+xo!oQz-YJ2*WMKTmB+xRBKSE+T`q**>;XRw~rYuzAGG0m@i+V6u3of)j
+zO}lR$>cT7tRO@UZO^OUy+mE;!9U!1jTYAjMvqD3H11~8!7%x`4wZ7<ai`YBDO;f7Y
+z*~?H~p(x+*u0~?<OX3MNVrP|pxttS1-PEeYyO@_-(!opKpPHG<T-NUC^n9vmWwxTo
+z2Su0<tQ5a1zupshG6rJuAPjk6Md%~<(+2fzn{okvO!Jf6)oa%+i`!{Q_>X9A@3uc4
+zyQPLhB^DDz#9Qlc7VqSG9n?E%DunZ~QRL>7ga~v?{hefafs=|fuoxk65tI+C`1@Ku
+z;dOcpdRE8`lZ<99n))&X32RCy)jPp86Z^t>=gRsO7v01Ijz*F7prz$~KQTMH5M?9#
+zFiQRkIVc#+LXO9C7k<A&Fj)xdCq()IT+axaGv(>i-x$%YG4gUfV7rv35AZc5=4hgz
+z`O6^p{!rabfslNcw0eAQa~S$R-a<e*P;KKvo_?{xJu${bE%fo&+s(N=(Aq@mSmEu=
+zJbyODx@MoL>gOIZjFL^()!t}1%myf$+_1Uhj#!Z8f}8UUksm*Xne$rc>#SIPG&~ef
+z+1Ys3V5cCc4_7BZV@kt)g=xSBM}K#ZuyNzwRXcWNebJ$kDka!<8U&38M6%}$2Czs*
+zPvEeWMJ?c^E~iw>tHUVn=75tl)`I@BJgDY9E<TruyA{@)QLiX;&(fLfO+mh(6Uc_=
+zEit|K0=Wcgy7n^itj80uXKH&6{P0yuN)xM$gIl3Oxbj&4#$oP4H7~3*i?o*@cC`QL
+zp9|Q-5FtdWWvb!-dsgSUu_G~+q@ZfFuitNVqN5y3F=A5Z3Bm<=sguaXCjW(`sw>@s
+z*joD3Ny)!Qd|86zk0h53OXS6@)~A^_nTMmNjgKKXbuh$wQiakYNwfp<waWNjz=0gb
+z1+|&t_8X8x%J7W>HnVe$Wd()%0g2jTb6@`R7Yw*lOuNw|p{SZXBxJ@*^fTJ+z{2RI
+zm?d!S3<-vF$&@yF9i$jAB6-LvCc_A`2AKoc>MC*x02|#@2e6R3byB<yDA?A8iZ$(9
+z%Z=9u)R*bSrOK>Kw0F{xfCDY<?IqFy!MUaXfSnt-db0Ad4?=Gz)W&i;Arp$iCTsj=
+z-Lf4^tU$GL`s1@ZA@)*NOXe4gl~2_0k-a8@QVX2uBD6}KhgWXIu@Pk-ztKWEtCFkU
+zmXV;QtR!){hDs`&482a&3`CK$y6*_9BnBnwhW!1jw<_@5PhZ33)sA*0D_eQ8$#l)+
+z{+Y4y<-3R)f)(prAmgfk`F93|kRf4jSj>svR-rYPXDZGW@(ylJA@x3utxAn6u;;Jc
+zIe3#P<s~c`Mf`IX%PlZ!*%i*0hYFC6&p^Wj^;OOCQ*+w&B>{<v1Xh(M#WsV~fVRu&
+zBbVmd0aCPnNp;p{AwkhwUq(t6+OuE&{YT_1)!^dd#}8)9<Z^BvY0EikJ2`7^{uL&8
+z?>PM^KiBzK?1bdIHtD1?3D0dUCY+-{6%jrHx+l6Z1qVd$d2U9``fgyojb{EQPm)`1
+zVKkckVzw%T<)zc<nmg;q-0c=CP}<}mSL=3>nsQHmC1<EUEDunPH==8OSYpAiVsy+N
+zJd2w-N;jc$7PTt7XmI-K_g33NFG3h5JX_GtG>MhC__F4Ga<f;%3uY7n^eLK77(Iud
+zJcZS5hS)iOyrNqvd#K&<;nEiJ5}75@IeDOVHJph3&s5pE(KUsw0MWQSzgD8KqH$^|
+z5TvJU-}B<|?>&v@tP-|m`^4f{^HTJsjeqKcY8-+yXeHD_n3phY8bn!Fx5sc<>EwQ8
+zmC-3ps!O=96$$D|B4H^H@L~tY2fs>U=JpdZIxtCxFutEloM26_Oo~?4UNF!Mt)^x5
+zvHPdQ+S}S^@L6xN^Z8%j*Gp_4d-l96Qf$}5-bFBdNLFJ|MEX~1I>CL1gisfXJRv@u
+zN5wF?^i`FlY@q)J!QAQGf8k%~^IR2rsE=ey(rW03QOtXzuTVO_3AUsfUKUmj$v`EX
+z$`);}`n{*SWOp>auInB9nNtB&&~rKBr#X4<d4spcl|Ts#N-QvLxzRr;-8(p)cI{g^
+z;InoYg!35YO;F(fgi;hECric`q#Q4t(BVH(+hdDyj9^S(@m04HAmidzIn0JEdWVur
+z(*1Fz&wbPfk-DC^(x-9g{Ovsz6qKB%D9X6iWv4g7P75@w{M$Z3gGICIbjg$mHp(lu
+z#l<@Ax>xi}t;eWBPAkzEhMai)38FmdGgYSFS&#Z-&zez{hT90+c?Yb0Kf5-CF`=iJ
+z9k5uXp3`U55bSTFM0|u|0(A{ZW0`#m-HkyU=EK8_UU*pkk!*9~R{(iB3pUm~g9DzJ
+zyr=yv=vag=5sPwZs~f@wsX=dk^nN+6tefn9(XeYyAI_VF_3V>n9Q&qNW%JOH0DowQ
+zDz0!AplO>+bPsmVl(A2RENVCCJAx?pI-E>mu>J77`L5GtR>Tf$h$~eVKK3M`(*V^@
+zk4E68GWOSjM`o?E-Hm4V>NKJ5DA2o_Di8@vly~2YyXjmq4XXhAjc?;s&Y9*iu|;Qg
+z`SxNHaDCcIR=?yl(O~ko34ug?EaJDjE^TXXt9}dyDlM6UGs(IFRk6yrsWN3X&gmQ6
+zGlRa>yQS`L)P!-=XP(a)!gDBJR9XG(m-DU?6GFOBqj;;vhU`Kx+OG9mdd}7x?hX-)
+z^y!@vQ*oQ&(QXSO$VQre7e812uKE6}#zx0v)Z{AO2!S`R!Bs@3E7_HZYy6yDdN%!u
+zFarCb@%u%YBNX0|;D@Rd#krJT36}ll9VOj%F$7=i6f$ukzkWTJSIx~7A)j@XpIVGM
+z<IlxHwWG)vXIKI=3HVFZ%9OllLGGKe5cCm{o)fy?))4u?lrUYK0@z-}Xb(LK<=~_O
+z_EN<|;uL+FJEFxDdO5Eq+2Y?B+`aov7*5H%8kBHAy57g4DJBib^yJHk=mJftsVvX>
+zWMkNI#n~ixU(}BKVU(iu*+oK%OD9Ri%9Y`PA%%7rza<Vf25K;YqL>kyEct!nGAwoH
+z?zT`e7O|;kMO0Z6lrrRhO%a-4f95)NpO0i(j0862eA{D;;9PjHvOg8TXz?r(&qqrc
+zM_I>+tUPp*_$7Cx8J*9KBUVz1@8Ka_sREt?HJZbP)LvN97@h1V?`-IGK<a?o-Rm^J
+z{H+ilomO5(c{accC=s$5M~FE{r=MW_Rq?g(pM?)-_a1md=a`Z5-2?J^k}bUfgN3E+
+z1&GpTVCY$!wtmWF=f#g*2;}h*r?M+`+$b%c_~p+#T$Ty^4-X7TXL{u9hP33hJ2@ry
+zFz5wA(QtZC>s+R2oneiPNCJf5C+`-=-Jg@lFlBc)vGOzz`}0illwtCeDf)7tzka^!
+zR)t2uKiY<Wkq1evR0Zf1MtT|iwGS3Rc_Thdal<Pk`hCKkgK_!DwTlb1jD%N^UN>%f
+zc+H!GV=!_?8`Sg7tD6iW%n%Lt)4D$(@ql<;Ta4&qFMZUGl4*HZQp=$&x?d1_LWpzk
+z#ZT^L@R3g`$Z{01Q^Wun_>KF*e#;45KI?<-HE!#mT@oXZp>Kx#0G@a3U1r^<;47;t
+z90e_|_|v7Mf@%7fqb_}A*+=6t0|IuuUeF^=$dQOB9%nS3Lvz6k*;ks{oFaN!C>g&s
+z>&uVJ{I*3Kx&hl^>zln3#d0^`-oN^=t=67Y0vE$^<*i&Q0YJMDoRb`aMs+)RZx1Ol
+zml#O1VWOov4q6Sjx;Thj-p6R(mKi>BF+6a^e`(f2wmlg^rxhte+ZR8KV^D&~Q8pY+
+z`5hs81j)=O>{UaUCPlqRQ3TXXDIPcWm}rF=h387SSMlAi&5lx%9&(nQC>tD5TfJ-q
+zgIZFolRw{~T}$9AKN?yU|D=nWx^Y44y$!`jBxxJ7kFH*Q;D2<bV*f)YO%KyQ8N3E@
+zO_iZ$blIAH_itA&fuqw{!;h@LG5QC!m#^mT{X%BnNB*q({)_)?3p9BT<%I%L*Fyp^
+z6_C=@S@O8fIp@MVz_Ka3eF`7$abilQ+bL~^%2Kl%HihEiNDUj-@?-b*DOIGo-Ch>!
+z?A4P1N+$?G4%FmJS}7}xZaCH_gw3)p05b$~4!%Cy2EvTu*;spCvDa02sxUxZD{`Qh
+zmc)Bk%UHS@7FCcuirYG!q6%yk?t=9cEN{N0KJpy!rNIMis}gMhS@q%2>O}iV+Tcby
+zg52`ctrs%F!a`ZJ9d;0wngj8%hpT%XMEE4V73ol8W7GzmM5hBU-2X3AkhCFS$!rwJ
+zP0vqSzJ)9=fveOHqNiW0QCUJQ<adI@=c&6+3?AS`+2l~)AsIRM&<>GeKaPOe3T0_H
+zd4FYMuEx)51(b-~GcNyJrZrpUP#E9ZNh2pIMEIA7Iu_=#U%Oq%DQSv&o|L=$2P2$7
+zJZO!OERuavPA_2wc?bpwI7x*?wZ)S-n6ANc#c3k$>S$~2;?b~JZHOZ)=zh`YnZz%~
+z3v`&W&0SjkXw3$61%JI2dn-8VM4D;CM1W}3f<--{4=t7ATN3E^q-%g_0*a$bcEY>K
+z;LI--#iyPwU0+i}Hq!&j%E@~l(^`}<u4Jpia<y1b{GJYk5DTdyepli#G^=dNgI_gg
+z;S&pn2_iy-Dr~VqiLz*^;k&%COF<RsI`scG{Lb(e0*RHih{c!#6UFR~cB%1WjO}v@
+zM<PJ9Ccv00ud;joZx((;s%}C|rr>9TCk-JX+5%dwmYcghabHtD{heqVq)Q>hGMSN6
+z%mmWC$nq?~xRmSsME9wj>f(q~i?KZU<d@H+D4J^N2O6Q;N=x0_cGq~ZO^A7s?~O(T
+z_ZU8y?KOMvLffiZ7wv=B0lRIC7GhTrL0PGhe^)!3B>P9IHALpufbC3>#(c}N6|d9{
+z#_}UIdWkM36?t<GemjF!ga;opz=gBN6-Tez5D}^X2Q)NQXQLmva}Pb7gEd0+TXm~7
+z<F5H4N4Cfkd78o&h$t_Vm!P-Xti&T-OE`$pASe2MLoS~M(uT!v?MqdzEo*cmL2RGe
+zr2rvv;+}Q;)I?DE$|%+}Q9N~kzu5PmL{F0NR%$B&KoZ+{vd4GRtqPCEVv`oa(8-7z
+zS&EGpbD(Gej!k89cA-J&G1U~mJZEZCeqbs(uthw=ClXz@zF(b)%uYL!68*9xZ)nQV
+zxQe$04lAV3KB-kT|I(+d!a9Z8)+}H_J8FR6=Hv&WYMzFn@S6Crt?Q;RmOAoD>pc5^
+zhK0GDOleB|){|2$#Yf!Q3_pTH&bCo!WI3x`l$i28s0OcC`FplSv$w|iVcgf03HL?_
+z{I=qJ6L*&q1ha<=jk$zHy#Bb*tMMFLM{5jqjts=fNMm^R@p^eY&vutr%t~v)0`41O
+z5*9cJkN2x<s>==-sif1hm>*`AD>23I#A5gMcc4}T2|`ktFDd`4BVV?lU@9SlbZ}Fr
+zOpC1n@RspBpT1vDCY$Wh*Ksn0XoBKXVUDAS=DGNp!yT;^-CkZ=w?iAT>k7VgvIW7e
+zM|m@>LI8TM&j(YwD~k6p<S-+^vCOH<fjSEM{HRt-R^k>DBDWs3u@vKu=eKZ81hGRO
+z+aCsnMg>B<iAyjKf*~*4)ClqL5b$=h0aM{=UPc>KWACVHTM<UR&sd5Tzp>puF|0=E
+zuXDv;+cu(Ks__>3sB%qIpFyU;CoEe+ZsokjI5%WH{?_7IKL0Weg2*ET;2_=kA}adM
+zVPbSoo1^lT0!kb0$^Iv!(KR1bi1T`{qfNh}y`*oX;GRiwn#;uRIkY^FkoAG&Ulw_-
+zqE3QI_x6+7#c9{@3*GV8RruGVya04>&mK5>pk=S%3J(oepz&b7W%)~Nf;2*L?g&cX
+zs)$v(P66svUyc1lZ@&?28Qm4u5UCF(T0YQ{V|OTcAR&cgdkJYFegrdj+?AcB?jxMC
+z;|y%NEs^&8k?%QB@_eU3aZDkEI%1SWL!rofjf+PWiZ0j9uXa;FrWSm86Lyn@r1VTm
+zBZsYXnmJSBioxdysvK{|3<*%cRPtIlX_9Vr24BYT{h3(1UhZ~&L6%CV|N7G9(FF>f
+z=%3^+*ou!Q`h6K<^!@bbjrfbS%DEIy%At2_GFG$gF?it{@{LbFY_SJw6lcHG?>P`C
+zZLgBVg0(4Y27+Ta2Lf9cBhuMMaPmpB48)=g%xSn|c+qiBYWFU8zr#l!ooz^SRet9t
+zGfIniDnJ5Y>^#gG%1!lIBI&FVP&8@YV9&%fFlzqICG`uNZCYPK{r(d}f&tRUfL=jl
+z&(A8ff8nmY#U2!=Z;<atafMPJdjbCrx$TL!{wMeFet--wNnuSDPQtk^4jLkfIFX$C
+zPC|@Gb@Xrk!&nloTkyX9RE3a0v05@Q0heWTOh)qM4jre*ynn*&>)*et^PK5O>GF!)
+z#<2SPB<6!m43MWOW}nf7SVMNG8K{U;r+?1WNs-uH<UxpMTp7s9((1QN!Nt9%`*5d0
+z50Nv0cigX)YfLsN;KcC%z{hQfzDw+X1h@M{VhqBoJ4X_<_KUa{$y2-zk3PFGhgAJ3
+zkfGNjl`8MRa2Bx@`&LpgBhrW272INCby{-NS!;FGj@q8Zij&f3n^@%JU7@{yiGw(_
+zlG<(Nm#&~m2WlhG(QP{CmvI%4Hge*Rlgw=Lwu2VMpTgykGforFs12YJ77WsIL}Fy^
+z{Y`;+r4-bs*Y7bsCr(R>?^L=T?1<Q?qA#QaBss3GW&XK`JcQ=}3u%&yY{V?3+XD}R
+zAXmIM(+(^VAcjE{kAS=ymgSP{L?l5dty)!t3&|?h52hvmv=LVXEBqrP{TKImfFW6G
+zDh>Toe2S2r<S)#gG)*jD-OmA6T44aN&mc2pkadm9nE#nt{JaL2nH4^ZXAYz%%tKcY
+z@8ZvifZva;UpAQK8zpq7Zu2Op#9B@DRHm{`jXlAGh>Y;!c3G1S-1z3@*W|Er>19YC
+zM+dtMFm9>)@W2G9G4oYg`Kt2fG(TP;yn9I6@mWQtLYoseoG<;Ojf4wG7-+`jP>3yo
+zMPI%OHRPg3(t1YxNUj4+bXT3GhVRK@Jkb($rD76k1ePc@hMfg>C3DT4>N@aW!Ihk4
+z_Etw&kI)#TMm*8?x7q0TS1WQiB-U=(PN{1zH|n2Sg=sC4u3;Y|vS^IV7kB4_N0~-|
+z?ra(^OnAX4AK1vl?F=xL<lr?5@+d!GJVXh*sQP%lja6}X_~wbMD=NgJg!dfU%Pkx^
+zc*Q=ae|BC(Oh#T%>g%e8TG$fN$BeqtxF@vRCnADBprb*pEQta5Cu2-FsPm2E&My#A
+zb+6O0!>nI2?Xx#h>qlIV+rw|4zZ0><H9Hp*B=Vj3)p2>u0*fGRi4j>u#Q?R2i9>K&
+zG+?=k4OtM}7a<f#1*mg}?k#f51Btkp6c|Np*e^Z|7k%q7X+XTV5{RJdns1|Y*eXT+
+z^7}O8>&Jph?1o;ZkvA$`cg>5GwynDEDl3LR7vfGDIwxXUpB7Y_l~CHp?LbK_tT26z
+zdYA+WBTkwC6CslM*RKR3w~Imeeo_iRZX>WETmGO$vX}a@$3blp?V$tFG?wk`Mb1?_
+zL+|g@dwogGy=6@cJn4vTpm@KDs;gEJO3-IjH@e%l5GQ)lOWkgm8h<+%8DFXEXTrDE
+zGH?-FWrSH7z&u9>QQ6{mgSc-VrQWqGlvT3nV16=Dt%1<r#`z!)+lJ=LJ@VX2@Dhaf
+zO$0BB4K;3SB<a#e;|fW5l}att$IRmeCw4rTrI`gnAaDz}zmQ8Jsxtbpy#BZ-qh#F3
+zSMpm9&5SN-UrLP?kTE>OD-b~6^ukc4?uzOYK0bt{;mh9TuJYfb9_=2?YeZVRL`24X
+z$YhPqPaD4+S#enLF{`=ecTKQ{mr4lpYUno_rcj6qe^2h`THE~+8fPi`7P!np=iEJ1
+zdKk+iIw%PD=TVip8xI{t8mNNsQ`a4i*>><nvZk|FNAGf>ULpVBV+tb}lJktyHEJbm
+zqV3Thy~gokXvIkCg~H!klPPW6(Xg!c!{u!aTn9g64^E^*#eL=<4FIw9_y^o!JQ>h5
+z8FA6MBhM=BMde~*UN57d9M?*`*PYi-qd{<1AQUOK=9lzafV)C%Rpw}k8)CwDfRb9f
+zrHsd7ULVeSv?ahWHlC0uv%1T=T0gt_SoXg|d}e;_99olTd?{H!tum2CLnP3Eab#V>
+z;t}eI0V`L0iQ13cQ4RhVF%%p}Se&<L2$&-`2)`=bxvZGoUSZ=4mj-BcT(5mcni(1p
+zyiSq<7c0|Bx)v5p2{j?El*$c3PI0yI;OV*sD>GD5_<kI-|5$Pl1^hX`(ov60Yp1ec
+zp<zFA1oc{47Oo2@%@Z2tntM?Q>Ex_Ope4xuvs!}7^?@)E3zmT3UUOfJSM45gjaQ)n
+zWhs}I1|3`0L+dnyQ2M2IbCaa2p)wf#yn`DKfB<Jx%vOrQ4lVm1<P*<-z$g6<JLgA+
+z3yNP#i4ug$U@fJx{$#Rp!Pj`U7W0Lm-E<ZrEDqjGRS!F0PMcbi+&HtJZaL_HUk_zu
+zKUc?k3sZ?QXldQw?n{*K3dNkLGV{(!O&15q>1}%ARx`TGcly^aG3W4;9jTO3RiB^`
+zRK4&5kIGgpN{`E8^Qg8{oR8u7f~6$bqbY<w!PHU&Jd<}ghC>sa`W<w+V@Y2pO_Nv>
+z%D-BRvI6`6#a4}T;b%nFy8gOZswD5%K#y`k`WC8!BBf1{QhGCB*<G(ivJe)O!+iS!
+zF~nGP5D-<ycOCE40ozz<v0~%})D>*Qg&rO*8RBo;el~uXfF{(lJK@9L`gk5$pIt_1
+zRl=EGn4=Bgb#ipCaWX?g+M0Rp%v6zB=@?LA-GC(25v>tSStItI@3uke*jO`!9O6^_
+z2jOiRW|7y27DaH1Nm|KIve?(|U8P@CWR@~-=!M%j+L@CSkZZ*7VATkSvA3RMj5n^X
+zHSc{O>E48MV*6s<u+j|vg{B7)6c>_{^5YJA{Vnx(#`vd*8Iwg%@U_Kf_7+veCb`jl
+ze@)mP7CL}-)tXWe#~eIv5_~VX(CFsjy<_TYpnkS?+sp?pwq3Z#nF_rnwU`j|RC{R-
+zOZK6eo@%iFv>>azmGH|r9^hmb$n4!CvCc?o&-FVTHOTM1#j^;Hd2=Uyvwnw?bNloQ
+z9c^4qU8($u$FvLpdU=YPVop@8?Oq}T$QK9mL*|JX{EgMyKc%nPPVwz|^fdFhU`x^m
+zC2;hkXQ1(a<K60}-uyXQqP4v#o+vrmC-K+KJ$V`5qf=6DJGS^p=au#6P+KpyNigW|
+z4yCFr_`5R7*e50KdD`F<MXg2#Q!nQ_(iCUJBFjn{;e8Qi5WInr1zfbr?)C)vI-r~H
+zBQ9ku;cP)af9^!V2Ug1o|BKoa2AV`CquHxy>3xH*gU)!@m8|H92Ooc_NdLXynlMrO
+zZ01B%r!>6Ty7H`lw*MSbc2b6Nkzw~vEibNT9Ag;P*~^u1gcJ)BmgE}^8A0y}Nz6_*
+zwBKQrT!zB2H-fX~gN-nW?cTNeFSd^svr=n%P=*x-*&M;|<0i-l3nbK67SXu)^(_Hi
+zx#FBNE4APN<zqtB7A=8kQd7Ie{%2P;EOL1c3yq^ETEqN_;r;7IPr{{|am}0KoqylJ
+zS*`Kag%Rl_|AkRC3uUrIrrga>Nzx1{sIX<uVV_`=i^3JfSj}Tuth>4C^S^urdag~l
+zGfMxd$<rkVMP)jMfX>RI(RF>duE9u@jWHq4N@qCcRNnJOM)BIpFyl#R=HLM}zLV{=
+zHk)I)4K0?5_O@D~>J2sLZw^|OgyZzL3bTth9jT+1#14H|(s(^rm@O=&n7V<BKR7U8
+zJCNu@%tomfaCFcHMxHlUwBGS%x2d%X+NOLl<c)ME=1c!2ERarg#Pa5Ws9U>)i<>CM
+z(e?HAPn*YaY&?r8DQ<ur)!hA9=QeNI=9&59GtDt{!fNzk4qO7=G^D4dX181~pqvL6
+zby{lGWg#n@gww4$xmx0MkUps^bECvx8(Y|k`pw7KWpapOpyaKp=t2vGv!LdheRnY=
+zdd!)yTL*4?)D$<s8gk>)ezU^Vs3UYClUM#08mIoa{*wZdasBh3z^vF%qYxNMM^90a
+zzBjX8?8bX5li+{aS5?Oy#6+8Wpc;ZEMGQX9=R0=$%U!nI+oUlh-bh@p3e+CWRcOrK
+z<>@M%=l8>BrqW=(kAte!d+Upj_U$nX3A=Kt<g!+xN^8~X&SqObyLfShDiH)xxu@5*
+zRjCtSP?+mOeDyB2$q8doU8Y!>WQ_~)0^cA(552Fr7PUU+@sA%7VOBtYO-j}o$`jdf
+z-}DTA2umAGw=e8(gsAjr6G!rG=D++z%~F~2t78o(Y{`fGi!j=eeAjw|0jHO9Vyy}@
+zDQ6ozBasXbn<e(#5Qh1Wrs~uRjb_SS94E`gzKb>`pF6Br?7aMVr`l@sBpr#eSExy@
+zE8W{&BRrBpEB#-WAqn*0`r>htQ~Jk*<wg=D+7_tRbiGsh8p5I?4J6%dEjpqI$eslQ
+zr?D%@y1R9b0lJj044+>}TI^qr1~i;-vnCC<?J&N5zoX;h=wSM25rnwx7NR@u1H`3S
+zYSyBkRZNC7i8JWUssweC_qrbn2I1y^N3v**Pt0!v#NpW&4P75Y2~}iWHA~z6F-dek
+z|NiXEsJ#W2e-h5ZfCSF(5St_1Jl_omKEfpo26&sMoOJq>TLWx<wA+qmQQAVGxr9Z;
+z)GO00XSN;(teo$>6eIjD*FwAzOeBTL<`YCHH1r=;8ZpA9;U$wisp`Y)$wG-R&`tqO
+zZCS_1hDwHT8Oaj28@`0|E$C#Bx8>?e-0-4w2|HH8JE1N(R<|`}yj<O@FbI@54=Sdb
+z^>aih(LT~k*;R?H4V5X)jY!F?8SUJN<iT8nwvw8xn8rfM`o8`^MSKHo<HxYMlq94x
+zXt)95N+2LcPsYdb>eIS{Wp(lW`2fgo%rb4rLM8Iqxiof7m3<}blU7+88YnIcV9)TR
+zY_4%KfX2d73gE-3SUZn0Gp%5+EVP{46ktlfp)*h|y77+J{gW8FR%kj1qTNgx@2c9t
+z+3b{L<cB1$g&G^I88hmtiDi8YoJQBFA&gSE5-zo5^9UW}+r=jNRn*AM81r~TyC!Z}
+zc|o6!y_rHCiA>SOw-6kfQ!bz+-QC$J`E3SyUGWEx?Yiwrl#K|n#gD(=D98s|FF-zd
+zKrc$;$6tzv#}!WX78G@c8;3mf<EndC=X3*9nsZzz)+W5C+ei9NeogCAe2?5b(+b;*
+zJ!*cvmixE0mxGCD+g&c_VPFlXr)X0i?^McLd(3fEV9qEaapO^oRPwH)CRtnQKmL&(
+zGi3E!4Fo{F1B(?}_d{!18ZZ<mawHRBPw+xiRA4B>2L)tFyY<<03!_ImUTyAIK?q)-
+z$FkT@JdJMU8h@cwBZlD5(vxh0FdPYY#FTXjv&oR&eSj!c82NaDr0^L(J2ojSj_Ijp
+zJ9jqDNkeU-sxuG&)e0cZ7S&UpPv+hbKbt@7-(RrH)q8{yV5&4KI|0pDCuPaWkH(<a
+z#OT8biA~+2-<o(hHQ5iw(I8Zgq{bP{c@kQRB{Jh4C5@hOld<5ok|Lo;Ytp{}Rmbu`
+zkuqeXfzghyg!|8e-K@bc->fcb3Df^`4f5wlVg$K{rz^QI$`^SkG_4NQ&a6gTYKVtn
+z@f(Z$!wy5ll|+wdzoSDAFA-9GY+!k%Q9VA_GZ6SNQk(FcBIq55HC<H0BZuw(p?&Gk
+z{Ue*DB2TUP-SK~0k4bgz3NeuOI*&mcDwellq@SK2&3=~V(>gGpri}^iJmR_y+r9~J
+zff-79U=c<fsqlJiUlJoE>mpQ;NdA}ORzXL3`!DO6iafcdMOE2Gk2+x%{mH4%(PDA%
+znh1^GcwAe&a_G0?O?xR3rn&BSu7HCMbO;yL6N5k#XWznBB&Ktz^6y8GXI;Tm;WJP_
+zcWz`!9+#(5Y9aGocQ!&4Uca@qlkaazAJO|(O~L#`DOoZ>0zbq#3x)QzQ1G4ocf>E{
+zwHy?ZOBPG6k&vUEHAGli5Ly{DIRdO%H?B~j%nm>rro-6F37gc>M|yM}PWYgJE5ON+
+zh+KbXSX_e5?m&}9b%%XS&rXjXaP_Kz^z<XQD_y>zp1FO(Po~r}{e_9hf)tLaMlmiu
+zOQ{04ax?Ew{oyXd07#AU#eD>WZrId&Y+Gk#pvFUjRa@8TnCsQblG7qa&Vvn|biCN9
+zucc5Y0Q%asN~5b5`?rK-ej_8s4<us~w<I_CbWAXfhQ=udP?F@nG+Sx8ABjxfILBB^
+zT1>At-B|BZsJ)6E$2PeS8cNaUdp~cs);<yfzE5hwdev5UsW0u(p4p*4aKU_HfV)S4
+z^o;y!>i$Q7N1^VTn)Cl@`rqpQ{{%H|K^RE@U<N<He=dkUGG{=YKYi|hYyYdjzXbq5
+zwh3|Z+Q3ZVHfBTiE_l!zxl2Rm$3)>4FX{Kx`BBlWcK=5m_zyi`fgi!ckYAV`VDB+A
+zWf;e@q4bJqrqsfpI(3}yJ)NL4oJbCW5~H67C%dty_S)6cJGLwfVK#g27eomD<G2fW
+zQU?J2h};r_1HkSSXlrSFA<@LJF~2Ruqp)DEu^5-1KpJMjvSyKV>ouT1X{7iiY-Yr7
+zfv9u;c*Gi+M*Y_jkRJbGUs3?NO;X%!GOJUP!*AZrY9t6@`}2U=51pQI7qZ+ca*s`1
+zFMK(ey*WK|3E5Uu_d=xRxlE-|0SSsYUbP#q#a@U*uUufq6?Xi6MD~HeM%s)C$6*OT
+z)iOZS_@5O}qcd~B4WBhdFnaPG!SkDu-hiy41WKj*Q0Sz5TkP_;CoOhwEiw&LU-S@<
+zdNMHX1LwF5S|_p}HWE{jEqe)c%29WK-VN#t{1viOKD3_;VV6ep<D<}-Y`G!48*aKF
+zE$*1rY&SAsa1iKx$3PO^9e8&;ejV4Qoo|IRtSbDU3sI`1`o)|ex&TmMM017xd;k10
+zD0=sDlX6|~(CJA<Xtta~?v$O$GYZd35|(N3P@o>RWG|mm`$Kp^eS;7@n{Tux;k#V_
+zWT_`9MzEApwtk}3hPiH5bk~XW!J|7-c8P3_Gf`?YkVZdIM2B9pU$FMCmr8&eV9+@B
+zuZH8U_ee%!4V>D4k+a>mOxZfcRXsB%QMxAH(<x)eOus#yOiis6s<5TpC^dg9tZRie
+z+rK=zE)Y1z+8z;veHoDcx2IcJyLE*3&!J<y(%lmne}nEG2ixQx>2-xHWp%*hN40%N
+zni8#pq+ydx10TplL6lGds|Zmo^1gTC*!qq#U#V66Ut5qU{r0*~eLlH3&}p?J!l|9R
+zTORncB69Pl{qPu|bv=EaWIq4^W{wFaz&^Tu2G|{V4#Y1@k+1ki3H&T3dP=V4RZ++4
+zi4}I~dU2_IQc=7Wb{h{R3p&ZLB}8Yj-*&Dxyh4v~oP;|+_FlTLjsghULT^@syEIoL
+zA_t6yx-C<rGIJJS8mC23R&1CPSr{9AIUV(DH?H|C3PRjr8jFx7n6(E^ADG0@<->{1
+zUd~YPMOI~O_Tat2Gw-yB`u+ED80?|?EKp+#(6p&N<P#!*-5X8t7qr|U&t>9rmwB<C
+zVqt)PrdxPNX&ANjvA#Xoi?QnUn*St*3|BizM^LjxqJ$wGfp1&ds*<GO&uVEFU%X|*
+zu-6E<E96QPBX})<-vx?EU-q<Q0@@N)Ld*nTp&}^o*8ZiQDhCX8wiXoXhY|wX0oBR1
+zCu7njdcJTj7S2p_Rm=SO&+i=un?y@6eh^8{r!x7V7+_ed-=L)yPLXjsq5NsTSnhr!
+zceNDEnr5fJ5z=8*s!A+v)kAmD8f6<-o^0Hev(%Nt!VR0RS0l5Vd#BPu8Tv**V1K4|
+z?O_#+P7VV5WPH;wr^yrC;1SoDmG3-{AZ%$63)ZUnUa<1)RPx1=aC7fvq;)%b^NPjx
+zo;ci-6Z@aIx12&^NosABNVvQlaFbSx(~ApF4<n+q=jpAVRih%nxJ5(8kYopvhlg#~
+z-&OS(Ne=Qn;WpfRbVArx{@h`_Qvw59cnXVSD6Wf5HY{gQ`fQb%vm(J$*C(cgmB5>1
+zTHJ|OS`A+Yeo$g6#Djbql*!VGaQr27N`>Q7t*s+xJmAc5!a2?`K-G!l705Fvt?LB<
+z`0FII(G_A=o}19<@kqnZZ*l>^LEKnJTDxT;xOY%~ifkzGiYds*o>}^6^MCk4^v`D}
+z=OY0RsZac$ihZrvVVu{F(Jt6SbK1;Cy2FqTWMpI*ZmU&qc8i*i(k@3uOdZ4Y1ZT(6
+z2FGJzY_<{3-4>uTw^_{a%exsJbj&2=0i!Hn%1VE+KBHL$+=618CejMNjEd%0ySCVp
+z=xX-t==$4fNZNc@JEMk3j11B-<+Rk6<f=Z4``2ITw6(Q%Wz4u<4ddU>Y^Dhbb&qJ)
+zG&Le16%LHf*Cl^vcy^RImH86_xPjZfXMT(G@m_b-=5HbukO@hn9!4|oW}_Czk|ZfO
+zYv6wUk&B%gian3#nj{_B^i94jNl@)=gWw$qpz@Cdi-#%%jZy8h%nKiF-?3vE88r#&
+zOP9K+vcD}v$Kfhny>*3ift49~2`Le1LfdKl@tSO@$}{K8>I|1It$#0FD6$-fjM;p>
+zxpC_#guF>y^=|uws45LOV4OGg+nuEz->buNLWY%_>;s?LhzL^Ux*mq<W^{b<(iaqv
+z5UrtYM?aeN>6J~zEp)-E!v|huLAFX(Q|i-mr<6OrC#!hS%R}1nH46$;{xOtZ?m%}O
+z);kEpj>a61{4MepUqz$g4ct6|2=7*2Z$)gMIm38E8VqZlc?~^&SHGGZzW-~AWPtyd
+z7!3EETdx$<fN5AFZR|wGAIu1r&4gvF{tT&TM}#_W_rx5z%RIqb64A?)jB5qPuSW~3
+zagj@)82flNbzorm>`5jxCZ-YbRqBpMxy!DTnC1#oUMI&1!LKd|s5oI|bG*}8B}&mZ
+z@3=PTjMk<qyJd{Np`kb0YLLMx+gH_4!E;RqS!XtBymoXtD)xI4{G`NJ>nj~JtCe$O
+zDvgJPca=mTe`Lu3ml@Pj3|)o!^u=~w!4*#>5|uLH4C%&uo-yR;uxdEIcc9bj$J=`0
+z_zp=VMmlYGFD7iw4en-MljsNoL=hqhs%oBa6a)w8kH@&+c`OKx9l!={nn~Pkbn|L;
+zcQ_0o^hqTO8;Q9}a--@fd=Es#h8p&}{>;|C%ToE2*N5bLP@tT7cJCtd5!$gYQvYc_
+zpR&GCNZv-mXo13}l%-9dp1}_}cJ(c8l(Z9|z<tBDDTYLCjE7NccZ~>_&4l%Z&{jm!
+z9KP6;!Gb=g|K6RRz8iK>Wx2au@)zV>Ld5H#z>^+c!Crx85Cy~7EFWHXLJfcCxITt`
+z&im-}(kp0@+308Fh`D}^h0#7YXu#6p7CRNzV$$5Sxh!1gr0AV%Cp8+>TFJ(AFtgx`
+z%h={~yjij;4rMHRg@0-#?ZAW-={NuyyI&+yEIc&%03M9>{TU%$V~tc{t3J*NOWUA;
+znjoj3-<t=Y(p9ddSvH!<b*`KYyjm+|XhAY0au-mNLg3(<2;*4mU|nvyv$EGwMCKeW
+z0#Hm20=>aSXO6JECx@Rf?p<;(9`VwMM4xu1Shp&H%OOOo@eQY~wEi}z=45DyQnMy4
+zo`CgE^Qn_ROH+xwvMmqe)td=iwH%kGca`1LV7;EbwUEzs_(b9<zAhsKf9ZQeiWBTA
+z`E_}o?G>tiW%bC0{d8!AajN3{M4~0_3hrn^w#XDzkAA>v%jwU36rZ~82TXoS=FxKe
+z<7m00tdIk~hFqSe8@mNB>+pAI{}eb2Ie|6P{;4V}x(C*c@&^pe`mqvaMJ*n90IJj5
+zQMXb#Nryb4^KdZp*AZ&+`#0Z;=CWFdCkX%?wr@Mh`TGFcZ0tvrpR$qSsu2EIM|AbY
+z3GL1jqe}5Hm0K3+vT57cdRNkBHN<X2FV`tt;<dK~S$LjtmNL5nQ6Igm{LNp9>xQm~
+zN|l1;blGVhTU}lBFH;5D=nI&mck%{gK<kkfsCsSz&UJ>M!ZD-Ao=c&Ou115OB8Llq
+zpXu%Ei22tG%x5k-p1g7>uTxz4zT@yaRQCxL@=qDdXI60mL{zE2<{($Y976_%h@nvo
+zm%qO7j~V+83b*1LL0o;}A+HwaU@`r9I$mlE{Cb098y2q2q?&PK>0cmnoW>35L|y9z
+zq&TyCNI&i2nw|7k@^MJpzjdA-UW9O1;<vOJtTvB=C!%$$F5*C87XX`{O=OB0gq_E3
+z{9O6s==QG&b<QHHkzIxf#UhvI0}UFdJvUFqx(AO|Y^E%zsM3-H0PVl*0#=27@OXO5
+z@vC1RdXPN08NxRq-%|9?t{Cg_8l_L9I<5zfY4FllXYYfIO`ksf6K3q<_h(+)nhlnH
+zV8!=EQz{sZz`DLO<uQL53fsYTGd2i`Wx?{BEIL;I&KGa1KI*M*-f+?e+x^Pgo`>K#
+zs#7Lq<tuUF<Z64FPi5?-hT7vsv{^(<gPJ%091SznshxPlk97YjCI@xGre`#=q+32}
+zRrC(OJPSdPGIof%;p92y<p!w+NT^EN8e;z^yOm5Rp$^ztu?I>3ubW`8X%njeDtif6
+zrqM5Lbj1=A$I`)!^B|Jr6^!vIi*m{kU7-!rd4ujTEYpa^*11kWjmwP}iESM?zgzp?
+z%{$OuT=oLeN|kv#!R4e3=z`W4Yv2`+gs1?<$q@Trse<V?P<`)l4RTP}_zHkOA^hNO
+z`b;gnC|#szKMS%By+l0n=}U9Qc5d=RxR)4crR#TjO^{9aI_EtFf;jzaaee8?4+{8`
+zqLkRdU}M-SN{s|Y)^rJTSjL?3qRLhh^oRk9L~%jLvTUk#lzUt|i5_rrT|@XMGxKQP
+z$;ttzFCztH*|tIV<g#9MEeBhxsywP5z{z*@S#HjY3-_}+9&R_dT2P30n^O1}s#&zr
+z^13EGiM=O5Z}G?v89B7)XOzjmSg}8Zo)Pl;cwiq-!D51}k>)S_Hcbkth<VHVe(}DT
+z1bUg>X`p4dg|(1I7&!Vo&1l8WgWsJFT<vUe*A0FWa~A}r|F(})9?HAGv@2`}!INSO
+zIp+|ep}o9v#%jN^#_bnbOzOz}mfVus9qwCijw}1ENJBgDQq{p6PkzR~@UvL!cPvO2
+z=+Mh-^I!$oz~84Ao@wAKKpunM4D+%rim&Ni0j62#0hL+>rH4b42|ft?gumn$FpX^`
+zGUqDfy&%6xp85l8u{?@VY||!pd+bfq#@ba6RO4?Z#p0Mcd$ByN!UuN2L6mZd|Jl56
+zU_a)hpMj#KhqreX8xvv_5?n{EI25mbzRfvKg%Y8QUj8v~o$;Ikn<!k7b-B;tWFmg5
+zAMWti8A<;M;o|C={|*YeK~?BIrM`dER*y-OfZZH>A!nok;1pNA^Xv+wjBR<PUlmsb
+zR+nL)D)sea_curHnh2gIM6LDLn(3hbjc83WbgI|=igh9V$eQ9h&L#<1sz0s!L(S*n
+zNH2726e(@N${*#d^6rk#6V~I_pf$$Ag~+uOg6BYH-eZ!JrvRpg=Ja=#Uw(RQz#nhz
+z<0dRHMa{Qo=R;}VqERE<imSv?5b&uPO%PyBA?~;iRxTW#&T&;GTJUG@mCDmvylyp@
+zf8j$I3Z0_ztoE!m3XWVJ8>m=QH;oR%otVqq$Ph60x~V8JyRL5{-ZxNUgU$~jhSDFw
+zr`s56kh3B|#s01|e>VT41_@2Wbg9jKVRdWw;n&37Dh7Xk0>hymV1mPW16Av~g#>Q0
+zYeT`%P0m^+a|a=?MQZc!^pm?7h@cBT-%K+Xs-$&W>AESK;#xN;v_OmY6@mGoBzYim
+z`1#@K)K68Kw~01U@hKV!t1JdsZ)MN19Ad)<QQGm$^Z4@$%!{6sRu^BZ<JKC9D5>9|
+z0F7gX=)R;%ED0QeqMp5lm}x?rWrU8;sj=j*;_pS4v=K$+XRW~>sO08i5`sV3^KBa?
+z=(+=vUxvV5A0M_UgcojG=q%{Zte-F{a4t-1@q?;!1G=n;lX>@nZ5GBJTudZaxobi*
+z6`&p-kd98Kae@LfJ*n#)udXR7O&)=aa&MAy6!CQ#vTvr=FRYaO9B7P3zQ2AJsD}KX
+z_htpAcS(wDT-Wc*sgb}dOS{6ZlI#%af?KSS%rOvX?^3|kj!<2EuqYANeYiVJZt$g}
+zzq9DYwScGO_v3Ng;6`7o)&k&CF2JWUE_wfs2*+W5=hs=fRb>jWrmD<>=Gh5UKgMD&
+zzlX`^mVP_u3#MO}_P#;|KENt&`|!0X?o<yZIPljSHCgo#fn7-Q$OUkV_{O26#RAAN
+z62)FcyJ1m*^g_BhEn^>(-)SN`^tjC4X01o%+SNsCs2L@UqWj0~%j??FbqV<wuWFDm
+z-sBaq5BAb`K|6o0Jq3&(NQeo<$vtk3RRsd_EE3uCPBD|M(f-kVzR_z@?<h}5OeWk9
+zLQ+3!*@Fdgs$pmy;vA?PNwX3%K=H9^Z})>=1D=U26=3lP>;Rk`=y5yCEqq38$>-Y{
+z1XqPcbVK>6bqp{jKB(zD5qDE<6?GFOG^hHv@%WScN3-GYja7-KWX-8!5SBwUoLsJh
+zzb1OI*0tNUWhxef<wR9*0G$fMA)CeG;Sclgsi(!Og#1#ue{egK+!JC$x&_m}(tH}y
+z$fPz0I&pSiHj;M9X<beTFoa03wUQ6*yjia{qVZaGhcERw5z6KZm@R;Ls~R7BIX?Ge
+zWECEGu~EmQqd$$V5Iok*7blqSSVYe8VqC%q6j<U~r;=36wo}T8MtT_9U#P~cha(LH
+z$5LdQCF?C642qnq!_)sA-h1HrFi2GjGutH__|4se`nEMDHjweWa`|nS1d&P6vmfAZ
+zr>XM^DQ@cE+Ph}E#I>xKBl>au??h02dTXj*`={Fo3k9919}VPzHCkI^&X6hZtfr6Z
+zBovxx4nfNk8IISPpu|JQ@DO(kN&Pu75i)s4y^a>z$_%YekCMiZD6m6DnX8CCYsQV*
+zq+o*}m$?Ef3G;rQZ~r2ic)e99vJx~A+O8{|8lCZ4x*khpvjaB-hL3~RF!VPy<y@1~
+zV~IxjXLXc}UTgVreE5@b8%B0p_I1^`cw-Jdj@xX^ZxU|9KVb~fcg$RCJ#DPB)6i-^
+z{x!EGx({X?_A0Xzw8mwUG(vzRW!wj)#1TEoH!82NwX1{zL8~ZDa$Dnfk&Y7zdhT~C
+zin`RHbmY}Tn%51!OeCD3RyQFROpcAKpfih0b}2hNIv)6Qf(*-LTK@8y)KXcF<)qV?
+zw|Fy562lAYUOp9GUE40p1+e*>NUr+@yjE(%7G9uptMVuBfYn-ufI+v)87TPT_tCJ;
+zSt92#GOW3+*G!bIpPWpX3+%t?@!4V<LcE|3cd!i$gZfH`r0K(!Bg`b73KTt6AbC$Q
+z^N;%ByTJeQk-gC>mi{<1U(Vn;m)ctPc;~y8+$bHCqadRVZ@^2{&R@0#Syme4a;S6G
+z{bCLH(LmF%s@Naxrd}`k$JE<tP(q3s%QP%jWAtoUsK_Ehl|;wJ2hNkXCEPTVwdl|`
+zW4PxlaHtGV;O+j!U@HoiJ7L}Ph(yYu{S_0PDfysK$UsIsGKS=tIY5rw$X1(f!%D0b
+zaxae87Fxj#g1}ha*KxQL&tH{sV|Jpkc8HbKo(=7XI5u3`Q7)my2O|xU#Y3b|_3F}S
+z5%M+#)h)wA+oA9tS}fE$1do>6nW}xd>OrLOzD%6bl7O{(eA3>MuRi8&nSKNJ)=&kB
+zBsE~+Q@)_wn%YXEW~yL6LW)uj_QIXYGx7%zHP4{)&y~mdt|Z0zm56%=df3Zw(4V6-
+zWP7>KOav_@jOy&aAX2QT&rIADQjnt*n#<kNCMrdskyxi31v`qtgep`Vq&bDC`kr`H
+z*G+|H;f&GOf7S6Mj9i$|8U@g**y0UO3Hc{J+Oy;!^<d%7=TYmaTM9~9b}W019e<Ed
+z>8xr7S_l&}p~CgIg_b5`gFt*c&C~qxC5`m%c<%3mhVgZkEDg#Kz{xyx6ubDAtLy}i
+z5S33-&t`(V!b5B|SajCx06}&6R*hiN?C96tU$Z>LQ9K`dju%7uwFrNHdw&HmjLT%H
+zqnFUoOydKDR94KEiX!}Ya~2(lt5g57bOH<)u;>5$A$^W0n{_)bkNV~i30)5hx97#z
+zGg(EWkH#`{ks~z>$LEY&TE6l<Z1*eP+_RC!4bc=b?>e_Y*jO>q-KSJC4hW%i2NeKw
+z%eEy=iP2(oyD7T%20m#OoPsxlgb2KVlgN9V<g`8dzXCck#m#sZR|AnDH*U+Ry(KLm
+zB<dzUBp0*`jxU5Z09*yg>FK_ybvq;F46s&dr(mM4!k}PVf13&v+em~OXlto>^d_Yd
+zcRD?eBV@1p{=J?TZ815i=e8xiZi2Rz2rFsvCSI-Wx#uEEA`#^ar9Zc@oBgQ%*$*C+
+zN(0zTZyuC#TGkFb04rn%z&rNB6*tz}^|B1^ZM}o_u;OWZ(lQ%01W0{SAxgZn%{c>X
+zj?oh7Ae!*)jD7@mQNl$4Rx8W_cb^l;P`&QR_FdbrQz;NIo3+FdBXa>yhWX!3{Se@y
+zCDCcYFdNSRz#-w7`BN;R9nU5Ok@&yovWXX+J@3!!nBM-vp8Y3zMX<>IGZ-BnH%VFm
+z4Xkwv99r{h-$DkUWFPy+O4o(}gh0n8pE*kLbQba@o@dErIU8pZMKFT~&V@G|$dqyn
+zH_l{3YlcgXyw;dgWBIBPe0Rjjuj<cow}b~1E$ox&G4c%MpXxZtLLD3$mc1EGCX5wW
+z>R75;ZbOA8O2l%rC8leSLI0VF2<S3w)65bNY-e8gBG9*<laz=qe}dl6d++Rh@~OR#
+z<M@$|(mSa}u16J6Z#&rqxQTvOns~9pBi5x;DHi4F!@ei&{Ry@@;2=?Deq{QuWv!8$
+z9?4?miaW9nsNT3*y%aXSr!eitRj^FEo`0k^9xP#4?3?(L;d<*$psK6}2t>7UzTxa!
+ztxc(n;=%Il<%IlhfLWO1Ht0SQAF|(uO22vNP(qxHs=m}{YY2ntWZc%MQ?!Yqxpq>*
+z4<%tl7d_q7({z%GHv|NS=dCL(e0IP-q`Xd}8Yvs=gp=3ihXR^_Q5oK7LX!YTpOxc@
+zh+Ow~^rtM^(R5*tZxF1++ML(N@$~eQ89L7j7K>!7D0p@&`hAj_XHUoD7U)RcL~$@N
+z%{EPm)GP^Hv=~(oI5}U~U;OG(Smt<a(ZELzQWof(@^Qc@2jX{F8^}c&+Yx)3%i=to
+z$C(X+3ruH1zvY+Oeqw!xMs9Ty{>{8~uI~VxD4|#Ghk<jX@SMpmc%a*b;rsY*5s3-!
+zo6)Eo$USOocBjTPa0srxuWO-4=|RYYHhFSD65;Rb8dpchQ|S9A&~^4t|Dyr&P`&T_
+zbw&UrS!}C)bWO`1d#vb}c(SX7blIsv6W{_m?zwxLU>O_uhgE_BT$t0>nYke}V^dHM
+zOFX(}AoUj|aJ&P8PAMu=#eY<%%uS=CX7ad_3;W~z0M(n@`v{EA>gP4T&u{iF7^(M+
+zUTxg?K+xmX&!s7r)K-<fxrh^MSLL=*9FEQP=aDTU&c+)VK16dzLF-{!L+Kse$~<SN
+zh=AvstRGV>@~}%ph?&m&&o4SPPl5|bS<4iAU?O=UdBWO-;ToS8J^Su6g{QqzS-MjT
+zV+cDft$KG3#SSyEgBWs|E&BR4J3HN7B#v!92{M~vk*Qw-od^J0gMQ!fgPd`OkXr<!
+z>;D&HvP9dPXlb9^!H#6F?Jo0uL|sQ*cR@t~PF4c;DAz#vY6eb8*<aU9T0TOg&wc~I
+zTs46%aVmfJHlF{ke3gu?cEP^k&_?wcNxBaXQ|t#LV}eh7Z*?CX*=e%qPC^N{Af99A
+z?X7myPUY+}@qRryWRm*Z)A&*b5`a+kt$wyL{q$=4sg}5Kx&%CwA}KMQOrAiwmIy}=
+z&=UzGqR_0=h6ljGc|CKkDJN#0d}|ba)=lre2Nmb=>6$S$Q$0ue%3<H$XC|8COv@#r
+zoJRdR`pBmz4|ET0C=v^AHMig`B<-1P7j_2vd$pCZ_y3Mt>Ky1z{Nq5z_4C|?50ZWY
+z^R9(9#Cau|w$vqvn+CNlA6||}{HE||{?3H5$ZQvNB%+Hm7cM_7QjFZ(r<W?WAwqrK
+zJ?w&h`%VjB;F#ukS(UK@gP6_mps_hp#{~AM>GDIVsRt};0R@>=U45*z=z)^%>6M@#
+zzvUxyiYewiO<3Zd0;;$um;1y~)ANN0p|83_BODv5ijbI3l_MiuUIy<`7><J<Iju5}
+zW50g+rGD)$ji;YbpDAg-OaBLdT=z0(V+FDY*g~R6E+C|JPN1L-t&bYt@}dp<p`$YB
+z^tnSA3=F;i03pm@{sk+LZ$}$C>7}dOW<a&))V%3;Zj&JtXCc-<xs)Z(d-4(tIsrUe
+zZu%!G<;;fE*^4-|$igYK1pi5-`&r{-9%{LM-jmqXuG)j1<nYlbg7F}{ufY2s_R9Ca
+zD)nyg&wzZtZdBB=wdKU%6FIj`QGVG0<#EV-v3<y_o<=UXK)pYp!SZu>qw<l?ph%}q
+zvR&5mER5JVY@HSFg|w4cSn^Tqmt~j=&7h8)AKv3@uI<>YG+#`y?>V#g);*eR6mckZ
+zi<D<l7)!i%IQwtY$rzne*dUfjUwHmq7P!pK8WUBKs!b0xOB4BB4)pk^c;uv_c&ZBG
+z`CC{-pL1e_&@C!Di#n8=Lg9x?LE_1^=1<N%Ka<qZia6K@D5|Lm{z`l|6zCeT65SL^
+z!=e{M@{tmqTvpNtS9;F|;$;j?s%pAHxP1k9aa2~&I7;=2fi_Mea!XVwFo^e*Ag9FV
+zMXIpqT<;_9uZaiP!|0D?P@Vt1I9E4TID~T3w(ED+xBZ6n9#VY=AsoHTN!HTsW^^-B
+zs}dE3UIG>JWKx-GJxArR@Nj@}N1~6})IK>+aO2geo}!ji#3xoyn6OZoC8$7E(a*>a
+zT9JbGDP9SWe!8ERNx+o;%5ZxL5Ct+=vbh6vq+If_I-+T0rFF`)G+^IfR9*yNTnRt?
+zB6Z3k7|%Gq9Fww-J@h0bBVz+mfrC(fPOs?&8C+mjs$?^a%^mm;UQO7x9Xrpz=Wwl8
+zZbuE-tI^eJhsFy65Xzf!uLcJV2M)<DBh%lmO4aoHKF)8WyDm<-rMf27@HPTCTHnu3
+z**qtFjN=3&2tF3NJ||kW`sDhQndHS@$c*B*xJH?wr`|d1WiGl?$?3cE1g#&-8f_@d
+z@R5SdorM|-r=W>|o57ihh!=XwGh-lI%)SZ${23WOo^T|ao)ni=+v248Gr5Ll!w{z`
+z2#wo*M?5JS;1>KEagjlsKOnycLherY(1tM1HCutpi9FmqgRLX>T0JO-O4?W0HERoq
+zFyCO}u;a$C6GlU0%}36fjzqvD*3L=Ga^-r@h)cpwm@baGatChru<Jjo<G%0cFo3*H
+z`qI7P`Q-r!pVm;tbLdlRJt{)1c{W<g$ry+3fwCtvC83joIvITbQ$?GQLA{BB?4t|o
+ziTe@dUiHN>@=`a#MDm3W#@98DIK=G~F102zbzKyEE=-LN1zkO|ev5-DV%Q*e+J3+W
+zT2`DhaT!Ir6n!ebFzpjKCU)o*82s#=YXcc=*+rhJUOJp}d}Kw=sUx7Hxpq3-gp>yV
+zPd2<!Akaf*qYeh0(K*!dqlzRW<oib{NT-{J!Uip3Rd^EU%eql>s8<ka1W?7^;uj`v
+zzQlm?P&~Z$e~v7DmGcrGBVMMm{%lhtm!A>~3pDh@C9x$$v?{u(Hk?inOTbX6DD31_
+zb#f#lELwS$Y<L6ZFyaUoP8{v?K1jWICL0>!TO;S?=|yYogz7)xJvpOMemTKA+(Sgw
+z&RbUEp=*%Sd7i-4zlnu0&SywL(^_;+q?;CzK0dJZuOS6l%Yx9JS)wMGoQa68dHIsc
+z0DDHyBnSn4yrkS!@9cA$)!oGF06(7MsHzk;9b)z{04AfpSw{>r%-oJOsLiK6exSb`
+zfE?6!#t)7WatC^J)9?1@@hhXh!1S<g{&d1MWN)|CC|y?Ur%FM=n%=Lk-4{=v7HhKv
+z4|=&Ive_B01W(*nFQdQAbT(Q#7C#o7US8)i@lotN<L1D%RE}v%Ris@7BY5JW%s7t^
+zcG#kph>G`8%yAvUEdAjD+PP)!JByDh3Rwh87J8|h;*`+i5-qGqXfPw1vh>(6rhUCL
+z8f-;fqk#sW!GAba_@3FA9>UEP>>&>P4pyK@E_=P4n~B~u@Qt`h^4oRSNsKx$J3vHg
+z6Z}($-o%QfK3N*_bA?FlHtK<7z;lF|ZX@y^_&WtF%j}4ynG+7Rl9$xN3izgvB9=z^
+zd3ms{(elgxhMQLnY}*T2@7O1Q<hY=R%neuoq61Pv$chMUZ)kTB5^=u3Z|MV36kZP5
+zXw$PJsm!wdWcNDy$_Dwy*7`><jP+d3vS;HrX5rv7^Z?Q&DVwm4-+S<7w(rcFp*8xL
+zZx0*wYtZN|8K(JmB#erZAp92X?~QUgK;nID0Ula%fz4l|+LsFVcpzCSo?)3#wdEa<
+z;y4CkMqlQM^~gGMK(s!)8F+aW$!EDDW}z#7mfN|-DSx{M|CRH8(;3+#NgAe|9SW}i
+zMv3JkT^Wwv_QPz`Oky3bR%RDbmyN`H<=Y}W)(5Dz({Q170;(r&tQzS*W`=AeF%v83
+zS@fJW#+;1{QRLLDWZj9tJE};_Zl5^2sCJag8_JjiXY9ctWb+R2=}dG>3I>QLxDsXU
+zyAT%LMUaZ~t7Ff)fJ{y3{#1jtF-ELxTR<SWka#Cv3+G{{cjRIV2Dv&M3CiZ+w9I1q
+zYH%vB*#3+YA|y?edE(g8`+^)cZr#GN(*mH{UZNBDy)86LR)ZJfTKqK%ZNUB_AHQv`
+zH?yn5B8O;uP7k8%Hj~^9v-Dg#Sqvj9B9X>{A4~(74$b!wn-FqknLadX#bN;e_$vov
+zlzY&MGRPSH5lQVl@a6n`qNA!%fvi{h$(qk9Mplc0LW8@Tj0U@#(hfEbQgW)7YMrqf
+z2rCFOpi5qn{4vXRcuzbwG9cIEzBJ@SQXWmv4QAWeWKYm`vSWGb53zf8u(YaI20seH
+z=>?^w5sR40Gn}}dF@rZl%GdubE1303mSd;9^iO^TGynnC6a}Dn%YMF73_~}=dTB5=
+z?Q){hvi-70^r#i<12ia-fUVcGALzh^skpcY?*$z2TmETp7-HJYkK3{5ffSlWo&S40
+zw^x&3smTYuw$zT5hC~7S9;~2%06upn$|i@3I5&;-Jgg$Jas4{J7u>kya1van9d2v5
+z1YQIY+9gc-o&%lRFXSyj>mEWx_Jtm^djXY!0+E8^W%6Ev57V?Z2@5E!D&Wr<Z~#>+
+zi^&M9F6j+N(NJ`s_zd>d_SiT2`&MBn11&K?!!9Z6xxHwc$C?K;vG@1ZzFmyx+NLp+
+zbPo&aS&CM-K1+3&No-D-lXLc2*zK+G@}c_egA9!d0k6y%KC$%tz?LTLFQNe}<qXCU
+zPU{uY&H+3()+OO?Er?Xz+B^n<Qh+Xbn{&EAX~5o9Y{1Py!S$WwX$Sk+tOKKOWsWY)
+zWD?ojY8*ucXF1-Z#N$$60g%T_7W(XQPT9Zt%FRVHBx(}l06~{%__fEi3rCbf-fg*I
+z>+LqelN>8g6FutU?eU@eKqG`!i9<?JVu%}tO~ILoSSKZIu=X&iV+w;r@ZmQ8-6$_;
+z5Vd;@<tZ4OHi%LLm^!2(??wH1Z}O;&f&&%nbF~N2V+enu!fI9kwmCPb^jpYrWPIw~
+zHuBJ~qjJ&k=L~~dMs;L6j&|Tp1a4uQYL#xS*DXyI<lE-%bYT8f`xWT4lUE$$dVBF4
+zPHY|e+=`!0rDMPVcevf!yECCXKSSf$^6r5Nuk&lmZ(tv7F_xJ;bpU!m3%w*z$m>RX
+z5D$+ttbv%sgI&n-oOQJ$^j*t7*cm>sJ4|*$iN0xF0IJ;k1}QYEkb#To4cgiSUwLkG
+zlb*JI+|x}No9JAw5XnHDfuZB?wDxNTj5vG|=3ljfGxy}<Zp|S9@#HGOg=@2FhA8%8
+z!Wy9Y{haTU`h6i3K!={iF$icES;<`o^h*lJRIJjl2j><Zr>m%Z(Z0jfZWQMtZJN><
+z5c1Zqj3Cx<rF^B%VM?6V%mw((yAqFk5-2faytIzP$nf`84KJBaw!!-_zwQeDz;R#R
+z$2NeD{-g(DXev-Ek6{DBFxyutiyuxQB!UAB$=%XC@PC{$6rP!X)iO)(XIQauT<dV}
+z?fhx@VCvhDOPw#b?Qom{brf(&VZT8yK?vMzWQh3>qN)R;oFBY@7G4#?8Y|jS;AtMo
+zeUVI5v36kzgoO~EK%c(opF|rj*{T}fI)G9Qx5h^!;qziF^*Y-gW(rn>8BUY6JjVw{
+zRWJ2!{TkM3dFOMu;kvZktEAUp?*j`v-<%>YKpoDw4U5v>Xf-dchjQI6j?Xb0lvS&h
+zZ=vE*9Na`?yGC_zu8>2R$a)e9s=nc`HQ1HqLpJrZ=blAJC{#wFF8}V}qZ8OG9o%~N
+zoyud%H3`^B9_D_;nIO5Qrk3clxBKhYiDE@>AYrWa$1xC~va$m;Mb}@>6wtu71m_>C
+ziY^?TpAtzHFcwjcut|VJ#q$LIjn!PS2%;e|K}5RkH1IrdK1C@<Dk)`3_~`S??ZzR+
+zRejAx8kO%ANWTNwVRIl2_~#WE4!d1UdWD0x!y7IY8#%y|w471shQuk$tkqH`ST(mM
+zs!x0})*3#y*NZk#IL9>RYK3OerofNP-*(97q?jBOrUbhYXLvX|yt7}t@3QxcUlXN`
+z=Ju*cug=Tw4rXWSNMzFI{&g~h5u7FI?q=~;8qp^RTEU+BoI1;Hxn?2>yh&Aw4*Knq
+z7kF{RpZ*<w^wyWWK%WX2FHEG$vcCW;wj*ItyTwi@Y(`hpc6$L|y4(TxSx2R&kfASg
+zQyXHhL~B1lT6en*MdP$RN|`tZWO9U&xJcgP**$NNEJwGzY@hwJIIw)_)l%3{*>~%P
+zVc38@wM}tmBkdAUTZU@{nT`-10tJao&d{U*My2@Rh$yyD!J(pxW75Lnea_6l#NVSg
+zFzTUn+`wE4E3Ujo+FCJ)0KtY2+zxk(f@<7gKEZo_7B^oMzs@#sE-^M`i|{fjkl95w
+zio<1Q2m~tLt@ztJzz~wqK=@g0zYlupe0~_&#B?&`SJ03*czF`Ozp&WwU*+&bBm*4e
+zmokQA_?cX>sN9a45Se%S+w(xtHuV5wspX7PEXmV`yd(4WV5_dUz!s&KkQTC*C%@2P
+zZOAX9$Dz*=MxL|PfF6e^UaS-^D(gUF>1W(X!WFIYVVaU|5YtUbl7*GT%jw?GJx9lh
+zbR;q4Y%*UOt5LGy7z0*rr~cXp0F$+5YYy(KD}*Z0Wy%Iv)_wU0R2;g^jIjZRhfXZ^
+zFQOj7ytm$5kig6hm6=v5iij2mAoz($!_>g)rzeF&h`m3r+psvfO?*8=aPZ&gHG<I|
+z$!Cqk>JVp?nz}#$!e#J}A}GFIH}3iNFWnf?<0rE{b~wFg&B5Gj*Zb5pVl3h&RwutO
+zasW<vE>MDOJt|}Wsx6EwVK8BG-IOQQu=l%aiS28Jz9Bb)>lmqb#nI%82$HsdNSYBH
+zq|m>P-M?P33)(K2PSd6Hd|VtF!SK*zNEi~^vx8YQX-tEqlMXw}(aRT#hsD9F;#)F=
+z6Ry5g;4Mh*wJE;bsmpI3j8uxwJ3X-DFHxpaC{ss1lU~Y9qzz*c&fd6uU?}i6QX9=~
+znJ@^Y3QRMz#Hgl6#ryOh67R?8u3XAa41RX+i-b;la*l*)!Z$x*&-vCB1t9YZn0vK^
+z8hvNWvr>Ox4pmi1n$fno@!rW&l+RJ8*88}sK{f_Il+vIk0QUp&A^8=KoubA53x8^n
+zF0(xu(dDc4l!e%E@iJ4QR+X`bZtZgyM8F-eRDb|GPm1T4-m|HAexX~g9WB)4P?24#
+z`)GhGGUs(W)`^>=2d?Ed)N`M`)OK>DSu9|9-SPRKt;@a@WMdc7kJsrO&hc}1;t6LP
+z;-piQ9S=X%M&BOtKvM~8Z&~4+|6@t|h^|x5S@Jmd<E5|I>cf_s@-p`0pckSjb1;xI
+zzO6_IA_vb4Q5bq&F)mT`;8hf(oo0vbbY2m`eg<WtOpp+a*>7OHRvy;LSQx0QLOG>@
+z2|CfA)SPknn-9{oU#S=vOE)R2c);p#K-aQ^<~2b_&6k6NpPzJ%i*e4Leogxh#I@?~
+zWaZ?hP08JIad%RZ#!b0XeXLAAGww)}W6T>crBKAh<6bI8f{s1`nl?BX(d%)EoBT1<
+z@#F!($r}`=CJt4DLWgKWMhsg}!9PqW8lec2LIc}%8?P))JRota>ShOjnbyjd5kQv~
+z3Em9O(F%6-A)k(`!G4AS8ng0`0W^OTD1g<ifU&5<s&^=_f2OU|M|ccfFg8FvnfyyS
+z@UE3MSju(QmE&pGR-b=)&z`jNK<GRk`>i>g)&Qko7bSOmcTRtvLl%fj3E4){aD&9n
+zj^$^X*6>_UY`Ap<lLD@+fv|wpdT&=Sl3nB83%H0h1<9xLS=x;}M=mO>1hw|muw|aY
+z_Qxi3cZ*_17NSiEy&0iqD5$}#)%t^jK<jzfra@zUIN2<IV4ll~mm{@GOiq6ynKEAC
+zW1$+l8t#)8BS05DIMER4e_Jg<J(A*dAJ_)7osm5lKl%^>t8>LP&0JtVaUy`wDNwbt
+zt2-}L0z7zNcZ0N540QO91qvr~Tjby?c?!(TTJ^~_L%A5c8!l=U7;buH=qhHffS0fd
+z(ttfwHEcuLXH<g=Krv7SwLikp;zl{gSVL}&K{$lL5+J44&q!nlL)NO(@|u?tK^wu=
+zg<uyqoJveAv41C3RR=_Fj?3VXqoPHG&qDF9d_E0E=t&>&(jl~kWShVmkN^VpNj{U@
+z0}CKtpYe7m69&h@pvUt9*_hZDA`TS`KdaA1)k&|RtzqfgfAZx7)z1xxpaX@3n!tRT
+zJdq4|aFkr3J~U;i0A#03^VDJ?p|14qr<hb6OP7BK_yEP@;YsnSw$hkjKrO(kE7=~k
+z8!5O4FM*lzWHY?8?#>%2$QEsUY!<nBYS>eiLj<R04Z~9}bSZy`W99B>_$*8p>(}iJ
+z!_Zr>6s_@PRrK44iFhOu*)){npvS?l92kdNJzY$PK7YO7dkZ7lMmLq4p$p=D%&p!j
+zLh|2`D4|9&2oKHrDT0cakIVJphGOuTOYN%bg9(IAYykM;0tp8{_xjCPkov7LVkdru
+zu*r@dcF<V_1?p(f9b~)-dB7XBD*J2zeq?~=x2vX8M}MX0vDK!=5WDLj>13!@xRDzr
+zEi|D=vh(5RsYfC7doJ?PrTb6J$T=9bjeEcV1ZtpF$-YvyDUVK=3ajJS{}8pRYP%1M
+zl7I%&h=l$G43bO_f6+q{RZHtp{?KUphX=XLm}3VzU}?M6lPh6<DFQQ4kP_9ZABK`1
+zk}I>3N#zjG-YLS_g6s4RZ&UrhI2^das5z5}WGjvG7e)?$Pr9r@V0w%~Bol&N#^LH4
+z3*EZ8X*<X1WLj#)6NiY4safS~z+;TGT<LaZ;F;3`Sl=bcGUlQ~Ww?U|86O-jz2Yy?
+z?5!6&9@2+)**}2aTa@#kW5m*Cc)ZPMct7ka%FL8}mAn(x%eVPvJqXRFpU(L%li+s*
+zWbAcX8enBD#PHo^>uQ+wJT1x|_y3uXbX*dTprI6t7GJr1Pi<euxETqfBO)&4CnwmT
+zk9oN<pkg~<_mvD`TumE@1<$slZnL3ZaWue7dm<CJzyJUNRc?jWQ5we@PfPLwvfnP^
+z0PlLY#-~(8kUs9b*P9V?nLr>23GazG`1I<q2UjnKP4;an8s|gP$ev*wKoI}fkiXsg
+z4+w#`eO=DPesnxif#!QYDKN-s77>?AP_i=svwdNs{vi^bW4yH&oE+s4^8WPe0h*@=
+zXDJ<GHY4`_mNrcPq{926UW`?GI_`sJadN`0(#|xtL^1>`n}`G)Zc`Va3lD$_I)_WL
+z4<gw707$Ad!&~JRiAQpSPGRQ~ii_IVrevLR3yPuYN%iM7iqG2VCYP?Yl+f@txYmtH
+zG@vHf;HG@E?wi{M<WSF$5VywTAbIuroj|PJnWi}){SKyjL5oHxkmuO}F5Z!zhb;Ck
+zWa|c+ZBix;qX@4n+mcS|g$=1;wAKs(Hs2sEOEue?#`mT+k>oa|LBcz_ccd*B@6vDp
+z00;p;hU+a|p}w{-&rpx25xJGBLN%H&zZ^$pD1Ya{65n_aPa)q0oouf$my2Wk-{{CY
+zZBZ|^ae<I4?J%N9pe-YEl}|b1Mt|TG{QuT<a*;#KmQ3-JBxmfhHZWXnb4dv1ZA1!*
+z(9TrR2C)PV7rx^u+bwy4_SeIRW=S7bD^Ck4pUy9SyO?DhrLi0lY!{_^VAkNz!F$uz
+z1wZ875Oq%mNZG2$#~(YJ%}g>-+g`$Y`2QpvEJn#XW+($VXCi){U$ZwLu)C|$9cpnL
+z@l09{d86}D<O>tkB({Dt;?*rXwR1&{v6Zhv+75%%yiKHT>A&w}Dcjff_>I^TAOHXe
+zrCl8{Yf;c+h^|?W*xbudhZ*+6BH9*dg@EmSiDNSBMlo6t%>_FFLCn!?iU%60qH6B1
+z*>9AFux(gUc7dgq3LV3K{mz8Fcqso*|1z^&s{tntQ=Y5GF+B4pfncgf+qmwrMKqd_
+zIRmJrs}H6=wi*&?jELG~NZ^;)!PlqLezgwgB(HAeuzo(vVkl()VN;);to`^Wts3wg
+z4O%NObzRyCYm&(b0MHZMa<lllnFLM20}k0?-~a#$9kHG9=N|&W67CTs?53Q8vA5;N
+zciwUbL<kwfYi^pyUPcU80003rthZgVu)c?!0^U(eovJi5tEN>Hn9HsL7q*@nNZDUE
+z?H-PyOTbOpD-`k`M$r`TB5hw$fyl!Bq0lob_mn}T&-TzPm3D2<4EEdpi5g%31ivH|
+zeR1Pk1|Je47PA8&yDmdZa^YfSNTVkom3WFit9~)W8xGrEv}h_MfZzpgPk@V^AVk%t
+zLP<v2(4Na`H|uVwWOxB95{{RC!?SZg%jKNL2u0=k{S!<xke!1ioB%aH`M4pO2G<K<
+z7JBt({3L=-ly`8jQ3^tCT^rv|v0h~RmE<mUdDN!nTTp{idampv7+OX7jLzlvD+3bg
+z?->br{{R32%f8eFxixVu)d_iX4c2|^(N?xlun{;=^)vvaX7VZ&75R)QnF~m{<qsf2
+zAk-iWTOd`ZcE)}e6t$hyx6{S<i5Mnkngx}iVT_3@zu_PZ1RV>cE;N2cvjQe0iMg#9
+zcsPy*!>T%!F8=zgrX)8zG@((8Gt}m+Qhd~<pkh)VU=AJ6$7<r(!H~6e9Nfn}^2(J>
+zj>s1i@n^=BIQeKjCbVmP&9G(Ys~!o2b_a(JF^=Jw=RH<8`Y5)lrHSOZDEX*WuGRAY
+zdTXGY{N_7EBR<#}Jiq_}(SSFo+wOLnfxY=g>(O$ZoP1%_urmI=e}`(C!sl)!Y;)*>
+z7k@?$LZgpg<TzV(X8}ktx&-m4J+Tlf$fi5)P~_$J<GwBY4cRXSot2q7j_+gSxy`3n
+zzIM;w<0;-BA`5Wz8e5y>Tmf6$xRBtiP{qUt23ezyWp-YAmab6hI(rZglxanOc(Oh3
+zi0c@l3j1KdsOfh&E(KhH58t*S-S`1d1(UO_rUCqB5m`73JT@BCqCZOQPa$WD!Cb5>
+z<xp1W*=LeXK{i<tUw{A>{7MJdmb@fIuS%3YlSF?z_{BsMFO!}_!QN-HiVS-6de4V_
+zDOfRmaWG(d;FwF%PP7l-1yQI$!+(0zZvw^r7n2GBY@jdJLHMzuUx$}?H5~qJ<`D%;
+zo$U~{&osMP$PGULrvRq}qeLNjaMsgHX$|f*Vq`0;hs`h-G^&gXN^~~)kXn4jHh?1x
+zc3jKC;@lzxf@W#?j4U9kZ|xwUQ4up0OoS3bXLyP;H{@dDMjed$P_3A6595Ffi1Ry)
+z>~^ZbPf3W8H9u}m6s@a3W}Q#L+a#y}06H&>3ViV8;Pw0jrMwu`lw=Bh@bkYeMc4C-
+zD9+StnU&Orv|4a(=DU=WO#tYSlgHgKX5aZ*b8#@}J~$61RP4L9Voqc>PXq%!IOFc#
+zfzc}4cfQM<SZxxW2OfZS4R{Qd5+mtg_w|6oh~Ieow|{KIuyEt|vYowJHBr7=l!#^_
+zwq+GiB6$V@R^S-D(jGMwMSyCjG;F?d(us_3HkWmA^z0z^@Zk*rd9;CmQKOYsU$GC_
+z$BkiR&0<3iJ1Dh>u93x@8d|0sdncd(00%tcbvm*Ykn7jI;~0i$bv!eg%wuQ>xwgar
+z0bTpw8<jy&(-kLhnWmpwFtRaKgbQu!O=<=7C;073vx}H$oDg`&E-Qizta-rH#owkh
+zBKuOmvmD&lE?z~&38~MA&xvHCOdAPf9XVL(+C`To-mZ6-uKZx4hrLtZN8b0?EUzHq
+z7zO|`9dX!30+7*o3w_`v|0Q0xDX!m5{6r-apmT2fG3%g>C)#`gvc2;IqbB~YOi;aT
+z6-$N5&OZ{7rX%MI6JZ1l_;xYBCYcx-P@%XGRgS=Wp+XQ2E4Y!_01RgGsf+6bKOB)|
+z1$P$w<i~u(WrU$HjtIju*x7$kUd@X&FdpjS%2kDApzH!aH)T!kl-=YqI~zSl>Eq;v
+zl^#YKz(uD1Y0u#=ZdI<d@Bj(mo1$wfW)MA|d7|}1**MCx3;$TwmDW_zPFJd2MQ2#=
+zm<Hn}00F~e2Z5=FA*`P_=?xeF3k$)zB(4=*1&cF;4J0uuMPCa5l^R+jlx066yaXJF
+zpMsOw04rzI0cl7g2ioZp!w%EL4)%(BxQp(=fgi)6Jm8>w2MCeqhG3EqU<B|TqJ*tA
+z*~COCq{=%Dz!66PuH3x$L_}<5_nN<To0A@!WlRc<K31BmfD^l;MjF-Dq;dZ+*HluR
+zc;hA&;Nw$U*i1T1BL0#p4z{5?4jR18Yet_<c{*csiRMvGRx((L@v=RCG(*>hOD<(s
+zJ>>ZqB3qhYSxMXzk?RtgRa5f)Dbn_7Hxf)Q3^?3H`cwb|rWLtUFoG&o3vWNd6$VSK
+z4@Ts=b4Hsm@wGP5d9HPx{o8P3a1LE!t8(XS^Fpz}E~2yT*wtlYTcdxEphcGnM`hQZ
+z<7Ey5Nux<*0oV{<<&4re-7+<hyVYWuOD#y?!npT1>Er2JdGxnXIM#^?B@3<wz#Qei
+zim2wx7iD@095&I!T#4myU6!JzE{{W>+ck7G1c4=lVr(-uS38CGFh~&=R4rU&fQFK&
+z9f*r7@3+3J0D}#7^E+*;q*N;nt64Q{36Vvp`~H}u0kclOdg%?O@6$0`7xQ*p$FarR
+z$5l4E7-*F@jqS!>0GVi_ecWi23uiO{5z{41e~s2dv)AIDM!zh12{diR`z5OP1slv~
+zqTBn!;~|7Yof!zTYIq<z00CSJ%E^D49syKnozOKR5u50(fQ;x5m%MOx<D^=DBYQ|d
+zjQPSlOJ(Yl-N0|=0K~kdZI?QA)vSO;@*O}W6MF;(m50PA6ylmRmhwED*GID*3s)kH
+z|C%<SW*FEQ3go$~9mFc=PM$YQ(&mS+`2d*e!w);)i(P_rtW!$4L#O~F$?c3=GDdKp
+z)vK7v16zy`q(eJqI1XI#LQ&IcvLI9yRn?aTy^9R_I`&F5F59h+f1+<#_7T&JNlvk}
+z?|D5{X#pod0USW8b!t-Yj--+4jwG4w<s&npU0)wwlg^~uPe`Vdjh$uJ$wgbzf-plB
+zyi&%#E7;b#DhGOe;rtT-cJMt@s^})L(#3hynGUgk{Jq*ey9<xy(ylLq`|CdxcGMye
+zbYvPy_@b0mKXDf#c7IH%<cdCCg&AoQcPmh){$wVJQ*mNR3Zl8y)M5zi5PkM}<<k4W
+z+ym@8?=9FF$XfEMKk2MUv8(RjSCQlcd=L##Rt-30r9roNRcGw1+87LQIPan9t~x<F
+z^nd}y4hId0fqb8wYDN_h=#W~_6!VsE=VdGhAS1;!DM9EjuLbc5F1GV|6l?$k+A2%{
+z4x#m{5dCvV={(}n5mqolz%XNqs7r5shH?dZ7nXOf_iFBQ+URq()(cBL^LeYQWz@ck
+zgI`$VEt1M>ATbTI0uQxS8T&>rS_{m|k2P5H%_cw-5IT)eIaf-TXX@i+d^a)O>)lYp
+z9b&|Zdmu_6%APAZ(WOz?;dl}q4ggAlZsRC9!j9DFi-cFT?s(_lda!3h)`F;$c_^VP
+zQ2MoEL57<vwIw>z>LHYLA=@5k)JUf8c=lGeGChBTZ^3N@-}Wv~<$LelO~3&tKOKw5
+zgU-~FsAAR2*ry?*3l@$~7UZT&u-$k2x<rB8sJhgyd5!=A(ypH=DNrd|#)chF(pZ4t
+zhY+BG7T+z!UB<>Q!qeFE@g>ZNYftv?mmKStiz8kJAqg%&H)c=H6||Z7vS9T*U_=B1
+z3BKs*@<K7tir-;yDUYo-p74a&%tu^kVdQ~~PAL!obK4JP&V#huiXTT4&M!wxE2<ff
+z)tA&Xl^DUs&kqe^%gt09X8XjWBkK@~>-~jyYotEra80q(wf+xKT@?$dYE~^)#%RD~
+zqr3nB00q5(lsl)Ll2`R5z-p7c+SEA*#$A2CrqruM07y?$sn#<~HNo$t-9>n|qK#<U
+z&s-xNH-{UHD;P+6E``JU4Ur3*{FyZM8I8?-Kq9IaRxh7G53BTA%-7h~Ev6<@<ZJss
+zC9D7r+UmKB=-(b-Gj3S?;lw7*U2ox@be4S}+<ptq1Y;Z*L3j5572FsH-~4rb-y`!w
+z9h?>7e}?W}sNN7R(Miq<=T+H{K`}-Yh$p#AILW7&(VnE*tuuOKsB*{i4f%5b<@P8W
+z@n#sWuWupVpaz;=fB~=)L?52OCY#zJ)^buH!I5;iZY&XOI42dr`beA@!C%HN?FO?l
+z(Bq(oj>Yf5hqf^}J2{UVup{~Kpz4)e-)#6j{~k*C_Jkg1m^Pksbd{Q^%kd>L!*QRb
+zIwbY2_j!4Br|1W|4;%s2i0#-O5g+Qs0DQfi+RKI{Cfk3z1h%H|BYG6PMH0!>;h1;#
+zT}QL*d~!G@8(Ee@ybBsB@7J{6s4Cia6-u64Lr7Aj%ZjxmNtrOOjEgDiO|dO%jdrNv
+zrz3H&^p--tB!v>_Ep5mtUc%2^HRi7X00Sa=zvjmXu~+{smTVSaYxm$@T!EfA0mCe5
+zIe~59?I|P6c{M$p@2Vz*mVJg5$RMMI#0Mmv$GHI7V!3K;iBs2er7c3Hyxhx<1zM?W
+zM$Nc>&pQs($t4v3wY|zDDvL<Z&$}R9%h=k>JHQr=J`Wqq2E%kVcL13vul=2V@~LvC
+zykS#B%<Vas5N2Lv#f+(R9y)RhJn8K)f}%H9o68{`Z2XiM0Avqy2ES{XvyEuFXzs2W
+z7uK>q;rbE?;B2@9DUbe(002fW&Fg~r;U^Gkz@%!rQwY*qC^{%H-~dq<r@+WJNL~N8
+zH!T-$MCq#6NuO}o6-?$p;JNgah1`-f0$4{@bW;{pN*DHIL|ITFI+FnZ6kOyq*|{8L
+zUT;*qrM~V)?ghtbRb~&3J)TeQ4ZCu+%Zbmc2tisW4dETUzt(uwgys9)<(N|zd)=Vy
+z#ButY3Q3CSnfI=jg{Wd;oWVo3i?5dAj1$QQG5F!trfP}+4g9sl^48wHgp2hI2T+D(
+zhV0pTc`hQn00P$LUNBRy{*Ie##u~Xqn@|)cq^oKH7k<M**U+AdB~=3nCuVZ{dBu8#
+z3dk-X@WZZMy^)*`5TZRTV3P${*3U#?p0l3H1PE88P#>uwY6l>>kX>0#gL(n<>T6c%
+ztf~gkjib!*_Jw%O!d$Rp9;MXY;;5=!k>s3O)Idg80X?y2R@mZA;z3RnhC*H644jMv
+z4^H?wL~DZCB$~eX{?$hl6(8Y%000h*J-7ou)#PcgoSw3SSz$6b5BmTYsoK}w7N@ft
+zd-<qY)}fPSo%8Mlwh_q-3`rn7j8VOqu@Mora9)}T+Bs3lbMnx7lmiok-MMca6NzJW
+zIRAV`43P~jbs70)ajGISl0NrUI1RfO=ownE9l*8g00G8(4Z9JvE9}pvdgltp!6kEo
+z&N?<5^l#u1INLnk0F><#rAwIgpOjTV-T(jq0QR5`q_EUae1F)!sFm(;`~rBxLWxBo
+zOQuRj-vut?l@65#^M8`JJY5BD+DZ?;9w-5ILI(=D84`HDjW}qDFA|x5rUl5~&bSu&
+zZOk^*35_|5kl$N#0}59>1y2vAA>ZbX0bH#-$*@FlC2<lpTl|T0VSK<&S*Y8+xS@{$
+z9j&UrRB!+S)&Kwp2PT8J&{|I^qudhlvud92Ogl+a&h$A|JL14^EodG@F-@wP;PF~6
+z8TEQ<tQ-M2-r*((lGYpO9M>b}##^Z2zz)dWfl0$OSiAd45y=Ov<`V~Et}%#T!~IPH
+z12&&v(cbjBgvwUXZ@Reh+xa*cx)-zeSae~$I-OCj+4$-&C;$Ke3BUlW>y<#yu%znY
+ztq0=Gpk<k#4is62vgQbcCL1a`4>0cxCm{i2lDI*VFb7eqsoO?#%$?b40;SM3DSgpL
+zO)aL)<c~DizyRoU_FwmXMqGhc&@l{-rWE<nFCOA$azjFqXxHXRgK?h?3Ejc}Qp|PN
+z-sK2P<PH*-Od>Xy%_#Bve-o*VTyqs*A(y}aMCuSQpHIzOFU;MMhB+lTAeAd+t3^dw
+zoeelUblI)v41!!T9a3J04Lomemr7Uz&$E;2nGLWZ)1GwDl-(rpp5n9sT#XN_*Z`;k
+zSoS?^cuD>Fe7o2Uea1g6rNA`eXW^AjiM4-jP$ZJah)lJ_1%E+SF^#i(h@sHx3ESiK
+zLn5{E?OzYKq8nb(Q;$}N-y8=$xCD(1j*{$vvQ35+Y_^7|mVj-uNg$P%LerxYc`i3`
+zF288nfVHW%)<pmlq}Q4lE?TqebRc(v<y;aDF8vXWUjdt7OsUk_stKf}+>QFl;y^M}
+z5B0*4923gj&u#u4gQ-dZ2cM-!G5==-PrE|KSU+1iTnif|A$QHvV2MdF-NCTO!4<`l
+z%B)_ozmr|+G-e{#eS6FK91jM2I@8VoOew-B>ur6UjZI74nlkXX;%hj768!}}#ix%b
+zibetNOh@i*Oj$7<gD4+oz;^4u00kKSLhRwThml&I^?bu3X<p~Tg12Ak@U+H3zyJUM
+Dq-1>U
+
+literal 0
+HcmV?d00001
+
+diff --git a/src/assets/images/logo-circulaire.svg b/src/assets/images/logo-circulaire.svg
+new file mode 100644
+index 0000000..0f3a9eb
+--- /dev/null
++++ b/src/assets/images/logo-circulaire.svg
+@@ -0,0 +1 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg width="100%" height="100%" viewBox="0 0 4500 4500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-miterlimit:10;"><g><path d="M4341.983,2253.661c0,-1152.675 -935.826,-2088.501 -2088.501,-2088.501c-1152.675,-0 -2088.501,935.826 -2088.501,2088.501c0,1152.675 935.826,2088.501 2088.501,2088.501c1152.675,0 2088.501,-935.826 2088.501,-2088.501Z" style="fill:#fff;stroke:#fff;stroke-opacity:0;stroke-width:4.34px;"/><path d="M2253.187,414.794c-1005.938,0 -1830.688,818.502 -1838.527,1824.587c-7.869,1013.895 810.604,1845.217 1824.529,1853.116l14.588,0.059c1005.938,0 1830.717,-818.472 1838.527,-1824.587c3.831,-491.166 -183.841,-954.393 -528.447,-1304.422c-344.635,-349.999 -804.916,-544.862 -1296.082,-548.694l-14.588,-0.059Zm0.589,3737.058l-15.06,-0.059c-1046.608,-8.164 -1891.457,-866.275 -1883.323,-1912.883c3.92,-504.369 203.292,-977.734 561.425,-1332.921c357.897,-354.95 832.501,-550.462 1336.369,-550.462l15.06,0.059c507.021,3.949 982.126,205.09 1337.842,566.347c355.717,361.316 549.46,839.485 545.511,1346.507c-3.92,504.369 -203.292,977.705 -561.425,1332.921c-357.927,354.98 -832.53,550.491 -1336.398,550.491" style="fill:#b09451;fill-rule:nonzero;"/><path d="M2253.287,1048.235c-659.417,0 -1200.065,536.581 -1205.222,1196.057c-5.128,664.663 531.394,1209.613 1196.057,1214.8l9.549,0.029c659.446,0 1200.094,-536.551 1205.222,-1196.086c2.505,-321.972 -120.507,-625.643 -346.404,-855.076c-225.926,-229.462 -527.651,-357.19 -849.623,-359.695l-9.578,-0.029Zm0.383,2465.143l-9.991,-0.059c-694.546,-5.423 -1255.235,-574.864 -1249.841,-1269.44c2.623,-334.704 134.919,-648.866 372.574,-884.576c237.537,-235.563 552.495,-365.295 886.875,-365.295l9.991,0.029c336.472,2.623 651.784,136.098 887.847,375.845c236.064,239.777 364.617,557.122 362.023,893.594c-2.593,334.704 -134.948,648.837 -372.604,884.576c-237.537,235.592 -552.495,365.324 -886.875,365.324" style="fill:#b09451;fill-rule:nonzero;"/><path d="M2254.669,2101.498c-84.052,-0.648 -152.719,66.929 -153.368,151.01c-0.648,84.052 66.958,152.719 151.01,153.338c84.052,0.678 152.719,-66.929 153.368,-150.981c0.648,-84.052 -66.958,-152.719 -151.01,-153.368" style="fill:#b09452;fill-rule:nonzero;"/><path d="M2253.157,260.083c-1090.55,0 -1984.704,887.376 -1993.192,1978.103c-8.547,1099.185 878.8,2000.471 1978.014,2009.018l15.855,0.059c1090.55,0 1984.704,-887.376 1993.162,-1978.103c8.547,-1099.214 -878.77,-2000.471 -1978.014,-2009.018l-15.826,-0.059Zm0.678,4082.106l-16.592,-0.088c-1151.555,-8.93 -2081.134,-953.097 -2072.204,-2104.681c4.303,-554.941 223.715,-1075.785 617.715,-1466.572c393.823,-390.581 916.022,-605.691 1470.403,-605.691l16.563,0.059c557.859,4.362 1080.618,225.66 1472.024,623.197c391.377,397.507 604.512,923.655 600.18,1481.514c-4.303,554.941 -223.686,1075.785 -617.715,1466.543c-393.793,390.61 -915.992,605.72 -1470.374,605.72" style="fill-rule:nonzero;"/><path d="M3015.349,2679.754c0,0 94.838,-214.55 95.015,-436.969c0.147,-191.032 -88.119,-451.616 -88.119,-451.616c0,0 146.324,193.36 144.261,461.813c-2.092,268.453 -151.157,426.772 -151.157,426.772m-142.906,-111.813c0,0 68.815,-155.755 68.962,-317.227c0.118,-138.662 -63.952,-327.866 -63.952,-327.866c0,0 106.243,140.371 104.711,335.264c-1.532,194.893 -109.721,309.83 -109.721,309.83m-144.143,-120.625c0,0 44.531,-100.732 44.59,-205.119c0.059,-89.681 -41.348,-212.045 -41.348,-212.045c0,0 68.697,90.801 67.725,216.819c-0.973,126.048 -70.966,200.345 -70.966,200.345m-477.609,164.803c-197.958,-1.562 -357.161,-163.27 -355.628,-361.228c1.532,-197.958 163.27,-357.19 361.228,-355.658c197.958,1.562 357.161,163.27 355.658,361.228c-1.562,197.958 -163.3,357.19 -361.257,355.658m-450.879,-144.173c0,0 -68.668,-90.771 -67.695,-216.79c0.973,-126.048 70.966,-200.374 70.966,-200.374c0,0 -44.531,100.732 -44.619,205.149c-0.059,89.681 41.348,212.015 41.348,212.015m-145.912,107.304c0,0 -106.214,-140.371 -104.711,-335.234c1.532,-194.893 109.751,-309.83 109.751,-309.83c0,0 -68.845,155.755 -68.992,317.227c-0.088,138.662 63.952,327.837 63.952,327.837m-144.792,131.707c0,0 -146.324,-193.39 -144.232,-461.813c2.092,-268.453 151.128,-426.801 151.128,-426.801c0,0 -94.809,214.579 -94.985,436.969c-0.177,191.032 88.089,451.645 88.089,451.645m752.958,-1558.139c-610.17,-4.715 -1108.675,486.067 -1113.42,1096.267c-4.745,610.2 486.067,1108.704 1096.238,1113.449c610.229,4.715 1108.734,-486.067 1113.478,-1096.267c4.715,-610.2 -486.067,-1108.704 -1096.297,-1113.449" style="fill-rule:nonzero;"/><path d="M884.406,2819.368c-3.802,-8.959 -14.47,-15.62 -31.976,-20.099c-17.565,-4.421 -35.277,-2.829 -53.166,4.745c-17.889,7.604 -31.475,16.474 -40.729,26.642c-9.283,10.168 -12.083,19.539 -8.429,28.174c4.48,10.521 37.428,14.853 98.817,12.908c2.711,-0.766 7.25,-2.21 13.704,-4.391c6.425,-2.151 11.317,-3.743 14.647,-4.774c3.89,-5.069 6.631,-12.142 8.222,-21.337c1.562,-9.136 1.208,-16.415 -1.09,-21.868m-128.583,123.543c-5.275,-12.437 -6.719,-22.958 -4.332,-31.505c1.297,-3.183 6.484,-6.719 15.62,-10.58c9.107,-3.861 21.455,-8.723 37.045,-14.588c-24.284,0.472 -43.175,-1.179 -56.702,-5.069c-13.527,-3.89 -23.017,-12.201 -28.44,-24.992c-5.423,-12.79 -4.155,-26.495 3.743,-41.171c7.928,-14.677 24.726,-27.467 50.455,-38.401c25.728,-10.904 51.574,-13.291 77.568,-7.161c25.964,6.13 44,21.042 54.021,44.649c4.332,10.256 2.505,24.579 -5.482,43.057c4.597,1.061 10.757,3.831 18.478,8.281c7.751,4.45 12.614,8.989 14.559,13.616c1.975,4.656 -3.124,9.549 -15.266,14.677c-3.212,1.356 -9.814,3.124 -19.805,5.305c-10.02,2.181 -17.594,3.036 -22.693,2.564c-8.576,0.236 -35.218,9.843 -79.955,28.852c-8.606,3.654 -12.525,6.425 -11.7,8.34c2.623,5.305 12.584,9.932 29.913,13.881c17.329,3.979 38.371,6.248 63.157,6.867c24.756,0.589 37.605,1.945 38.489,4.067c0.855,2.063 0.029,3.654 -2.535,4.715c-8.959,3.802 -25.139,5.187 -48.539,4.185c-64.394,-2.446 -100.261,-12.319 -107.599,-29.589" style="fill:#b09452;fill-rule:nonzero;"/><path d="M833.421,3029.924l-13.645,8.665c-8.37,4.951 -13.969,5.01 -16.769,0.236c-4.244,-7.161 -7.338,-14.618 -9.283,-22.339c-1.945,-7.721 -1.208,-12.614 2.24,-14.618c3.448,-2.034 15.738,-8.164 36.868,-18.478c21.16,-10.285 36.809,-18.39 46.977,-24.402l26.465,-15.649c14.323,-8.458 23.872,-12.083 28.646,-10.875c4.715,1.238 12.201,3.979 22.398,8.252c10.168,4.273 16.268,8.105 18.302,11.553c2.034,3.419 2.711,5.953 2.063,7.574c-0.678,1.591 -2.652,3.36 -5.953,5.305c-15.826,9.372 -32.536,15.178 -50.101,17.506c-17.948,8.606 -30.178,14.795 -36.751,18.685c2.505,0.147 16.356,0.413 41.613,0.855c25.227,0.383 44.501,2.004 57.881,4.804c13.321,2.77 21.868,7.338 25.581,13.616c3.684,6.248 4.922,13.115 3.654,20.512c-1.297,7.397 -5.069,12.938 -11.346,16.651c-13.144,7.78 -33.332,17.801 -60.563,30.061c-27.231,12.231 -44.207,20.365 -50.926,24.343c-6.719,3.979 -9.549,6.837 -8.517,8.635c3.301,4.922 13.792,8.164 31.534,9.814c17.683,1.65 38.843,1.12 63.481,-1.532c24.638,-2.652 37.517,-3.006 38.666,-1.061c1.149,1.945 0.53,3.625 -1.857,5.04c-8.37,4.922 -24.225,8.458 -47.566,10.551c-64.188,6.042 -101.027,1.031 -110.546,-15.119c-6.896,-11.671 -9.696,-21.897 -8.458,-30.679c0.855,-3.36 5.688,-7.604 14.5,-12.82c8.841,-5.216 23.636,-12.849 44.501,-22.958c20.866,-10.109 36.191,-18.036 46.063,-23.901c9.873,-5.806 13.792,-10.433 11.759,-13.881c-2.034,-3.448 -17.624,-6.425 -46.741,-8.989c-29.117,-2.564 -46.771,-2.593 -52.989,-0.147c-11.523,4.391 -21.927,9.313 -31.18,14.795" style="fill:#b09452;fill-rule:nonzero;"/><path d="M1114.13,3052.343c5.04,-3.684 11.346,-4.185 18.862,-1.503c7.545,2.682 12.82,6.13 15.885,10.344c5.511,7.604 3.92,14.529 -4.774,20.866c-8.723,6.336 -17.86,9.549 -27.438,9.637c-9.578,0.118 -17.329,-3.92 -23.253,-12.054c-3.861,-5.334 3.006,-14.411 20.718,-27.29m-199.166,163.476c-7.957,-10.934 -11.759,-20.866 -11.346,-29.766c0.53,-3.389 6.837,-9.46 18.92,-18.243c12.083,-8.782 32.89,-22.516 62.42,-41.201c29.56,-18.685 45.946,-28.174 49.217,-28.381c3.271,-0.236 10.639,1.061 22.133,3.861c11.494,2.8 18.714,6.248 21.661,10.315c2.977,4.096 -0.884,9.991 -11.553,17.771c-2.8,2.034 -8.841,5.216 -18.095,9.608c-9.283,4.362 -16.474,6.896 -21.514,7.604c-11.936,3.065 -37.546,18.92 -76.861,47.507c-7.574,5.482 -10.757,9.107 -9.549,10.786c3.772,4.539 14.529,6.837 32.3,6.778c17.771,-0.029 38.813,-2.564 63.068,-7.545c24.284,-5.01 37.075,-6.602 38.43,-4.745c1.297,1.798 0.855,3.566 -1.385,5.157c-7.869,5.747 -23.341,10.757 -46.388,15.06c-63.304,12.113 -100.438,10.61 -111.46,-4.568" style="fill:#b09452;fill-rule:nonzero;"/><path d="M1008.795,3291.796l-11.405,11.435c-7.103,6.66 -12.525,7.957 -16.327,3.92c-5.717,-6.101 -10.344,-12.673 -13.94,-19.775c-3.595,-7.132 -3.92,-12.054 -1.002,-14.765c2.888,-2.741 13.557,-11.435 31.947,-26.082c18.39,-14.647 31.888,-25.994 40.493,-34.069l22.428,-21.042c12.142,-11.405 20.659,-17.005 25.581,-16.887c4.892,0.177 12.79,1.208 23.636,3.153c10.875,1.945 17.683,4.362 20.423,7.279c2.711,2.918 3.949,5.246 3.625,6.926c-0.295,1.739 -1.827,3.89 -4.597,6.484c-13.439,12.614 -28.469,21.956 -45.12,28.057c-15.59,12.26 -26.2,21.013 -31.77,26.259c37.664,-10.109 62.891,-16.18 75.741,-18.243c23.459,-4.421 38.755,-2.829 45.887,4.774c4.509,4.804 6.837,11.081 6.955,18.803c0.118,7.751 -2.593,14.264 -8.164,19.48c-5.57,5.216 -10.904,10.079 -15.944,14.588c-5.069,4.509 -9.077,7.928 -12.113,10.285c-3.036,2.358 -4.922,3.89 -5.658,4.627c2.947,-0.914 12.702,-1.945 29.176,-3.124c16.504,-1.208 27.379,-1.768 32.654,-1.709c5.275,0.029 10.727,0.236 16.386,0.678c11.287,0.354 19.127,2.888 23.518,7.574c4.391,4.656 6.778,10.757 7.161,18.272c0.383,7.515 -2.092,13.734 -7.427,18.744c-11.111,10.433 -28.646,24.638 -52.547,42.527c-23.901,17.889 -38.696,29.53 -44.384,34.894c-5.688,5.305 -7.839,8.753 -6.395,10.256c4.273,4.096 15.237,4.981 32.86,2.711c17.624,-2.24 38.195,-7.368 61.654,-15.325c23.459,-8.016 35.955,-11.17 37.517,-9.519c1.532,1.65 1.297,3.448 -0.737,5.334c-7.103,6.66 -21.809,13.527 -44.118,20.689c-61.3,19.922 -98.345,23.017 -111.165,9.342c-8.105,-8.576 -12.496,-17.3 -13.174,-26.17c0.088,-3.419 3.89,-8.665 11.346,-15.649c7.486,-7.044 20.276,-17.742 38.401,-32.124c18.154,-14.441 31.387,-25.522 39.757,-33.391c8.34,-7.839 11.229,-13.144 8.606,-15.914c-3.094,-3.301 -15.384,-5.246 -36.839,-5.776c-21.484,-0.56 -34.835,0.914 -40.11,4.421c-10.02,6.572 -29.353,23.253 -57.94,50.101c-7.103,6.66 -12.437,8.105 -15.973,4.303c-5.482,-5.865 -9.814,-12.113 -13.056,-18.832c-3.212,-6.719 -3.36,-11.494 -0.472,-14.205c2.918,-2.741 16.091,-13.675 39.55,-32.831c23.459,-19.156 39.668,-32.949 48.657,-41.377c8.959,-8.429 12.113,-14.087 9.372,-17.005c-2.741,-2.918 -18.007,-1.798 -45.798,3.33c-27.791,5.128 -45.621,10.344 -53.52,15.62c-7.898,5.275 -15.797,11.612 -23.636,18.95" style="fill:#b09452;fill-rule:nonzero;"/><path d="M1338.603,3420.502c-7.692,-5.924 -20.276,-6.513 -37.723,-1.798c-17.476,4.774 -32.124,14.824 -43.971,30.237c-11.877,15.384 -19.333,29.795 -22.428,43.205c-3.094,13.38 -0.914,22.929 6.484,28.646c9.107,7.014 39.904,-5.393 92.451,-37.222c1.975,-2.004 5.216,-5.511 9.784,-10.58c4.539,-5.04 7.987,-8.841 10.403,-11.346c0.914,-6.307 -0.206,-13.851 -3.33,-22.604c-3.094,-8.753 -6.985,-14.942 -11.671,-18.537m-51.339,170.785c-10.727,-8.252 -17.152,-16.71 -19.274,-25.345c-0.442,-3.419 2.387,-9.048 8.399,-16.887c6.042,-7.81 14.411,-18.125 25.139,-30.915c-20.925,12.348 -38.224,20.188 -51.928,23.43c-13.675,3.301 -26.023,0.678 -37.016,-7.78c-10.993,-8.488 -16.651,-21.042 -16.946,-37.753c-0.324,-16.651 8.046,-36.043 25.109,-58.176c17.064,-22.133 38.401,-36.927 64.041,-44.325c25.64,-7.427 48.657,-3.301 68.992,12.378c8.812,6.778 14.264,20.158 16.356,40.199c4.539,-1.326 11.258,-1.945 20.188,-1.857c8.93,0.088 15.384,1.621 19.363,4.715c3.979,3.065 1.975,9.843 -6.101,20.276c-2.122,2.77 -7.014,7.545 -14.647,14.352c-7.662,6.808 -13.822,11.258 -18.508,13.35c-7.338,4.421 -25.846,25.876 -55.494,64.365c-5.747,7.427 -7.751,11.788 -6.101,13.056c4.863,3.33 15.826,2.476 32.86,-2.593c17.064,-5.04 36.515,-13.38 58.412,-25.021c21.868,-11.641 33.686,-16.769 35.513,-15.384c1.768,1.385 1.827,3.153 0.118,5.364c-5.924,7.692 -19.333,16.887 -40.228,27.497c-57.321,29.471 -93.394,38.489 -108.247,27.055" style="fill:#b09452;fill-rule:nonzero;"/><path d="M1489.557,3618.139c-54.021,35.159 -89.062,47.773 -105.153,37.811c-16.091,-9.961 -24.343,-17.712 -24.756,-23.312c-0.442,-5.541 6.012,-19.097 19.363,-40.67c13.321,-21.543 34.658,-51.427 64.011,-89.592c-12.938,-12.083 -17.005,-22.958 -12.231,-32.654c2.918,-4.715 7.486,-5.187 13.675,-1.326c6.218,3.831 10.934,8.37 14.205,13.675c15.797,-19.598 32.241,-39.226 49.305,-58.883c4.362,-5.069 10.433,-8.635 18.272,-10.727c7.839,-2.122 13.969,-1.798 18.39,0.973c3.831,2.358 2.004,9.608 -5.482,21.691c-3.478,5.6 -21.514,30.149 -54.168,73.648c8.871,3.448 19.51,5.924 31.829,7.456c12.348,1.503 19.392,2.829 21.16,3.92c5.305,3.271 6.955,6.543 4.951,9.784c-1.532,3.124 -9.49,3.831 -23.901,2.034c-14.441,-1.768 -28.941,-5.334 -43.588,-10.727c-30.208,40.906 -52.164,72.411 -65.868,94.573c-7.309,11.788 -9.195,18.803 -5.658,20.983c5.511,2.977 16.415,1.179 32.772,-5.452c16.356,-6.602 34.864,-16.887 55.524,-30.856c20.689,-13.91 31.976,-20.306 33.892,-19.127c1.916,1.208 2.151,2.977 0.678,5.334c-5.099,8.281 -17.535,18.744 -37.222,31.446" style="fill:#b09452;fill-rule:nonzero;"/><path d="M1580.158,3473.144c2.947,-5.511 8.37,-8.723 16.298,-9.608c7.957,-0.884 14.235,-0.118 18.803,2.328c8.311,4.391 9.902,11.376 4.863,20.866c-5.04,9.49 -11.877,16.386 -20.423,20.659c-8.576,4.332 -17.3,4.096 -26.2,-0.619c-5.835,-3.124 -3.595,-14.323 6.66,-33.627m-107.393,234.207c-11.965,-6.336 -19.687,-13.616 -23.223,-21.75c-1.002,-3.271 2.004,-11.523 9.018,-24.726c6.985,-13.144 19.687,-34.629 38.047,-64.365c18.361,-29.736 28.941,-45.444 31.799,-47.095c2.829,-1.621 10.02,-3.684 21.602,-6.218c11.523,-2.505 19.539,-2.564 23.99,-0.206c4.421,2.358 3.566,9.372 -2.623,21.013c-1.65,3.094 -5.658,8.606 -12.083,16.592c-6.395,7.987 -11.73,13.409 -15.973,16.239c-9.372,8.016 -25.463,33.479 -48.274,76.389c-4.391,8.252 -5.688,12.908 -3.861,13.881c5.393,2.476 16.062,-0.236 32.006,-8.075c15.973,-7.81 33.744,-19.304 53.402,-34.422c19.628,-15.089 30.444,-22.162 32.418,-21.072c2.004,1.061 2.358,2.8 1.061,5.246c-4.568,8.576 -16.268,19.864 -35.1,33.862c-51.574,38.607 -85.673,53.52 -102.206,44.708" style="fill:#b09452;fill-rule:nonzero;"/><path d="M1692.113,3617.591c-5.128,-2.151 -10.109,-1.474 -14.912,1.945c-4.833,3.478 -8.37,7.928 -10.639,13.38c-4.922,11.847 -4.833,23.164 0.265,33.921c5.099,10.786 13.115,18.419 24.019,22.958l5.776,2.387c5.865,-15.973 9.166,-31.328 9.843,-46.063c0.678,-14.765 -4.096,-24.255 -14.352,-28.528m-3.389,92.186l-17.683,-6.218c-14.765,-6.13 -25.434,-15.738 -32.035,-28.823c-6.572,-13.085 -7.692,-24.903 -3.271,-35.483c4.391,-10.58 9.932,-18.979 16.681,-25.198c-18.331,5.157 -34.128,23.783 -47.478,55.818c-6.395,15.384 -9.283,31.387 -8.665,47.979c0.619,16.622 7.81,27.791 21.602,33.509c13.763,5.747 26.966,4.362 39.491,-4.155c12.584,-8.488 23.017,-20.954 31.357,-37.428m41.466,-11.523c14.529,1.149 24.933,1.267 31.18,0.295c6.218,-0.973 10.963,-1.739 14.205,-2.269l7.161,-0.973c2.004,-0.295 3.478,-0.265 4.45,0.147c2.564,1.061 3.242,3.036 2.034,5.924c-1.208,2.888 -8.281,5.865 -21.19,8.93c-12.938,3.094 -27.998,4.45 -45.12,4.096c-13.439,25.994 -31.004,44.266 -52.665,54.816c-21.691,10.521 -46.152,10.109 -73.383,-1.208c-19.893,-8.281 -31.829,-22.516 -35.778,-42.792c-4.008,-20.247 -1.562,-41.024 7.309,-62.361c8.871,-21.337 23.547,-38.784 44.089,-52.429c20.512,-13.675 40.7,-16.356 60.593,-8.105c11.641,-2.652 23.636,-1.444 35.955,3.684c12.348,5.128 21.072,16.474 26.2,34.01c5.099,17.535 3.419,36.957 -5.04,58.235" style="fill:#b09452;fill-rule:nonzero;"/><path d="M1777.532,3803.109l-3.713,15.708c-2.535,9.401 -6.513,13.321 -11.847,11.906c-8.046,-2.21 -15.472,-5.364 -22.251,-9.549c-6.778,-4.155 -9.637,-8.164 -8.606,-12.024c1.031,-3.861 5.541,-16.828 13.498,-38.961c7.987,-22.103 13.498,-38.902 16.592,-50.248l8.016,-29.677c4.362,-16.091 8.665,-25.345 12.908,-27.791c4.244,-2.417 11.523,-5.688 21.809,-9.755c10.256,-4.038 17.3,-5.541 21.16,-4.509c3.861,1.031 6.101,2.358 6.749,3.979c0.648,1.621 0.472,4.244 -0.53,7.928c-4.804,17.801 -12.673,33.627 -23.665,47.566c-6.837,18.655 -11.258,31.652 -13.233,39.02c1.857,-1.65 11.965,-11.14 30.355,-28.469c18.361,-17.329 33.273,-29.648 44.796,-36.957c11.494,-7.309 20.777,-10.02 27.821,-8.105c7.044,1.886 12.673,5.953 16.946,12.142c4.244,6.189 5.423,12.79 3.537,19.834c-4.008,14.736 -11.464,35.984 -22.398,63.776c-10.963,27.791 -17.417,45.474 -19.48,53.019c-2.034,7.545 -2.063,11.553 -0.029,12.113c5.776,1.208 15.59,-3.772 29.383,-14.971c13.822,-11.199 28.616,-26.347 44.413,-45.444c15.767,-19.097 24.756,-28.351 26.937,-27.762c2.181,0.589 2.888,2.21 2.181,4.922c-2.535,9.372 -11.435,22.958 -26.701,40.759c-41.702,49.128 -71.585,71.232 -89.681,66.34c-13.085,-3.537 -22.251,-8.871 -27.497,-16.062c-1.709,-2.947 -1.208,-9.401 1.474,-19.304c2.652,-9.873 7.928,-25.699 15.797,-47.478c7.869,-21.779 13.321,-38.224 16.298,-49.276c3.006,-11.052 2.564,-17.093 -1.297,-18.125c-3.831,-1.061 -17.093,7.662 -39.727,26.17c-22.604,18.508 -35.277,30.827 -38.018,36.898c-5.187,11.199 -9.195,21.985 -11.995,32.389" style="fill:#b09452;fill-rule:nonzero;"/><path d="M2100.017,3816.235c-10.374,-0.943 -19.038,-4.273 -25.994,-9.961c-6.985,-5.688 -9.932,-14.411 -8.841,-26.2c1.061,-11.73 6.719,-20.276 17.005,-25.61c10.226,-5.334 20.276,-7.545 30.149,-6.631c9.843,0.914 17.476,4.038 22.929,9.431c5.423,5.393 7.78,11.7 7.132,18.95c-1.297,14.176 -6.101,24.638 -14.382,31.357c-8.311,6.749 -17.624,9.608 -27.998,8.665" style="fill:#b09452;fill-rule:nonzero;"/><path d="M2358.293,3732.34c-9.313,0.737 -18.066,8.989 -26.2,24.608c-8.105,15.649 -11.317,33.273 -9.725,52.812c1.621,19.539 5.423,35.336 11.464,47.36c6.042,12.054 12.879,17.771 20.482,17.123c15.62,-1.297 30.797,-33.892 45.769,-97.815c0.177,-19.156 0.118,-30.473 -0.177,-33.921c-10.816,-8.193 -24.638,-11.582 -41.613,-10.168m79.248,162.74c-11.788,0.973 -21.16,-0.884 -28.145,-5.511c-2.977,-2.535 -5.01,-9.696 -5.924,-21.484c-0.973,-11.73 -1.709,-27.172 -2.299,-46.299c-7.25,25.669 -15.207,45.327 -23.842,58.913c-8.606,13.616 -20.306,21.013 -34.982,22.221c-14.736,1.208 -27.732,-4.155 -38.961,-16.121c-11.287,-11.936 -18.066,-31.947 -20.365,-59.974c-2.299,-27.998 3.507,-53.372 17.476,-76.153c13.999,-22.722 33.803,-35.159 59.355,-37.281c12.496,-1.031 25.846,2.741 40.11,11.317c0,-67.901 1.916,-106.361 5.629,-115.409c1.798,-3.979 6.277,-9.902 13.498,-17.801c7.132,-7.928 13.35,-12.083 18.508,-12.525c5.187,-0.413 8.488,7.515 9.784,23.783c1.562,19.009 1.208,35.601 -1.09,49.688c-6.425,36.397 -10.403,59.591 -12.083,69.463c-1.709,37.753 -0.501,81.9 3.625,132.414c0.766,9.313 2.181,13.91 4.273,13.734c6.218,-0.855 13.91,-8.782 23.135,-23.842c9.195,-15.06 17.948,-34.304 26.288,-57.822c8.37,-23.488 13.645,-35.336 15.914,-35.513c2.24,-0.206 3.448,1.09 3.684,3.861c0.796,9.696 -2.947,25.493 -11.229,47.419c-22.575,60.386 -43.352,91.361 -62.361,92.922" style="fill:#b09452;fill-rule:nonzero;"/><path d="M2486.94,3628.097c-1.12,-6.159 1.149,-12.024 6.837,-17.683c5.688,-5.6 11.081,-8.871 16.209,-9.814c9.224,-1.68 14.795,2.77 16.74,13.38c1.916,10.58 0.855,20.188 -3.212,28.882c-4.067,8.694 -11.052,13.94 -20.954,15.738c-6.484,1.179 -11.7,-9.018 -15.62,-30.503m29.088,258.285c-31.269,49.099 -44.59,86.262 -39.992,111.548c2.092,11.612 5.894,20.807 11.376,27.556c5.452,6.778 11.759,9.519 18.95,8.222c10.934,-2.034 17.535,-9.401 19.775,-22.133c2.269,-12.79 1.09,-37.635 -3.507,-74.533l-6.602,-50.661Zm-2.859,-24.373c-11.877,-90.27 -17.86,-137.188 -17.977,-140.695c-0.118,-3.478 3.743,-9.932 11.582,-19.304c7.81,-9.372 14.176,-14.47 19.156,-15.413c4.922,-0.884 8.753,6.012 11.435,20.718c2.682,14.677 1.975,28.204 -2.122,40.582c1.65,26.524 3.654,48.038 5.953,64.571c25.758,-48.48 39.521,-74.09 41.289,-76.89c1.798,-2.77 3.507,-4.332 5.246,-4.656c3.389,-0.619 5.423,0.796 6.042,4.185c0.383,2.063 0.088,4.391 -0.825,7.044c-8.016,18.036 -24.373,50.13 -49.128,96.282c5.334,40.994 9.018,68.933 11.022,83.757c6.189,43.647 5.688,75.24 -1.532,94.72c-7.191,19.48 -24.107,31.681 -50.779,36.544c-11.582,2.092 -23.076,0.56 -34.422,-4.597c-11.346,-5.157 -18.39,-15.148 -21.072,-30.031c-2.711,-14.853 -1.827,-29.736 2.682,-44.678c4.539,-14.942 9.784,-27.526 15.855,-37.811c6.071,-10.315 14.588,-23.665 25.522,-40.11c10.934,-16.474 18.302,-27.88 22.074,-34.216" style="fill:#b09452;fill-rule:nonzero;"/><path d="M2735.691,3748.572c-9.902,3.242 -19.186,3.654 -27.821,1.208c-8.694,-2.446 -14.853,-9.254 -18.537,-20.482c-3.684,-11.229 -1.916,-21.308 5.364,-30.296c7.279,-8.959 15.649,-14.971 25.021,-18.095c9.401,-3.065 17.683,-3.242 24.785,-0.501c7.132,2.8 11.818,7.633 14.087,14.588c4.48,13.527 4.244,24.992 -0.678,34.481c-4.922,9.49 -12.348,15.855 -22.221,19.097" style="fill:#b09452;fill-rule:nonzero;"/><path d="M2973.762,3708.798l8.488,13.763c4.833,8.429 4.833,13.999 0.029,16.769c-7.22,4.155 -14.706,7.132 -22.457,8.989c-7.751,1.857 -12.614,1.031 -14.618,-2.417c-1.975,-3.448 -7.957,-15.826 -17.977,-37.104c-10.02,-21.278 -17.948,-37.045 -23.842,-47.272l-15.266,-26.642c-8.311,-14.441 -11.818,-24.019 -10.521,-28.764c1.267,-4.774 4.126,-12.172 8.488,-22.31c4.421,-10.138 8.34,-16.18 11.818,-18.154c3.448,-2.004 5.983,-2.652 7.574,-1.975c1.591,0.707 3.36,2.682 5.246,5.983c9.166,15.973 14.765,32.772 16.887,50.337c8.34,18.066 14.411,30.385 18.213,36.986c-1.149,-38.961 -1.238,-64.925 -0.265,-77.863c1.09,-23.872 6.189,-38.401 15.237,-43.588c5.688,-3.271 12.348,-4.096 19.893,-2.417c7.545,1.68 13.262,5.806 17.034,12.437c3.802,6.631 7.338,12.908 10.551,18.862c3.212,5.983 5.6,10.698 7.22,14.176c1.621,3.478 2.652,5.658 3.153,6.572c-0.147,-3.094 1.09,-12.82 3.713,-29.147c2.623,-16.298 4.597,-27.055 5.865,-32.153c1.267,-5.128 2.711,-10.403 4.45,-15.797c2.947,-10.875 7.191,-17.918 12.79,-21.131c5.541,-3.212 12.024,-4.096 19.421,-2.741c7.397,1.356 12.879,5.216 16.504,11.553c7.604,13.233 17.358,33.538 29.294,60.917c11.906,27.408 19.805,44.472 23.695,51.221c3.89,6.808 6.749,9.637 8.547,8.606c4.951,-3.212 8.34,-13.675 10.226,-31.357c1.827,-17.683 1.621,-38.872 -0.737,-63.54c-2.387,-24.638 -2.564,-37.546 -0.589,-38.666c1.916,-1.12 3.625,-0.501 5.01,1.916c4.833,8.458 8.134,24.373 9.961,47.743c5.246,64.218 -0.265,100.968 -16.533,110.34c-10.226,5.865 -19.746,8.105 -28.528,6.749c-3.301,-0.884 -7.515,-5.776 -12.614,-14.677c-5.099,-8.871 -12.555,-23.813 -22.398,-44.767c-9.843,-20.954 -17.624,-36.426 -23.312,-46.358c-5.688,-9.961 -10.226,-13.94 -13.527,-12.054c-3.92,2.24 -8.606,13.763 -14.117,34.511c-5.482,20.777 -7.132,34.098 -4.922,40.051c4.067,11.287 15.885,33.921 35.424,67.931c4.833,8.429 4.981,13.969 0.442,16.563c-6.896,3.949 -14.028,6.749 -21.308,8.34c-7.279,1.591 -11.936,0.619 -13.94,-2.829c-1.975,-3.448 -9.578,-18.832 -22.811,-46.034c-13.233,-27.231 -22.899,-46.211 -29.059,-56.879c-6.13,-10.669 -10.934,-15.03 -14.382,-13.056c-3.448,2.004 -5.894,17.123 -7.309,45.327c-1.415,28.233 -0.472,46.8 2.859,55.7c3.301,8.9 7.633,18.036 12.997,27.349" style="fill:#b09452;fill-rule:nonzero;"/><path d="M3185.527,3561.584l-34.216,-47.331c-23.341,-28.911 -34.776,-45.769 -34.216,-50.661c0.501,-4.892 2.063,-12.761 4.715,-23.577c2.623,-10.816 5.482,-17.506 8.606,-20.011c3.094,-2.505 5.482,-3.537 7.161,-3.124c1.709,0.413 3.831,2.269 6.454,5.482c9.372,11.641 16.327,25.463 20.777,41.495c16.032,28.115 30.473,50.13 43.352,66.074c12.849,15.914 21.868,21.809 26.996,17.653c6.218,-5.01 9.136,-16.298 8.753,-33.862c-0.324,-17.565 -4.951,-40.375 -13.792,-68.491c-19.421,-28.97 -29.235,-45.12 -29.471,-48.509c-0.265,-3.33 0.265,-10.226 1.621,-20.718c1.356,-10.462 4.008,-17.3 7.928,-20.453c3.92,-3.183 10.02,0.383 18.302,10.639c2.181,2.711 5.688,8.576 10.521,17.624c4.863,9.018 7.751,16.062 8.694,21.101c3.153,9.932 20.541,34.481 52.164,73.678c5.894,7.279 9.637,10.256 11.258,8.93c4.362,-3.949 6.101,-14.824 5.157,-32.566c-0.973,-17.771 -4.568,-38.637 -10.786,-62.597c-6.218,-24.019 -8.429,-36.692 -6.66,-38.136c1.739,-1.415 3.507,-1.031 5.216,1.12c6.13,7.574 11.936,22.722 17.388,45.533c15.325,62.626 15.708,99.819 1.09,111.578c-10.521,8.517 -20.217,12.79 -29.117,12.849c-3.419,-0.383 -9.048,-5.423 -16.887,-15.148c-7.869,-9.725 -16.18,-20.836 -24.992,-33.391c6.189,25.345 8.871,46.299 7.957,62.862c-0.914,16.563 -6.69,29.147 -17.329,37.782c-10.669,8.606 -20.07,11.523 -28.145,8.665c-8.105,-2.829 -17.594,-10.993 -28.499,-24.491" style="fill:#b09452;fill-rule:nonzero;"/><path d="M3362.872,3394.804c-0.147,19.628 2.8,32.477 8.753,38.548c5.983,6.042 12.054,6.012 18.243,-0.059c3.684,-3.654 5.334,-8.222 4.863,-13.616c-1.857,-12.761 -12.496,-21.072 -31.858,-24.874m-48.333,-96.43l-4.745,-6.277c-4.391,-4.48 -9.107,-4.185 -14.176,0.825c-5.069,4.981 -6.719,13.056 -4.951,24.255c1.768,11.17 4.715,18.862 8.871,23.046c4.126,4.214 7.662,7.309 10.61,9.313c2.947,1.975 5.482,3.478 7.721,4.45c2.181,1.002 5.099,1.886 8.782,2.652c3.684,0.737 6.395,1.267 8.105,1.532l9.195,1.149c4.185,0.766 7.014,1.149 8.488,1.179c2.358,-23.312 5.983,-50.278 10.845,-80.928c0.236,-1.739 1.002,-3.212 2.24,-4.421c2.446,-2.446 5.04,-2.299 7.721,0.413c2.682,2.741 3.654,5.924 2.859,9.578c-5.806,25.758 -9.902,51.486 -12.289,77.244c13.233,2.564 24.491,8.517 33.774,17.918c9.254,9.401 13.586,20.954 12.997,34.717c-0.56,13.704 -6.425,26.082 -17.565,37.045c-11.111,10.963 -21.897,11.14 -32.389,0.53c-7.545,-7.662 -10.963,-27.467 -10.285,-59.355c-2.711,-0.265 -7.309,-0.472 -13.792,-0.648c-6.484,-0.147 -11.523,-0.442 -15.089,-0.855c-3.537,-0.354 -8.046,-1.09 -13.409,-2.092c-10.05,-2.269 -18.626,-6.985 -25.669,-14.146c-14.411,-14.588 -21.367,-31.033 -20.866,-49.305c0.501,-18.272 6.071,-32.683 16.681,-43.175c6.69,-6.572 13.645,-9.902 20.866,-9.991c7.25,-0.059 12.702,1.768 16.356,5.482c8.281,8.399 10.433,14.559 6.484,18.449c-2.947,2.918 -5.393,3.389 -7.368,1.415" style="fill:#b09452;fill-rule:nonzero;"/><path d="M3480.557,3357.965c-8.989,10.138 -17.83,15.944 -26.612,17.447c-3.448,0.236 -10.757,-4.627 -21.897,-14.529c-11.17,-9.902 -29.059,-27.29 -53.667,-52.134c-24.608,-24.815 -37.369,-38.784 -38.312,-41.967c-0.914,-3.124 -1.267,-10.58 -0.973,-22.398c0.265,-11.847 2.092,-19.657 5.423,-23.4c3.33,-3.743 9.961,-1.267 19.834,7.456c2.593,2.328 7.014,7.515 13.291,15.649c6.248,8.105 10.256,14.559 12.024,19.363c5.57,10.993 26.553,32.566 62.921,64.836c7.014,6.218 11.229,8.547 12.614,6.955c3.654,-4.627 3.537,-15.62 -0.354,-32.978c-3.861,-17.358 -10.845,-37.31 -20.925,-59.974c-10.109,-22.604 -14.382,-34.746 -12.908,-36.456c1.503,-1.709 3.301,-1.621 5.364,0.236c7.279,6.425 15.502,20.453 24.667,42.026c25.434,59.208 31.947,95.811 19.51,109.868m-202.496,-159.35c-4.656,-4.155 -6.513,-10.197 -5.511,-18.125c1.031,-7.928 3.242,-13.851 6.69,-17.742c6.218,-7.014 13.35,-6.926 21.426,0.206c8.016,7.132 13.144,15.354 15.296,24.697c2.151,9.342 -0.118,17.771 -6.778,25.316c-4.391,4.922 -14.736,0.147 -31.122,-14.352" style="fill:#b09452;fill-rule:nonzero;"/><path d="M3441.932,3139.147c-5.717,7.869 -5.688,20.659 0.059,38.401c5.776,17.712 16.592,32.33 32.448,43.883c15.855,11.582 30.473,18.655 43.794,21.278c13.321,2.623 22.457,0.56 27.349,-6.159c4.922,-6.749 4.745,-16.533 -0.53,-29.383c-5.246,-12.849 -16.032,-31.652 -32.359,-56.408l-33.715,-29.736c-6.395,0.501 -13.38,2.623 -21.013,6.307c-7.633,3.684 -12.967,7.604 -16.032,11.818m247.204,173.585c-20.512,-14.912 -39.992,-36.22 -58.5,-63.864l-85.555,-70.023c11.7,19.274 19.215,35.365 22.516,48.244c3.242,12.938 0.737,25.05 -7.515,36.426c-8.281,11.346 -20.63,17.417 -37.045,18.125c-16.415,0.707 -35.984,-7.191 -58.707,-23.783c-22.752,-16.533 -38.136,-37.517 -46.27,-62.95c-8.075,-25.463 -4.568,-48.539 10.551,-69.316c6.543,-8.989 19.569,-14.765 39.02,-17.329c-4.686,-23.606 -4.804,-38.489 -0.324,-44.649c3.094,-4.214 9.932,-2.446 20.63,5.305c2.505,1.857 7.044,6.69 13.616,14.441c6.572,7.81 10.963,13.999 13.174,18.626c4.391,5.776 17.742,17.653 40.081,35.631c22.339,18.007 35.483,28.646 39.521,31.976c-3.242,-7.928 -11.553,-26.023 -24.933,-54.227c-19.48,-41.643 -27.791,-64.424 -24.933,-68.373c1.65,-2.24 4.008,-2.24 7.103,0c3.065,2.24 5.305,6.248 6.719,11.995c7.191,28.44 28.174,72.47 62.891,132.119c47.154,34.334 79.307,63.54 96.518,87.677c2.918,4.273 4.833,11.553 5.688,21.838c0.884,10.315 -0.206,17.565 -3.301,21.779c-2.034,2.8 -6.159,3.006 -12.348,0.619c-6.218,-2.358 -12.437,-5.806 -18.596,-10.285" style="fill:#b09452;fill-rule:nonzero;"/><path d="M3614.73,3105.041l-49.718,-30.679c-32.595,-17.771 -49.6,-29 -50.985,-33.744c-1.385,-4.686 -2.947,-12.555 -4.627,-23.547c-1.709,-11.022 -1.621,-18.272 0.295,-21.809c1.916,-3.478 3.713,-5.364 5.452,-5.629c1.709,-0.236 4.421,0.619 8.075,2.623c13.085,7.161 24.756,17.3 35.012,30.385c25.551,19.864 47.301,34.688 65.308,44.501c17.977,9.784 28.558,11.788 31.711,6.012c3.802,-7.014 2.21,-18.567 -4.833,-34.658c-7.044,-16.091 -20.04,-35.424 -38.931,-58.029c-29,-19.333 -44.236,-30.532 -45.769,-33.509c-1.532,-3.036 -3.684,-9.608 -6.425,-19.805c-2.741,-10.226 -2.888,-17.535 -0.472,-21.927c2.387,-4.45 9.372,-3.478 20.954,2.829c3.065,1.65 8.547,5.747 16.474,12.231c7.928,6.513 13.262,11.906 16.091,16.18c6.69,8.016 32.153,24.078 76.33,48.156c8.222,4.48 12.849,5.806 13.851,4.008c2.505,-5.364 -0.059,-16.062 -7.721,-32.094c-7.662,-16.032 -18.95,-33.951 -33.862,-53.755c-14.912,-19.775 -21.838,-30.65 -20.748,-32.654c1.061,-1.975 2.859,-2.299 5.275,-0.973c8.547,4.627 19.687,16.474 33.479,35.424c38.077,52.017 52.635,86.233 43.647,102.707c-6.484,11.877 -13.822,19.539 -22.015,22.958c-3.301,0.973 -10.433,-1.532 -21.396,-7.515c-10.993,-5.983 -22.929,-13.056 -35.837,-21.308c15.413,21.042 25.876,39.403 31.357,55.082c5.511,15.649 4.981,29.501 -1.591,41.525c-6.543,12.024 -14.117,18.302 -22.693,18.744c-8.547,0.472 -20.423,-3.448 -35.69,-11.73" style="fill:#b09452;fill-rule:nonzero;"/><path d="M3685.042,2877.187c4.421,-20.247 3.949,-36.662 -1.503,-49.158c-5.423,-12.496 -15.384,-21.661 -29.884,-27.526c-14.5,-5.835 -23.606,-4.067 -27.379,5.246c-4.539,11.258 -0.589,23.931 11.906,37.929c12.496,14.058 28.115,25.227 46.859,33.509m93.365,7.957c-7.279,18.036 -19.893,29.56 -37.87,34.658c-17.977,5.128 -35.631,4.155 -53.019,-2.859c-35.071,-14.176 -58.648,-32.271 -70.701,-54.374c-12.054,-22.074 -13.35,-44.885 -3.831,-68.344c4.391,-10.993 11.022,-18.773 19.834,-23.459c8.812,-4.686 18.39,-4.922 28.675,-0.796c19.304,7.81 32.212,22.486 38.696,43.971c6.454,21.543 5.246,44.207 -3.566,67.931c13.056,3.772 25.669,3.89 37.753,0.354c12.083,-3.507 20.07,-10.138 23.99,-19.775c3.89,-9.667 5.157,-19.245 3.772,-28.823c-1.385,-9.549 -4.981,-19.215 -10.727,-29.029c-12.26,-20.659 -27.703,-40.375 -46.329,-59.149c-4.745,-4.892 -8.134,-8.606 -10.109,-11.081c-2.004,-2.505 -2.652,-4.627 -1.945,-6.366c0.737,-1.798 2.387,-2.181 4.922,-1.12c16.121,6.484 36.308,26.052 60.563,58.707c25.876,35.13 32.507,68.314 19.893,99.553" style="fill:#b09452;fill-rule:nonzero;"/><path d="M3907.425,2213.424l-61.536,-61.477l-86.969,0.029l-61.477,61.506l0.029,86.969l61.536,61.477l86.94,-0.029l61.506,-61.506l-0.029,-86.969Z" style="fill-rule:nonzero;"/><path d="M3732.326,2069.348l140.135,-0.029l-24.196,58.441l-91.714,0.029l-24.225,-58.441Z" style="fill-rule:nonzero;"/><path d="M3861.321,2133.186l24.196,-58.471l99.141,99.052l-58.5,24.225l-64.836,-64.807Z" style="fill-rule:nonzero;"/><path d="M3931.603,2302.76l-0.029,-91.685l58.471,-24.255l0.029,140.135l-58.471,-24.196Z" style="fill-rule:nonzero;"/><path d="M3861.377,2380.667l64.836,-64.836l58.471,24.196l-99.052,99.082l-24.255,-58.441Z" style="fill-rule:nonzero;"/><path d="M3756.645,2386.107l91.685,-0.029l24.255,58.471l-140.135,0.029l24.196,-58.471Z" style="fill-rule:nonzero;"/><path d="M3620.256,2340.114l58.471,-24.225l64.866,64.807l-24.225,58.471l-99.111,-99.052Z" style="fill-rule:nonzero;"/><path d="M3614.815,2186.932l58.471,24.196l0,91.685l-58.441,24.255l-0.029,-140.135Z" style="fill-rule:nonzero;"/><path d="M3620.226,2173.879l99.023,-99.111l24.255,58.471l-64.836,64.836l-58.441,-24.196Z" style="fill-rule:nonzero;"/><path d="M811.488,2213.424l-61.506,-61.477l-86.969,0.029l-61.477,61.506l0.029,86.969l61.506,61.477l86.969,-0.029l61.477,-61.506l-0.029,-86.969Z" style="fill-rule:nonzero;"/><path d="M636.418,2069.348l140.135,-0.029l-24.196,58.441l-91.714,0.029l-24.225,-58.441Z" style="fill-rule:nonzero;"/><path d="M765.413,2133.186l24.196,-58.471l99.111,99.052l-58.471,24.225l-64.836,-64.807Z" style="fill-rule:nonzero;"/><path d="M835.693,2302.76l0,-91.685l58.441,-24.255l0.029,140.135l-58.471,-24.196Z" style="fill-rule:nonzero;"/><path d="M765.484,2380.667l64.807,-64.836l58.471,24.196l-99.052,99.082l-24.225,-58.441Z" style="fill-rule:nonzero;"/><path d="M660.723,2386.107l91.685,-0.029l24.255,58.471l-140.135,0.029l24.196,-58.471Z" style="fill-rule:nonzero;"/><path d="M524.348,2340.114l58.471,-24.225l64.836,64.807l-24.196,58.471l-99.111,-99.052Z" style="fill-rule:nonzero;"/><path d="M518.893,2186.932l58.471,24.196l0.029,91.685l-58.471,24.255l-0.029,-140.135Z" style="fill-rule:nonzero;"/><path d="M524.304,2173.879l99.052,-99.111l24.225,58.471l-64.807,64.836l-58.471,-24.196Z" style="fill-rule:nonzero;"/><path d="M1026.192,1605.741c0.265,14.912 -1.002,30.679 -3.861,47.301c-2.859,16.651 -6.896,31.151 -12.172,43.529c-14.382,33.656 -33.509,60.416 -57.469,80.279c-23.96,19.864 -50.455,31.77 -79.484,35.719c-29.059,3.92 -58.382,-0.442 -88.03,-13.085c-37.104,-15.826 -65.396,-36.574 -84.877,-62.214c-19.48,-25.64 -30.355,-53.579 -32.625,-83.786c-2.24,-30.178 3.006,-60.239 15.797,-90.152c8.222,-19.274 18.095,-36.485 29.648,-51.604c11.582,-15.148 23.547,-27.703 35.984,-37.723l49.6,45.15c-8.164,6.366 -17.3,16.003 -27.349,28.882c-10.109,12.849 -17.211,24.196 -21.396,33.951c-14.736,34.54 -17.358,64.601 -7.898,90.211c9.49,25.64 31.18,45.71 65.131,60.18c19.569,8.34 38.489,11.17 56.85,8.429c18.302,-2.711 34.776,-10.403 49.335,-23.046c14.588,-12.643 26.229,-29.176 34.923,-49.6c8.37,-19.569 11.818,-35.277 10.403,-47.095l-38.401,-16.386l-23.371,54.816l-60.416,-25.787l50.455,-118.238l134.182,57.262c3.094,7.103 4.774,18.095 5.04,33.008" style="fill:#b09452;fill-rule:nonzero;"/><path d="M970.718,1398.753l28.115,-39.285c10.727,-15.001 14.176,-29.088 10.315,-42.232c-3.861,-13.144 -10.875,-23.371 -21.042,-30.65c-10.168,-7.25 -21.985,-11.287 -35.454,-12.083c-13.468,-0.796 -26.229,7.191 -38.254,23.99l-28.381,39.668l84.7,60.593Zm211.455,5.983l-131.589,-4.745l-26.465,36.986l89.268,63.893l-39.58,55.317l-280.772,-200.934l60.887,-85.083c24.933,-34.835 52.724,-55.789 83.374,-62.921c30.65,-7.073 60.593,-0.147 89.857,20.777c17.27,12.348 30.915,27.614 40.847,45.68c9.961,18.066 13.851,37.723 11.788,58.883l148.535,7.662l-46.152,64.483Z" style="fill:#b09452;fill-rule:nonzero;"/><path d="M1201.032,1206.699c18.331,6.307 36.927,7.692 55.759,4.155c18.803,-3.537 35.69,-11.936 50.661,-25.198c14.5,-12.879 24.461,-28.292 29.854,-46.24c5.393,-17.977 5.924,-36.191 1.591,-54.757c-4.303,-18.508 -13.233,-35.395 -26.73,-50.602c-13.675,-15.413 -29.648,-26.347 -47.891,-32.742c-18.213,-6.425 -36.603,-7.957 -55.199,-4.627c-18.567,3.301 -35.247,11.523 -49.983,24.579c-14.736,13.085 -24.874,28.646 -30.355,46.712c-5.541,18.066 -6.189,36.515 -2.004,55.376c4.214,18.862 13.144,36.014 26.848,51.427c13.291,15.001 29.088,25.64 47.449,31.917m-140.577,-66.546c-6.248,-30.827 -4.597,-61.241 4.951,-91.243c9.549,-30.002 26.111,-55.465 49.747,-76.448c23.636,-20.954 50.897,-34.393 81.841,-40.317c30.915,-5.894 61.418,-4.038 91.537,5.629c30.09,9.667 55.553,26.2 76.301,49.6c21.16,23.842 34.629,51.191 40.464,81.989c5.776,30.827 3.831,61.094 -5.953,90.86c-9.755,29.766 -26.406,55.14 -50.042,76.094c-23.872,21.19 -51.103,34.805 -81.694,40.818c-30.591,6.042 -60.74,4.244 -90.388,-5.393c-29.677,-9.637 -55.082,-26.377 -76.271,-50.248c-20.748,-23.4 -34.245,-50.484 -40.493,-81.34" style="fill:#b09452;fill-rule:nonzero;"/><path d="M1504.897,971.693c16.121,10.786 33.744,16.887 52.812,18.272c19.097,1.385 37.576,-2.387 55.465,-11.435c17.3,-8.723 30.856,-21.072 40.67,-37.045c9.814,-16.003 14.971,-33.479 15.561,-52.518c0.56,-19.009 -3.743,-37.605 -12.908,-55.759c-9.283,-18.419 -21.956,-33.067 -37.929,-43.912c-15.973,-10.845 -33.391,-17.064 -52.193,-18.596c-18.832,-1.532 -37.016,2.122 -54.61,11.022c-17.594,8.841 -31.357,21.337 -41.289,37.369c-9.961,16.062 -15.296,33.744 -16.062,53.048c-0.796,19.274 3.478,38.165 12.79,56.585c8.989,17.86 21.573,32.182 37.694,42.969m-118.887,-100.261c1.827,-31.416 11.199,-60.386 28.086,-86.969c16.916,-26.553 39.462,-46.948 67.666,-61.182c28.204,-14.235 57.999,-20.247 89.415,-18.036c31.387,2.181 60.416,11.788 87.058,28.852c26.612,17.034 46.977,39.491 61.064,67.43c14.382,28.469 20.423,58.353 18.184,89.622c-2.269,31.269 -11.936,60.033 -28.97,86.321c-17.034,26.288 -39.668,46.535 -67.843,60.769c-28.469,14.382 -58.294,20.571 -89.415,18.567c-31.122,-1.975 -59.797,-11.435 -86.026,-28.322c-26.2,-16.887 -46.476,-39.58 -60.858,-68.049c-14.087,-27.939 -20.217,-57.587 -18.361,-89.003" style="fill:#b09452;fill-rule:nonzero;"/><path d="M1997.342,555.401l-66.723,388.4l-239.394,-313.072l79.277,-19.48l123.042,170.166l25.434,-206.74l78.364,-19.274Z" style="fill:#b09452;fill-rule:nonzero;"/><path d="M2325.023,540.492l2.004,65.662l-167.396,5.157l2.269,73.589l148.151,-4.568l2.092,65.662l-148.21,4.568l2.299,74.562l173.998,-5.393l2.004,65.662l-241.958,7.456l-10.639,-345.078l235.386,-7.279Z" style="fill:#b09452;fill-rule:nonzero;"/><path d="M2705.872,953.618c-20.276,2.004 -41.319,0.118 -63.068,-5.688c-34.746,-9.283 -62.921,-24.933 -84.582,-46.889c-21.632,-21.956 -35.866,-47.537 -42.615,-76.713c-6.808,-29.147 -6.101,-59.001 2.063,-89.504c8.959,-33.538 23.754,-61.624 44.384,-84.287c20.6,-22.663 45.12,-38.018 73.501,-46.152c28.41,-8.105 58.618,-7.869 90.624,0.678c20.247,5.393 38.254,13.144 54.021,23.164c15.797,10.05 29.059,20.895 39.874,32.536l-42.409,55.17c-19.038,-24.491 -41.083,-40.11 -66.192,-46.8c-16.916,-4.539 -34.01,-4.096 -51.309,1.326c-17.329,5.393 -32.507,15.001 -45.592,28.852c-13.085,13.792 -22.251,30.532 -27.497,50.16c-5.747,21.455 -6.69,41.377 -2.859,59.709c3.861,18.361 12.113,34.069 24.815,47.154c12.673,13.115 29.117,22.369 49.394,27.791c16.268,4.362 31.652,5.629 46.063,3.802c14.382,-1.798 26.347,-5.334 35.837,-10.551l11.464,66.163c-10.344,4.686 -25.669,8.046 -45.916,10.079" style="fill:#b09452;fill-rule:nonzero;"/><path d="M2957.963,939.245l8.429,-89.946l-69.051,59.09l60.622,30.856Zm-5.894,61.212l-102,-51.958l-55.759,47.419l-59.767,-30.414l301.637,-249.12l3.36,1.709l-24.107,390.463l-70.23,-35.778l6.867,-72.322Z" style="fill:#b09452;fill-rule:nonzero;"/><path d="M3417.986,988.889l-344.311,191.769l93.541,-382.83l64.925,49.482l-55.288,202.614l176.945,-109.927l64.188,48.893Z" style="fill:#b09452;fill-rule:nonzero;"/><path d="M3219.622,1286.191l47.057,49.136l249.363,-238.812l-47.057,-49.136l-249.363,238.812Z" style="fill:#b09452;"/><path d="M3493.22,1422.25l49.482,-75.593l-88.649,19.981l39.167,55.612Zm-33.803,51.368l-65.927,-93.571l-71.438,15.885l-38.607,-54.846l383.066,-79.336l2.151,3.065l-203.704,333.996l-45.386,-64.424l39.845,-60.769Z" style="fill:#b09452;fill-rule:nonzero;"/><path d="M3654.389,1602.991l19.068,44.384c7.309,16.946 17.565,27.172 30.827,30.679c13.262,3.478 25.64,2.77 37.104,-2.181c11.494,-4.951 21.072,-12.967 28.705,-24.107c7.662,-11.111 7.397,-26.141 -0.796,-45.091l-19.245,-44.826l-95.663,41.142Zm-114.466,177.947l72.116,-110.193l-17.977,-41.79l-100.85,43.382l-26.878,-62.479l317.168,-136.451l41.319,96.076c16.916,39.373 20.512,74.002 10.727,103.915c-9.755,29.913 -31.151,51.958 -64.188,66.192c-19.539,8.399 -39.609,12.172 -60.21,11.346c-20.63,-0.825 -39.462,-7.633 -56.526,-20.365l-83.344,123.189l-31.357,-72.823Z" style="fill:#b09452;fill-rule:nonzero;"/></g></svg>
+\ No newline at end of file
+diff --git a/src/assets/styles/tailwind.css b/src/assets/styles/tailwind.css
+index e1dcb30..8bc6996 100755
+--- a/src/assets/styles/tailwind.css
++++ b/src/assets/styles/tailwind.css
+@@ -14,10 +14,10 @@
+   --color-muted: var(--aw-color-text-muted);
+ 
+   --font-sans:
+-    'var(--aw-font-sans, ui-sans-serif)', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
++    var(--aw-font-sans, ui-sans-serif), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+     'Segoe UI Symbol', 'Noto Color Emoji';
+-  --font-serif: 'var(--aw-font-serif, ui-serif)', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+-  --font-heading: 'var(--aw-font-heading, ui-sans-serif)', ui-sans-serif, system-ui, sans-serif;
++  --font-serif: var(--aw-font-serif, ui-serif), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
++  --font-heading: var(--aw-font-heading, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+ 
+   --animate-fade: fadeInUp 1s both;
+ 
+@@ -117,5 +117,29 @@
+ }
+ 
+ @utility font-quote {
+-  font-family: 'Rock Salt', cursive;
++  font-family: 'Cormorant Garamond', Georgia, serif;
++  font-style: italic;
++}
++
++/* Boutons Groove Caviar — style unique réutilisable partout.
++   btn-gc        : base (forme, padding, typo)
++   btn-gc-primary: plein or (sur tout fond)
++   btn-gc-outline: contour clair (sur fond sombre, ex. Hero) */
++@utility btn-gc {
++  @apply inline-flex items-center justify-center gap-2 rounded-md px-8 py-3.5 text-sm font-semibold uppercase tracking-wider transition;
++}
++
++@utility btn-gc-primary {
++  @apply btn-gc bg-primary text-black hover:bg-secondary;
++}
++
++@utility btn-gc-outline {
++  @apply btn-gc border border-white/40 text-white hover:border-primary hover:text-primary;
++}
++
++.brand {
++  text-transform: uppercase;
++  letter-spacing: 0.01em;
++  color: #af9453;
++  font-weight: 800;
+ }
+diff --git a/src/components/CustomStyles.astro b/src/components/CustomStyles.astro
+index 383655d..4e6f732 100755
+--- a/src/components/CustomStyles.astro
++++ b/src/components/CustomStyles.astro
+@@ -1,13 +1,16 @@
+ ---
+-import '@fontsource-variable/inter'; // corps de texte (lisibilité)
++import '@fontsource-variable/hanken-grotesk'; // corps de texte
+ import '@fontsource-variable/josefin-sans'; // titres / logo
+-import '@fontsource/rock-salt'; // citations uniquement (décoratif)
++import '@fontsource-variable/josefin-sans/wght-italic.css'; // accent « haut de gamme » en italique
++import '@fontsource/cormorant-garamond/500-italic.css'; // citations (serif)
++import '@fontsource/cormorant-garamond/600-italic.css';
++import '@fontsource/cormorant-garamond/700-italic.css'; // citation en gras
+ ---
+ 
+ <style is:inline>
+   :root {
+-    --aw-font-sans: 'Inter Variable';
+-    --aw-font-serif: 'Inter Variable';
++    --aw-font-sans: 'Hanken Grotesk Variable';
++    --aw-font-serif: 'Cormorant Garamond';
+     --aw-font-heading: 'Josefin Sans Variable';
+ 
+     /* Palette Groove Caviar — or & noir */
+@@ -28,11 +31,11 @@ import '@fontsource/rock-salt'; // citations uniquement (décoratif)
+   }
+ 
+   .dark {
+-    --aw-font-sans: 'Inter Variable';
+-    --aw-font-serif: 'Inter Variable';
++    --aw-font-sans: 'Hanken Grotesk Variable';
++    --aw-font-serif: 'Cormorant Garamond';
+     --aw-font-heading: 'Josefin Sans Variable';
+ 
+-    --aw-color-primary: rgb(202 172 102); /* or plus clair sur fond sombre */
++    --aw-color-primary: rgb(202 172 102);
+     --aw-color-secondary: rgb(175 148 83);
+     --aw-color-accent: rgb(226 209 164); /* #E2D1A4 */
+ 
+diff --git a/src/components/analytics/GoogleTagManager.astro b/src/components/analytics/GoogleTagManager.astro
+new file mode 100644
+index 0000000..16bdc1a
+--- /dev/null
++++ b/src/components/analytics/GoogleTagManager.astro
+@@ -0,0 +1,74 @@
++---
++/**
++ * Google Tag Manager + Silktide Consent Manager — chargement unique, RGPD-friendly.
++ *
++ * - part="head" : Consent Mode v2 (défaut lu depuis localStorage) → bandeau Silktide (CDN, FR)
++ *                 → chargeur GTM en idle. Ordre garanti.
++ * - part="body" : <noscript> de repli (juste après l'ouverture du <body>).
++ *
++ * Silktide est open-source (CDN jsDelivr) : aucun compte ni ID. À l'acceptation,
++ * il appelle gtag('consent','update',…) et pousse l'événement `stcm_consent_update`
++ * (capté par le déclencheur GTM du même nom).
++ */
++import { ANALYTICS } from '~/config/analytics';
++
++export interface Props {
++  part?: 'head' | 'body';
++}
++
++const { part = 'head' } = Astro.props;
++const { gtmId } = ANALYTICS;
++
++// 1. Consent Mode v2 — défaut lu depuis localStorage (méthode officielle Silktide) :
++//    un visiteur déjà consentant n'est pas redemandé. Sinon tout est "denied".
++const consentDefault = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{analytics_storage:localStorage.getItem('stcm.consent.analytics')==='true'?'granted':'denied',ad_storage:localStorage.getItem('stcm.consent.marketing')==='true'?'granted':'denied',ad_user_data:localStorage.getItem('stcm.consent.marketing')==='true'?'granted':'denied',ad_personalization:localStorage.getItem('stcm.consent.marketing')==='true'?'granted':'denied',functionality_storage:'granted',security_storage:'granted',wait_for_update:500});`;
++
++// 3. Styles de marque du bandeau (variables CSS Silktide).
++const stcmStyles = `#stcm-wrapper{--primaryColor:#AF9453;--backgroundColor:#FFFFFF;--textColor:#1A1A1A;--fontFamily:'Hanken Grotesk Variable',sans-serif;--iconColor:#AF9453;--iconBackgroundColor:#FFFFFF;}#stcm-wrapper #stcm-banner{width:440px;padding:24px;}#stcm-wrapper #stcm-banner p{font-size:13px;line-height:1.5;}#stcm-wrapper #stcm-banner .stcm-button{padding:7px 14px;font-size:12.5px;line-height:18px;}#stcm-wrapper #stcm-banner .stcm-actions{gap:10px;margin-top:18px;}#stcm-wrapper #stcm-banner .stcm-preferences-button{font-size:12.5px;}`;
++
++// 4. Configuration Silktide (FR) + mapping Consent Mode.
++const silktideInit = `window.silktideConsentManager.init({prompt:{position:"bottomRight"},icon:{position:"bottomRight"},consentTypes:[{id:"essential",label:"Essentiels",description:"<p>Nécessaires au bon fonctionnement du site. Ils ne peuvent pas être désactivés.</p>",required:true},{id:"analytics",label:"Mesure d'audience",description:"<p>Nous aident à comprendre comment les visiteurs utilisent le site, de façon anonyme.</p>",defaultValue:false,gtag:"analytics_storage"},{id:"marketing",label:"Marketing",description:"<p>Utilisés pour personnaliser les publicités et en mesurer l'efficacité.</p>",defaultValue:false,gtag:["ad_storage","ad_user_data","ad_personalization"]}],text:{prompt:{description:"<p>Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic.</p>",acceptAllButtonText:"Tout accepter",acceptAllButtonAccessibleLabel:"Tout accepter les cookies",rejectNonEssentialButtonText:"Tout refuser",rejectNonEssentialButtonAccessibleLabel:"Refuser les cookies non essentiels",preferencesButtonText:"Préférences",preferencesButtonAccessibleLabel:"Gérer mes préférences de cookies"},preferences:{title:"Vos préférences de confidentialité",description:"<p>Choisissez les cookies que vous souhaitez accepter. Vos préférences s'appliqueront à tout le site.</p>",saveButtonText:"Enregistrer",saveButtonAccessibleLabel:"Enregistrer mes préférences"}}});`;
++
++// 5. Chargeur GTM en idle (préserve les Core Web Vitals).
++const gtmLoader = `(function(){function l(){if(window.__gtmLoaded)return;window.__gtmLoaded=true;window.dataLayer=window.dataLayer||[];window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=${gtmId}';f.parentNode.insertBefore(j,f);}if('requestIdleCallback' in window){requestIdleCallback(l,{timeout:3000});}else{window.addEventListener('load',function(){setTimeout(l,1200);});}})();`;
++---
++
++{
++  part === 'head' && (
++    <Fragment>
++      <script is:inline set:html={consentDefault} />
++
++      <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
++      <link
++        rel="stylesheet"
++        href="https://cdn.jsdelivr.net/gh/silktide/consent-manager@v2.0.0/silktide-consent-manager.css"
++        integrity="sha384-IO1E/jCrQXyH5rwcI0SXP7OXw47JFqQNDQcKhbFvqnL2IunBxxwE2Ne5XyAmCqKs"
++        crossorigin="anonymous"
++      />
++      <script
++        is:inline
++        src="https://cdn.jsdelivr.net/gh/silktide/consent-manager@v2.0.0/silktide-consent-manager.js"
++        integrity="sha384-j4NIMOecmtzMWe9GJADIIe5hTlHG63aiTQ/2XorW10RNyQJg+IU+xwFVDy45wBah"
++        crossorigin="anonymous"
++      />
++      <style is:inline set:html={stcmStyles} />
++      <script is:inline set:html={silktideInit} />
++
++      <script is:inline set:html={gtmLoader} />
++    </Fragment>
++  )
++}
++
++{
++  part === 'body' && (
++    <noscript>
++      <iframe
++        src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
++        height="0"
++        width="0"
++        style="display:none;visibility:hidden"
++        title="gtm"
++      />
++    </noscript>
++  )
++}
+diff --git a/src/components/gc/Footer.astro b/src/components/gc/Footer.astro
+new file mode 100644
+index 0000000..43219a7
+--- /dev/null
++++ b/src/components/gc/Footer.astro
+@@ -0,0 +1,495 @@
++---
++import logoUrl from '~/assets/images/logo-circulaire.svg?url';
++import { getLocale, useTranslations } from '~/i18n/ui';
++
++const locale = getLocale(Astro.url);
++const t = useTranslations(locale);
++const p = (frVal: string, enVal: string) => (locale === 'fr' ? frVal : enVal);
++
++const homeHref = p('/', '/en/');
++
++// ---- Navigation ----
++const footerNav = [
++  { label: t.nav.weddings, href: p('/mariages', '/en/weddings') },
++  { label: t.nav.parties, href: p('/soirees', '/en/parties') },
++  { label: t.nav.events, href: p('/evenements', '/en/events') },
++  { label: t.nav.music, href: p('/musique', '/en/music') },
++  { label: t.nav.about, href: p('/a-propos', '/en/about') },
++  { label: t.nav.faq, href: p('/faq', '/en/faq') },
++  { label: t.nav.contact, href: p('/contact', '/en/contact') },
++];
++
++// ---- Coordonnées (NAP) ----
++const nap = {
++  address: '3 allée Gabrielle Doziat, 64200 Biarritz',
++  maps: 'https://maps.app.goo.gl/5PteWHKmc19sPByR7',
++  phoneDisplay: '06 23 62 57 04',
++  phoneHref: 'tel:+33623625704',
++  email: 'contact@groovecaviar.com',
++};
++
++// ---- Réseaux sociaux (icônes monochromes, viewBox 0 0 24 24) ----
++const socials = [
++  {
++    name: 'Instagram',
++    href: 'https://www.instagram.com/groove.caviar',
++    path: 'M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077',
++  },
++  {
++    name: 'Facebook',
++    href: 'https://www.facebook.com/groovecaviar',
++    path: 'M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z',
++  },
++  {
++    name: 'Mixcloud',
++    href: 'https://www.mixcloud.com/groovecaviar/',
++    path: 'M2.462 8.596l1.372 6.49h.319l1.372-6.49h2.462v6.808H6.742v-5.68l.232-.81h-.402l-1.43 6.49H2.854l-1.44-6.49h-.391l.222.81v5.68H0V8.596zM24 8.63v1.429L21.257 12 24 13.941v1.43l-3.235-2.329h-.348l-3.226 2.329v-1.43l2.734-1.94-2.733-1.942V8.63l3.225 2.338h.348zm-7.869 2.75v1.24H9.304v-1.24z',
++  },
++  {
++    name: 'Spotify',
++    href: 'https://open.spotify.com/user/yvc9dh69dsfayamamf07z2p9w',
++    path: 'M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z',
++  },
++  {
++    name: 'LinkedIn',
++    href: 'https://www.linkedin.com/company/groovecaviar/about/',
++    path: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z',
++  },
++];
++
++// ---- Newsletter Brevo ----
++const brevoAction =
++  'https://9779d3f4.sibforms.com/serve/MUIFAJXUKhe4Tg-SyrEIG03ZG5Xm7vu618IWtdKsZMo5MhNsieXvApcsJ6CHHoaJ3SrnV0gjv-7Cm8Nuz7TeUIR0gPCDn3MJ4LCcDPbJlu--pgnkD_t-EuJyPT2BYMxOv5CTYbm1rdsBUG4S9uti-xRw1HrEAgrxe5v3Z8ANKU4jqpH7fh14n0Og8l6JRIwTOJXQKdSxRTc-uq9t8Q==';
++
++// Textes
++const tagline = p(
++  'DJ & direction musicale haut de gamme pour mariages, soirées et événements d’exception.',
++  'Premium DJ & music curation for weddings, parties and exceptional events.'
++);
++const navTitle = p('Navigation', 'Navigation');
++const socialTitle = p('Réseaux sociaux', 'Follow us');
++const newsTitle = 'Newsletter';
++const newsIntro = p(
++  'Dates, sélections musicales et coulisses — directement dans votre boîte mail.',
++  'Dates, music selections and behind-the-scenes — straight to your inbox.'
++);
++const emailPlaceholder = p('Votre email', 'Your email');
++const subscribeLabel = p('S’inscrire', 'Subscribe');
++const successMsg = p('Votre inscription est confirmée.', 'Your subscription is confirmed.');
++const errorMsg = p(
++  'Nous n’avons pas pu confirmer votre inscription.',
++  'We could not confirm your subscription.'
++);
++const rights = p('Tous droits réservés.', 'All rights reserved.');
++const year = new Date().getFullYear();
++
++// ---- Liens légaux (pages dédiées) ----
++const legalLinks = [
++  {
++    label: p('Politique de confidentialité', 'Privacy Policy'),
++    href: p('/politique-de-confidentialite', '/en/privacy-policy'),
++  },
++  {
++    label: p('Conditions générales de vente', 'Terms of Sale'),
++    href: p('/conditions-generales-de-vente', '/en/terms-of-sale'),
++  },
++];
++
++// ---- JSON-LD LocalBusiness ----
++const jsonLd = {
++  '@context': 'https://schema.org',
++  '@type': 'LocalBusiness',
++  '@id': 'https://www.groovecaviar.com',
++  name: 'Groove Caviar',
++  description: tagline,
++  url: 'https://www.groovecaviar.com',
++  telephone: '+33623625704',
++  email: nap.email,
++  address: {
++    '@type': 'PostalAddress',
++    streetAddress: '3 allée Gabrielle Doziat',
++    postalCode: '64200',
++    addressLocality: 'Biarritz',
++    addressRegion: 'Nouvelle-Aquitaine',
++    addressCountry: 'FR',
++  },
++  areaServed: 'Pays Basque, Landes, France',
++  sameAs: socials.map((s) => s.href),
++};
++
++// ---- Config Brevo (localisée), injectée avant main.js ----
++const brevoConfig = `
++window.REQUIRED_CODE_ERROR_MESSAGE = '${p('Veuillez choisir un code pays', 'Please choose a country code')}';
++window.LOCALE = '${locale}';
++window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "${p('Les informations fournies ne sont pas valides. Veuillez vérifier le format du champ et réessayer.', 'The information provided is invalid. Please check the field format and try again.')}";
++window.REQUIRED_ERROR_MESSAGE = "${p('Vous devez renseigner ce champ.', 'This field is required.')}";
++window.GENERIC_INVALID_MESSAGE = "${p('Les informations fournies ne sont pas valides. Veuillez vérifier le format du champ et réessayer.', 'The information provided is invalid. Please check the field format and try again.')}";
++window.translation = { common: { selectedList: '{quantity} liste sélectionnée', selectedLists: '{quantity} listes sélectionnées', selectedOption: '{quantity} sélectionné', selectedOptions: '{quantity} sélectionnés' } };
++var AUTOHIDE = Boolean(0);
++`;
++---
++
++<footer class="gc-footer">
++  <div class="gc-footer-inner">
++    <div class="gc-footer-grid">
++      <!-- Colonne 1 : Marque + coordonnées -->
++      <div class="gc-footer-col">
++        <a href={homeHref} class="gc-footer-brand" aria-label="Groove Caviar — accueil">
++          <img src={logoUrl} alt="" width="40" height="40" class="gc-footer-logo" />
++          <span class="brand gc-footer-wordmark">Groove Caviar</span>
++        </a>
++        <p class="gc-footer-tagline">{tagline}</p>
++        <address class="gc-footer-nap">
++          <a href={nap.maps} target="_blank" rel="noopener" class="gc-footer-napline">{nap.address}</a>
++          <a href={nap.phoneHref} data-track="call-click" class="gc-footer-napline">{nap.phoneDisplay}</a>
++          <a href={`mailto:${nap.email}`} data-track="email-click" class="gc-footer-napline">{nap.email}</a>
++        </address>
++      </div>
++
++      <!-- Colonne 2 : Navigation -->
++      <nav class="gc-footer-col" aria-label={navTitle}>
++        <h3 class="gc-footer-title">{navTitle}</h3>
++        <ul class="gc-footer-links">
++          {footerNav.map((item) => (
++            <li>
++              <a href={item.href} class="gc-footer-link">{item.label}</a>
++            </li>
++          ))}
++        </ul>
++      </nav>
++
++      <!-- Colonne 3 : Réseaux + Newsletter -->
++      <div class="gc-footer-col">
++        <h3 class="gc-footer-title">{socialTitle}</h3>
++        <div class="gc-footer-socials">
++          {socials.map((s) => (
++            <a
++              href={s.href}
++              target="_blank"
++              rel="noopener"
++              class="gc-footer-social"
++              aria-label={s.name}
++              data-track="social-click"
++            >
++              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
++                <path d={s.path} />
++              </svg>
++            </a>
++          ))}
++        </div>
++
++        <h3 class="gc-footer-title gc-footer-title--news">{newsTitle}</h3>
++        <p class="gc-footer-news-intro">{newsIntro}</p>
++
++        <div class="gc-news">
++          <div id="error-message" class="sib-form-message-panel gc-news-msg gc-news-msg--error">{errorMsg}</div>
++          <div id="success-message" class="sib-form-message-panel gc-news-msg gc-news-msg--success">{successMsg}</div>
++
++          <div id="sib-form-container">
++            <div id="sib-container">
++              <form id="sib-form" method="POST" action={brevoAction} data-type="subscription" class="gc-news-form">
++                <div class="sib-input sib-form-block gc-news-field">
++                  <input
++                    class="input gc-news-input"
++                    type="email"
++                    id="EMAIL"
++                    name="EMAIL"
++                    autocomplete="email"
++                    placeholder={emailPlaceholder}
++                    aria-label={emailPlaceholder}
++                    data-required="true"
++                    required
++                  />
++                  <input type="hidden" id="ORIGINE" name="ORIGINE" value="footer_groovecaviar_com" />
++                  <label class="entry__error entry__error--primary gc-news-error"></label>
++                </div>
++
++                <button class="sib-form-block__button sib-form-block__button-with-loader gc-news-button" form="sib-form" type="submit">
++                  {subscribeLabel}
++                </button>
++
++                <!-- Anti-spam (honeypot) : ne pas remplir -->
++                <input type="text" name="email_address_check" value="" class="input--hidden" tabindex="-1" aria-hidden="true" />
++                <!-- Langue de l'inscrit : fr sur les pages FR, en sur les pages EN -->
++                <input type="hidden" name="locale" value={locale} />
++              </form>
++            </div>
++          </div>
++        </div>
++      </div>
++    </div>
++
++    <div class="gc-footer-bottom">
++      <p>© {year} GROOVE CAVIAR. {rights}</p>
++      <nav class="gc-footer-legal" aria-label={p('Liens légaux', 'Legal links')}>
++        {legalLinks.map((item) => (
++          <a href={item.href} class="gc-footer-legal-link">{item.label}</a>
++        ))}
++      </nav>
++    </div>
++  </div>
++</footer>
++
++<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
++<script is:inline set:html={brevoConfig} />
++<script is:inline defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
++
++<style>
++  .gc-footer {
++    background-color: #0a0a0a;
++    border-top: 1px solid rgba(255, 255, 255, 0.08);
++    color: rgba(255, 255, 255, 0.7);
++  }
++  .gc-footer-inner {
++    max-width: 80rem;
++    margin-inline: auto;
++    padding: 4rem 1.25rem 2.5rem;
++  }
++  @media (min-width: 1024px) {
++    .gc-footer-inner {
++      padding-inline: 2rem;
++    }
++  }
++
++  /* Grille : 1 colonne en mobile, 3 colonnes dès le bureau */
++  .gc-footer-grid {
++    display: grid;
++    grid-template-columns: 1fr;
++    gap: 3rem;
++  }
++  @media (min-width: 768px) {
++    .gc-footer-grid {
++      grid-template-columns: repeat(2, 1fr);
++    }
++  }
++  @media (min-width: 1024px) {
++    .gc-footer-grid {
++      grid-template-columns: 1.4fr 1fr 1.4fr;
++      gap: 4rem;
++    }
++  }
++
++  /* Colonne 1 : marque */
++  .gc-footer-brand {
++    display: inline-flex;
++    align-items: center;
++    gap: 0.7rem;
++  }
++  .gc-footer-logo {
++    width: 40px;
++    height: 40px;
++    flex-shrink: 0;
++  }
++  .gc-footer-wordmark {
++    font-family: var(--aw-font-heading, sans-serif);
++    line-height: 1;
++    white-space: nowrap;
++    font-size: 1.4rem;
++  }
++  .gc-footer-tagline {
++    margin-top: 1.25rem;
++    max-width: 22rem;
++    font-size: 0.92rem;
++    line-height: 1.6;
++    color: rgba(255, 255, 255, 0.6);
++  }
++  .gc-footer-nap {
++    margin-top: 1.5rem;
++    display: flex;
++    flex-direction: column;
++    gap: 0.6rem;
++    font-style: normal;
++  }
++  .gc-footer-napline {
++    font-size: 0.92rem;
++    color: rgba(255, 255, 255, 0.7);
++    transition: color 0.2s ease;
++  }
++  .gc-footer-napline:hover {
++    color: #af9453;
++  }
++
++  /* Titres de colonne */
++  .gc-footer-title {
++    font-family: var(--aw-font-heading, sans-serif);
++    font-size: 0.78rem;
++    font-weight: 700;
++    text-transform: uppercase;
++    letter-spacing: 0.14em;
++    color: #af9453;
++    margin-bottom: 1.25rem;
++  }
++  .gc-footer-title--news {
++    margin-top: 2.25rem;
++  }
++
++  /* Colonne 2 : liens */
++  .gc-footer-links {
++    display: flex;
++    flex-direction: column;
++    gap: 0.7rem;
++    list-style: none;
++    padding: 0;
++    margin: 0;
++  }
++  .gc-footer-link {
++    font-size: 0.95rem;
++    color: rgba(255, 255, 255, 0.7);
++    transition: color 0.2s ease;
++  }
++  .gc-footer-link:hover {
++    color: #af9453;
++  }
++
++  /* Réseaux sociaux */
++  .gc-footer-socials {
++    display: flex;
++    flex-wrap: wrap;
++    gap: 0.75rem;
++  }
++  .gc-footer-social {
++    display: inline-flex;
++    align-items: center;
++    justify-content: center;
++    width: 40px;
++    height: 40px;
++    border: 1px solid rgba(255, 255, 255, 0.18);
++    border-radius: 9999px;
++    color: rgba(255, 255, 255, 0.8);
++    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
++  }
++  .gc-footer-social svg {
++    width: 18px;
++    height: 18px;
++  }
++  .gc-footer-social:hover {
++    color: #0d0d0d;
++    background-color: #af9453;
++    border-color: #af9453;
++  }
++
++  /* Newsletter */
++  .gc-footer-news-intro {
++    font-size: 0.9rem;
++    line-height: 1.6;
++    color: rgba(255, 255, 255, 0.6);
++    margin-bottom: 1rem;
++    max-width: 24rem;
++  }
++  .gc-news-form {
++    display: flex;
++    flex-direction: column;
++    gap: 0.6rem;
++    max-width: 24rem;
++  }
++  .gc-news-field {
++    display: flex;
++    flex-direction: column;
++  }
++  .gc-news-input {
++    width: 100%;
++    background-color: rgba(255, 255, 255, 0.06);
++    border: 1px solid rgba(255, 255, 255, 0.18);
++    border-radius: 6px;
++    padding: 0.7rem 0.9rem;
++    font-size: 0.95rem;
++    color: #fff;
++    transition: border-color 0.2s ease;
++  }
++  .gc-news-input::placeholder {
++    color: rgba(255, 255, 255, 0.4);
++  }
++  .gc-news-input:focus {
++    outline: none;
++    border-color: #af9453;
++  }
++  .gc-news-button {
++    display: inline-flex;
++    align-items: center;
++    justify-content: center;
++    cursor: pointer;
++    background-color: #af9453;
++    color: #0d0d0d;
++    border: 0;
++    border-radius: 6px;
++    padding: 0.7rem 1rem;
++    font-family: var(--aw-font-heading, sans-serif);
++    font-size: 0.78rem;
++    font-weight: 700;
++    text-transform: uppercase;
++    letter-spacing: 0.08em;
++    transition: background-color 0.25s ease;
++  }
++  .gc-news-button:hover {
++    background-color: #8a7440;
++  }
++  .gc-news-error {
++    display: block;
++    color: #ff8a8a;
++    font-size: 0.8rem;
++  }
++  .gc-news-error:empty {
++    display: none;
++  }
++
++  /* Panneaux de message Brevo : cachés par défaut, affichés par main.js */
++  .sib-form-message-panel {
++    display: none;
++    border-radius: 6px;
++    padding: 0.7rem 0.9rem;
++    font-size: 0.88rem;
++    margin-bottom: 0.75rem;
++    max-width: 24rem;
++  }
++  .gc-news-msg--success {
++    background-color: rgba(19, 206, 102, 0.12);
++    border: 1px solid #13ce66;
++    color: #8ff0bb;
++  }
++  .gc-news-msg--error {
++    background-color: rgba(255, 73, 73, 0.12);
++    border: 1px solid #ff4949;
++    color: #ff9a9a;
++  }
++
++  /* Honeypot anti-spam */
++  .input--hidden {
++    position: absolute !important;
++    left: -9999px !important;
++    width: 1px;
++    height: 1px;
++    overflow: hidden;
++  }
++
++  /* Bas de footer */
++  .gc-footer-bottom {
++    margin-top: 3.5rem;
++    padding-top: 1.75rem;
++    border-top: 1px solid rgba(255, 255, 255, 0.08);
++    display: flex;
++    flex-direction: column;
++    gap: 0.4rem;
++    font-size: 0.82rem;
++    color: rgba(255, 255, 255, 0.45);
++  }
++  @media (min-width: 768px) {
++    .gc-footer-bottom {
++      flex-direction: row;
++      align-items: center;
++      justify-content: space-between;
++    }
++  }
++  .gc-footer-legal {
++    display: flex;
++    flex-wrap: wrap;
++    gap: 1.25rem;
++  }
++  .gc-footer-legal-link {
++    font-size: 0.82rem;
++    color: rgba(255, 255, 255, 0.45);
++    transition: color 0.2s ease;
++  }
++  .gc-footer-legal-link:hover {
++    color: #af9453;
++  }
++</style>
+diff --git a/src/components/gc/Header.astro b/src/components/gc/Header.astro
+new file mode 100644
+index 0000000..b062c1c
+--- /dev/null
++++ b/src/components/gc/Header.astro
+@@ -0,0 +1,368 @@
++---
++import logoUrl from '~/assets/images/logo-circulaire.svg?url';
++import { getLocale, useTranslations, getAlternateUrl } from '~/i18n/ui';
++
++const locale = getLocale(Astro.url);
++const t = useTranslations(locale);
++const p = (frVal: string, enVal: string) => (locale === 'fr' ? frVal : enVal);
++
++const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
++
++const nav = [
++  { label: t.nav.weddings, href: p('/mariages', '/en/weddings') },
++  { label: t.nav.parties, href: p('/soirees', '/en/parties') },
++  { label: t.nav.events, href: p('/evenements', '/en/events') },
++  { label: t.nav.music, href: p('/musique', '/en/music') },
++  { label: t.nav.about, href: p('/a-propos', '/en/about') },
++  { label: t.nav.contact, href: p('/contact', '/en/contact') },
++];
++
++const isActive = (href: string) => pathname === href.replace(/\/$/, '');
++
++const alt = getAlternateUrl(Astro.url.pathname, locale);
++const frUrl = locale === 'fr' ? Astro.url.pathname : (alt ?? '/');
++const enUrl = locale === 'en' ? Astro.url.pathname : (alt ?? '/en/');
++
++const homeHref = p('/', '/en/');
++const phoneHref = 'tel:+33623625704';
++---
++
++<header id="gc-header" class="gc-header">
++  <div class="gc-bar">
++    <!-- Logo + wordmark -->
++    <a href={homeHref} class="gc-brand" aria-label="Groove Caviar — accueil">
++      <img src={logoUrl} alt="" width="37" height="37" class="gc-logo" />
++      <span class="brand gc-wordmark">Groove Caviar</span>
++    </a>
++
++    <!-- Navigation desktop -->
++    <nav class="gc-nav">
++      {
++        nav.map((item) => (
++          <a href={item.href} class:list={['gc-navlink', isActive(item.href) && 'is-active']}>
++            {item.label}
++          </a>
++        ))
++      }
++    </nav>
++
++    <!-- Droite : langue + téléphone + burger -->
++    <div class="gc-actions">
++      <div class="gc-langgroup gc-langgroup--desktop">
++        <a href={frUrl} class:list={['gc-lang', locale === 'fr' && 'is-active']}>FR</a>
++        <span class="gc-langsep">/</span>
++        <a href={enUrl} class:list={['gc-lang', locale === 'en' && 'is-active']}>EN</a>
++      </div>
++
++      <a href={phoneHref} data-track="call-click" class="gc-cta gc-cta--desktop">
++        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="gc-icon" aria-hidden="true">
++          <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z" />
++        </svg>
++        {t.cta.call}
++      </a>
++
++      <!-- Burger (mobile/tablette) -->
++      <button id="gc-burger" type="button" class="gc-burger" aria-label="Menu" aria-expanded="false" aria-controls="gc-mobile">
++        <span></span><span></span><span></span>
++      </button>
++    </div>
++  </div>
++
++  <!-- Menu mobile -->
++  <div id="gc-mobile" class="gc-mobile">
++    <nav class="gc-mobile-nav">
++      {
++        nav.map((item) => (
++          <a href={item.href} class:list={['gc-mobile-link', isActive(item.href) && 'is-active']}>
++            {item.label}
++          </a>
++        ))
++      }
++    </nav>
++    <div class="gc-mobile-foot">
++      <div class="gc-langgroup">
++        <a href={frUrl} class:list={['gc-lang', locale === 'fr' && 'is-active']}>FR</a>
++        <span class="gc-langsep">/</span>
++        <a href={enUrl} class:list={['gc-lang', locale === 'en' && 'is-active']}>EN</a>
++      </div>
++      <a href={phoneHref} data-track="call-click" class="gc-cta">
++        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="gc-icon" aria-hidden="true">
++          <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z" />
++        </svg>
++        {t.cta.call}
++      </a>
++    </div>
++  </div>
++</header>
++
++<style>
++  /* ---------- Conteneur ---------- */
++  .gc-header {
++    position: fixed;
++    inset: 0 0 auto 0;
++    z-index: 50;
++    background-color: transparent;
++    transition: background-color 0.3s ease;
++  }
++  .gc-header.is-scrolled,
++  .gc-header.is-open {
++    background-color: #0d0d0d;
++    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.06);
++  }
++
++  .gc-bar {
++    max-width: 80rem;
++    margin-inline: auto;
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    gap: 1rem;
++    padding: 0.75rem 1.25rem;
++  }
++  @media (min-width: 1024px) {
++    .gc-bar {
++      padding-inline: 2rem;
++    }
++  }
++
++  /* ---------- Logo + wordmark ---------- */
++  .gc-brand {
++    display: flex;
++    flex-shrink: 0;
++    align-items: center;
++    gap: 0.75rem;
++  }
++  .gc-logo {
++    width: 37px;
++    height: 37px;
++    flex-shrink: 0;
++  }
++  .gc-wordmark {
++    /* Couleur, graisse, capitales et letter-spacing viennent de la classe .brand */
++    font-family: var(--aw-font-heading, sans-serif);
++    line-height: 1;
++    white-space: nowrap;
++    font-size: clamp(1.4rem, 3.5vw, 1.6rem);
++  }
++
++  /* ---------- Navigation desktop ---------- */
++  .gc-nav {
++    display: none;
++    align-items: center;
++    gap: 1.5rem;
++  }
++  @media (min-width: 1024px) {
++    .gc-nav {
++      display: flex;
++    }
++  }
++  .gc-navlink {
++    position: relative;
++    display: inline-block;
++    text-align: center;
++    font-family: var(--aw-font-heading, sans-serif);
++    font-size: 0.82rem;
++    font-weight: 700;
++    line-height: 1.15;
++    text-transform: uppercase;
++    letter-spacing: 0.1em;
++    color: rgba(255, 255, 255, 0.85);
++    transition: color 0.2s ease;
++  }
++  .gc-navlink::after {
++    content: '';
++    position: absolute;
++    left: 0;
++    bottom: -7px;
++    width: 100%;
++    height: 1.5px;
++    background-color: #af9453;
++    transform: scaleX(0);
++    transform-origin: left;
++    transition: transform 0.25s ease;
++  }
++  .gc-navlink:hover {
++    color: #fff;
++  }
++  .gc-navlink:hover::after,
++  .gc-navlink.is-active::after {
++    transform: scaleX(1);
++  }
++  .gc-navlink.is-active {
++    color: #fff;
++  }
++
++  /* ---------- Bloc actions (droite) ---------- */
++  .gc-actions {
++    display: flex;
++    align-items: center;
++    gap: 1rem;
++  }
++
++  /* ---------- Sélecteur de langue ---------- */
++  .gc-langgroup {
++    display: flex;
++    align-items: center;
++    gap: 0.4rem;
++    font-size: 0.82rem;
++    font-weight: 700;
++    text-transform: uppercase;
++    letter-spacing: 0.08em;
++    line-height: 1;
++  }
++  .gc-langgroup--desktop {
++    display: none;
++  }
++  @media (min-width: 768px) {
++    .gc-langgroup--desktop {
++      display: flex;
++    }
++  }
++  .gc-langsep {
++    color: rgba(255, 255, 255, 0.3);
++  }
++  .gc-lang {
++    color: rgba(255, 255, 255, 0.5);
++    transition: color 0.2s ease;
++  }
++  .gc-lang:hover {
++    color: #fff;
++  }
++  .gc-lang.is-active {
++    color: #af9453;
++  }
++
++  /* ---------- Bouton téléphone ---------- */
++  .gc-cta {
++    display: inline-flex;
++    align-items: center;
++    gap: 0.5rem;
++    border-radius: 6px;
++    background-color: #af9453;
++    color: #0d0d0d;
++    padding: 0.55rem 0.85rem;
++    font-size: 0.72rem;
++    font-weight: 600;
++    line-height: 1;
++    text-transform: uppercase;
++    letter-spacing: 0.07em;
++    white-space: nowrap;
++    transition: background-color 0.25s ease;
++  }
++  .gc-cta:hover {
++    background-color: #8a7440;
++  }
++  /* Variante en-tête : masquée sous le desktop (le menu mobile garde le sien). */
++  .gc-cta--desktop {
++    display: none;
++  }
++  @media (min-width: 1024px) {
++    .gc-cta--desktop {
++      display: inline-flex;
++    }
++  }
++  .gc-icon {
++    width: 1rem;
++    height: 1rem;
++  }
++
++  /* ---------- Burger (mobile/tablette) ---------- */
++  .gc-burger {
++    display: inline-flex;
++    flex-direction: column;
++    justify-content: center;
++    gap: 5px;
++    width: 30px;
++    height: 30px;
++    padding: 4px;
++  }
++  @media (min-width: 1024px) {
++    .gc-burger {
++      display: none;
++    }
++  }
++  .gc-burger span {
++    display: block;
++    height: 2px;
++    width: 100%;
++    background-color: #fff;
++    border-radius: 2px;
++    transition: transform 0.3s ease, opacity 0.2s ease;
++  }
++  .gc-burger.is-open span:nth-child(1) {
++    transform: translateY(7px) rotate(45deg);
++  }
++  .gc-burger.is-open span:nth-child(2) {
++    opacity: 0;
++  }
++  .gc-burger.is-open span:nth-child(3) {
++    transform: translateY(-7px) rotate(-45deg);
++  }
++
++  /* ---------- Panneau mobile ---------- */
++  .gc-mobile {
++    display: none;
++    background-color: #0d0d0d;
++    border-top: 1px solid rgba(255, 255, 255, 0.08);
++  }
++  .gc-mobile.is-open {
++    display: block;
++  }
++  @media (min-width: 1024px) {
++    .gc-mobile,
++    .gc-mobile.is-open {
++      display: none;
++    }
++  }
++  .gc-mobile-nav {
++    display: flex;
++    flex-direction: column;
++    gap: 0.25rem;
++    padding: 1.5rem;
++  }
++  .gc-mobile-link {
++    font-family: var(--aw-font-heading, sans-serif);
++    font-size: 1.1rem;
++    font-weight: 700;
++    text-transform: uppercase;
++    letter-spacing: 0.1em;
++    color: rgba(255, 255, 255, 0.9);
++    padding: 0.6rem 0;
++  }
++  .gc-mobile-link.is-active {
++    color: #af9453;
++  }
++  .gc-mobile-foot {
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    border-top: 1px solid rgba(255, 255, 255, 0.1);
++    padding: 1.25rem 1.5rem;
++  }
++</style>
++
++<script>
++  const header = document.getElementById('gc-header');
++  const burger = document.getElementById('gc-burger');
++  const mobile = document.getElementById('gc-mobile');
++
++  const onScroll = () => {
++    if (!header) return;
++    header.classList.toggle('is-scrolled', window.scrollY > 20);
++  };
++  onScroll();
++  window.addEventListener('scroll', onScroll, { passive: true });
++
++  const toggleMenu = (open: boolean) => {
++    if (!burger || !mobile || !header) return;
++    burger.classList.toggle('is-open', open);
++    burger.setAttribute('aria-expanded', String(open));
++    header.classList.toggle('is-open', open);
++    mobile.classList.toggle('is-open', open);
++    document.body.style.overflow = open ? 'hidden' : '';
++  };
++  burger?.addEventListener('click', () => {
++    toggleMenu(burger.getAttribute('aria-expanded') !== 'true');
++  });
++  mobile?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => toggleMenu(false)));
++</script>
+diff --git a/src/components/sections/EditorialStatement.astro b/src/components/sections/EditorialStatement.astro
+new file mode 100644
+index 0000000..98be800
+--- /dev/null
++++ b/src/components/sections/EditorialStatement.astro
+@@ -0,0 +1,105 @@
++---
++/**
++ * EditorialStatement — bloc éditorial premium (rupture visuelle façon campagne mode/luxe).
++ * Tailwind + Astro uniquement. Aucune dépendance JS. Responsive mobile-first.
++ * Couleurs Groove Caviar : or #AF9453 / noir #0D0D0D.
++ *
++ * Affiche : un titre accrocheur (avec mot/chiffre surligné en or via <mark>),
++ * un corps de direction artistique, et éventuellement une citation (Rock Salt).
++ */
++export interface Props {
++  eyebrow?: string; // petit label en capitales (optionnel)
++  headline?: string; // grand titre — accepte <mark>…</mark> pour le surlignage or
++  body?: string; // texte de direction artistique — accepte <br>, <strong>
++  quote?: string; // citation optionnelle
++  quoteAuthor?: string; // signature de la citation
++  theme?: 'light' | 'dark'; // fond clair (défaut) ou noir
++  align?: 'center' | 'left'; // centré (défaut) ou aligné à gauche
++}
++
++const { eyebrow, headline, body, quote, quoteAuthor, theme = 'light', align = 'center' } = Astro.props;
++
++const isDark = theme === 'dark';
++const isCenter = align === 'center';
++const muted = isDark ? 'text-white/70' : 'text-black/65';
++---
++
++<section
++  class:list={[
++    'editorial relative w-full overflow-hidden',
++    isDark ? 'bg-[#0D0D0D] text-white' : 'bg-[#F2F2F2] text-[#0D0D0D]',
++  ]}
++>
++  <div
++    class:list={[
++      'mx-auto flex max-w-4xl flex-col gap-10 px-6 py-28 sm:py-36 md:py-44',
++      isCenter ? 'items-center text-center' : 'items-start text-left',
++    ]}
++  >
++    {eyebrow && <span class="editorial-fade text-xs uppercase tracking-[0.35em] text-primary">{eyebrow}</span>}
++
++    {
++      headline && (
++        <h2
++          class="editorial-fade font-sans text-4xl font-bold leading-[1.12] tracking-tight sm:text-5xl md:text-6xl"
++          style="animation-delay:80ms"
++          set:html={headline}
++        />
++      )
++    }
++
++    {
++      body && (
++        <div
++          class:list={['editorial-fade max-w-2xl text-sm leading-relaxed sm:text-base', muted, isCenter && 'mx-auto']}
++          style="animation-delay:200ms"
++          set:html={body}
++        />
++      )
++    }
++
++    {
++      quote && (
++        <figure class="editorial-fade max-w-2xl" style="animation-delay:300ms">
++          <blockquote class="font-quote text-2xl font-bold text-primary sm:text-3xl">“{quote}”</blockquote>
++          {quoteAuthor && (
++            <figcaption class:list={['mt-4 text-xs uppercase tracking-[0.25em]', isDark ? 'text-white/40' : 'text-black/40']}>
++              {quoteAuthor}
++            </figcaption>
++          )}
++        </figure>
++      )
++    }
++  </div>
++</section>
++
++<style>
++  .editorial :global(mark) {
++    background-color: #af9453;
++    color: #0d0d0d;
++    padding: 0 0.2em;
++    border-radius: 2px;
++    box-decoration-break: clone;
++    -webkit-box-decoration-break: clone;
++  }
++  @keyframes editorial-rise {
++    from {
++      opacity: 0;
++      transform: translateY(18px);
++    }
++    to {
++      opacity: 1;
++      transform: translateY(0);
++    }
++  }
++  .editorial-fade {
++    opacity: 0;
++    animation: editorial-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
++  }
++  @media (prefers-reduced-motion: reduce) {
++    .editorial-fade {
++      opacity: 1;
++      animation: none;
++    }
++  }
++</style>
+diff --git a/src/components/sections/HeroHome.astro b/src/components/sections/HeroHome.astro
+new file mode 100644
+index 0000000..39149fb
+--- /dev/null
++++ b/src/components/sections/HeroHome.astro
+@@ -0,0 +1,89 @@
++---
++import { Image } from 'astro:assets';
++import heroImg from '~/assets/images/homepage-hero.webp';
++
++export interface Props {
++  titleLine1: string;
++  titleAccent: string; // ligne médiane, en or
++  titleLine3: string;
++  ctaQuote: { text: string; href: string; track: string };
++  ctaPhone: { text: string; href: string; type: 'tel' | 'whatsapp'; track: string };
++  socialProof: string;
++}
++
++const { titleLine1, titleAccent, titleLine3, ctaQuote, ctaPhone, socialProof } = Astro.props;
++const isWhatsApp = ctaPhone.type === 'whatsapp';
++---
++
++<section class="hero relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-black">
++  <Image
++    src={heroImg}
++    alt=""
++    widths={[768, 1280, 1920]}
++    sizes="100vw"
++    loading="eager"
++    fetchpriority="high"
++    class="hero-bg absolute inset-0 h-full w-full object-cover object-center"
++  />
++  <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/60"></div>
++
++  <div class="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-6 text-center text-white">
++    <h1 class="font-heading leading-[1.05] tracking-tight">
++      <span class="block text-4xl font-bold uppercase sm:text-5xl md:text-6xl">{titleLine1}</span>
++      <span class="mt-2 block text-4xl font-semibold italic uppercase text-primary sm:text-5xl md:text-6xl">{titleAccent}</span>
++      <span class="mt-3 block font-quote text-2xl text-white/90 sm:text-3xl" set:html={titleLine3} />
++    </h1>
++
++    <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row">
++      <a href={ctaQuote.href} data-track={ctaQuote.track} class="btn-gc-primary">
++        {ctaQuote.text}
++      </a>
++      <a
++        href={ctaPhone.href}
++        data-track={ctaPhone.track}
++        target={isWhatsApp ? '_blank' : undefined}
++        rel={isWhatsApp ? 'noopener noreferrer' : undefined}
++        class="btn-gc-outline"
++      >
++        {
++          isWhatsApp ? (
++            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
++              <path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.78 14.06c-.24.68-1.4 1.3-1.93 1.34-.5.04-.97.22-3.26-.68-2.76-1.09-4.5-3.92-4.64-4.1-.13-.18-1.1-1.47-1.1-2.8 0-1.33.7-1.98.94-2.25.25-.27.54-.34.72-.34.18 0 .36 0 .52.01.17.01.39-.06.61.47.24.56.8 1.94.87 2.08.07.14.12.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.53 1.9 1.05.93 1.94 1.22 2.21 1.36.27.14.43.12.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.22.61-.13.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.12.07.68-.17 1.36Z" />
++            </svg>
++          ) : (
++            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
++              <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z" />
++            </svg>
++          )
++        }
++        {ctaPhone.text}
++      </a>
++    </div>
++
++    <p class="mt-9 text-[0.7rem] uppercase tracking-[0.25em] text-white/70 sm:text-xs">{socialProof}</p>
++  </div>
++</section>
++
++<style>
++  /* Sur écran tactile (pas de survol) : image en couleur par défaut. */
++  .hero-bg {
++    filter: grayscale(0) brightness(1.18);
++    transition: filter 0.8s ease;
++    will-change: filter;
++  }
++  /* Sur appareils avec souris : N&B par défaut, couleur au survol du Hero
++     (revient en N&B dès que la souris quitte la zone, y compris au scroll). */
++  @media (hover: hover) {
++    .hero-bg {
++      filter: grayscale(1) brightness(1.18);
++    }
++    .hero:hover .hero-bg {
++      filter: grayscale(0) brightness(1.18);
++    }
++  }
++  @media (prefers-reduced-motion: reduce) {
++    .hero-bg {
++      transition: none;
++    }
++  }
++</style>
+diff --git a/src/components/sections/HomeSections.astro b/src/components/sections/HomeSections.astro
+new file mode 100644
+index 0000000..bc80876
+--- /dev/null
++++ b/src/components/sections/HomeSections.astro
+@@ -0,0 +1,21 @@
++---
++import HeroHome from '~/components/sections/HeroHome.astro';
++import EditorialStatement from '~/components/sections/EditorialStatement.astro';
++import type { HomeContent, Locale } from '~/data/pages/home';
++
++export interface Props {
++  t: HomeContent;
++  locale: Locale;
++}
++
++const { t } = Astro.props;
++---
++
++<HeroHome {...t.hero} />
++
++<EditorialStatement
++  headline={t.editorial.headline}
++  body={t.editorial.body}
++  quote={t.editorial.quote}
++  quoteAuthor={t.editorial.quoteAuthor}
++/>
+diff --git a/src/config.yaml b/src/config.yaml
+index 2e02513..cafd26d 100755
+--- a/src/config.yaml
++++ b/src/config.yaml
+@@ -66,7 +66,7 @@ apps:
+ analytics:
+   vendors:
+     googleAnalytics:
+-      id: 'G-JNP77GV0GC' # configuré mais DORMANT tant que hasExternalScripts=false (RGPD)
++      id: '' # GA4 piloté UNIQUEMENT via GTM (voir src/config/analytics.ts + docs/analytics.md)
+ 
+ ui:
+   theme: 'light:only'
+diff --git a/src/config/analytics.ts b/src/config/analytics.ts
+new file mode 100644
+index 0000000..599877e
+--- /dev/null
++++ b/src/config/analytics.ts
+@@ -0,0 +1,29 @@
++/**
++ * Configuration analytics centralisée — L'UNIQUE endroit où changer les identifiants.
++ *
++ * Tout est piloté par Google Tag Manager (un seul conteneur).
++ * GA4, Google Tag, et plus tard Meta Pixel / LinkedIn se configurent DANS GTM,
++ * pas ici. Ces IDs sont conservés pour référence / documentation.
++ */
++export const ANALYTICS = {
++  gtmId: 'GTM-K939WRS', // conteneur GTM (le seul script chargé sur le site)
++  ga4Id: 'G-JNP77GV0GC', // configuré dans GTM
++  googleTagId: 'GT-NMLTR5K', // configuré dans GTM
++  debug: import.meta.env.DEV, // logs console en développement uniquement
++};
++
++/**
++ * Mapping data-track → nom d'événement GA4 poussé dans le dataLayer.
++ * Pour ajouter un événement : ajoute une entrée ici + crée le déclencheur
++ * « Custom Event » correspondant dans GTM (voir docs/analytics.md).
++ */
++export const TRACK_EVENT_MAP: Record<string, string> = {
++  'call-click': 'phone_click',
++  'email-click': 'email_click',
++  'whatsapp-click': 'whatsapp_click',
++  'instagram-click': 'contact_click',
++  'quote-wedding': 'quote_request',
++  'quote-booking': 'quote_request',
++  'cta-hero': 'cta_click',
++  'cta-final': 'cta_click',
++};
+diff --git a/src/data/pages/home.ts b/src/data/pages/home.ts
+new file mode 100644
+index 0000000..a84f938
+--- /dev/null
++++ b/src/data/pages/home.ts
+@@ -0,0 +1,45 @@
++/**
++ * Contenu bilingue de la page d'accueil.
++ * Le markup vit dans les composants ; ici uniquement le texte (FR + EN).
++ *
++ * Téléphone : en FR, appel classique (tel:). En EN, le visiteur anglophone
++ * est routé vers WhatsApp (wa.me) — même numéro.
++ */
++export const home = {
++  fr: {
++    hero: {
++      titleLine1: 'DJ & direction musicale',
++      titleAccent: 'haut de gamme',
++      titleLine3: "mariages, soirées & événements d'exception",
++      ctaQuote: { text: 'Demander un devis', href: '/devis/mariages', track: 'quote-wedding' },
++      ctaPhone: { text: '06 23 62 57 04', href: 'tel:+33623625704', type: 'tel', track: 'call-click' },
++      socialProof: "Basé à Biarritz — prestations en France & à l'international",
++    },
++    editorial: {
++      headline:
++        'Savez-vous que <mark>100&nbsp;000</mark> nouveaux morceaux arrivent chaque jour sur les plateformes&nbsp;?',
++      body: "Nous sélectionnons uniquement ceux que votre piste de danse mérite.<br>À l'ère des playlists automatiques, l'émotion d'un dancefloor reste humaine.<br>La différence entre une playlist et une vraie direction musicale, c'est l'expérience et la qualité du DJ.<br>Alors, pour vivre une soirée mémorable, choisissez <span class=\"brand\">Groove Caviar</span>.",
++      quote: 'Une playlist remplit le silence. Un DJ remplit la piste.',
++      quoteAuthor: 'Pierre HENNY DE BASSY (GROOVE CAVIAR)',
++    },
++  },
++  en: {
++    hero: {
++      titleLine1: 'DJ & music curation',
++      titleAccent: 'premium',
++      titleLine3: 'weddings, parties & exceptional events',
++      ctaQuote: { text: 'Request a quote', href: '/en/quote/wedding', track: 'quote-wedding' },
++      ctaPhone: { text: '+33 6 23 62 57 04', href: 'https://wa.me/33623625704', type: 'whatsapp', track: 'whatsapp-click' },
++      socialProof: 'Based in Biarritz — available across France & internationally',
++    },
++    editorial: {
++      headline: 'Did you know <mark>100,000</mark> new tracks drop every day on streaming platforms?',
++      body: 'We only select the ones your dancefloor deserves.<br>In the age of automated playlists, the emotion of a dancefloor stays human.<br>The difference between a playlist and true music curation is the experience and skill of the DJ.<br>So, for a night to remember, choose <span class="brand">Groove Caviar</span>.',
++      quote: 'A playlist fills the silence. A DJ fills the floor.',
++      quoteAuthor: 'Pierre HENNY DE BASSY (GROOVE CAVIAR)',
++    },
++  },
++} as const;
++
++export type Locale = keyof typeof home;
++export type HomeContent = (typeof home)[Locale];
+diff --git a/src/i18n/en.ts b/src/i18n/en.ts
+index bfe892b..a85583f 100644
+--- a/src/i18n/en.ts
++++ b/src/i18n/en.ts
+@@ -7,6 +7,7 @@ export const en = {
+     parties: 'Parties',
+     events: 'Events',
+     music: 'Music',
++    about: 'About',
+     faq: 'FAQ',
+     contact: 'Contact',
+   },
+diff --git a/src/i18n/fr.ts b/src/i18n/fr.ts
+index 477af90..f9f7bb2 100644
+--- a/src/i18n/fr.ts
++++ b/src/i18n/fr.ts
+@@ -7,6 +7,7 @@ export const fr = {
+     parties: 'Soirées',
+     events: 'Événements',
+     music: 'Musique',
++    about: 'À propos',
+     faq: 'FAQ',
+     contact: 'Contact',
+   },
+diff --git a/src/i18n/routes.ts b/src/i18n/routes.ts
+index fcf6562..f548019 100644
+--- a/src/i18n/routes.ts
++++ b/src/i18n/routes.ts
+@@ -35,6 +35,8 @@ export const routeMap: Record<string, string> = {
+   '/a-propos': '/en/about',
+   '/faq': '/en/faq',
+   '/contact': '/en/contact',
++  '/politique-de-confidentialite': '/en/privacy-policy',
++  '/conditions-generales-de-vente': '/en/terms-of-sale',
+   '/devis/mariages': '/en/quote/wedding',
+   '/devis/booking-dj': '/en/quote/dj-booking',
+ };
+diff --git a/src/layouts/Layout.astro b/src/layouts/Layout.astro
+index b333447..514027e 100755
+--- a/src/layouts/Layout.astro
++++ b/src/layouts/Layout.astro
+@@ -10,6 +10,7 @@ import ApplyColorMode from '~/components/common/ApplyColorMode.astro';
+ import Metadata from '~/components/common/Metadata.astro';
+ import SiteVerification from '~/components/common/SiteVerification.astro';
+ import Analytics from '~/components/common/Analytics.astro';
++import GoogleTagManager from '~/components/analytics/GoogleTagManager.astro';
+ import BasicScripts from '~/components/common/BasicScripts.astro';
+ 
+ // Comment the line below to disable View Transitions
+@@ -19,16 +20,19 @@ import type { MetaData as MetaDataType } from '~/types';
+ 
+ export interface Props {
+   metadata?: MetaDataType;
++  lang?: string;
+ }
+ 
+-const { metadata = {} } = Astro.props;
++const { metadata = {}, lang } = Astro.props;
+ const { language, textDirection } = I18N;
++const htmlLang = lang ?? language;
+ ---
+ 
+ <!doctype html>
+-<html lang={language} dir={textDirection} class="2xl:text-[20px]">
++<html lang={htmlLang} dir={textDirection} class="2xl:text-[20px]">
+   <head>
+     <CommonMeta />
++    <GoogleTagManager part="head" />
+     <Favicons />
+     <CustomStyles />
+     <ApplyColorMode />
+@@ -43,8 +47,13 @@ const { language, textDirection } = I18N;
+   </head>
+ 
+   <body class="antialiased text-default bg-page tracking-tight">
++    <GoogleTagManager part="body" />
+     <slot />
+ 
+     <BasicScripts />
++    <script>
++      import { initAnalytics } from '~/utils/analytics';
++      initAnalytics();
++    </script>
+   </body>
+ </html>
+diff --git a/src/layouts/PageLayout.astro b/src/layouts/PageLayout.astro
+index e3bc4da..d6b4887 100755
+--- a/src/layouts/PageLayout.astro
++++ b/src/layouts/PageLayout.astro
+@@ -1,31 +1,26 @@
+ ---
+ import Layout from '~/layouts/Layout.astro';
+-import Header from '~/components/widgets/Header.astro';
+-import Footer from '~/components/widgets/Footer.astro';
+-import Announcement from '~/components/widgets/Announcement.astro';
+-
+-import { headerData, footerData } from '~/navigation';
++import GCHeader from '~/components/gc/Header.astro';
++import GCFooter from '~/components/gc/Footer.astro';
+ 
+ import type { MetaData } from '~/types';
+ 
+ export interface Props {
+   metadata?: MetaData;
++  lang?: string;
+ }
+ 
+-const { metadata } = Astro.props;
++const { metadata, lang } = Astro.props;
+ ---
+ 
+-<Layout metadata={metadata}>
+-  <slot name="announcement">
+-    <Announcement />
+-  </slot>
++<Layout metadata={metadata} lang={lang}>
+   <slot name="header">
+-    <Header {...headerData} isSticky showRssFeed showToggleTheme />
++    <GCHeader />
+   </slot>
+   <main>
+     <slot />
+   </main>
+   <slot name="footer">
+-    <Footer {...footerData} />
++    <GCFooter />
+   </slot>
+ </Layout>
+diff --git a/src/pages/en/index.astro b/src/pages/en/index.astro
+new file mode 100644
+index 0000000..c74becd
+--- /dev/null
++++ b/src/pages/en/index.astro
+@@ -0,0 +1,10 @@
++---
++import Layout from '~/layouts/PageLayout.astro';
++import HomeSections from '~/components/sections/HomeSections.astro';
++import { home } from '~/data/pages/home';
++
++const locale = 'en';
++---
++<Layout lang={locale}>
++  <HomeSections t={home[locale]} locale={locale} />
++</Layout>
+diff --git a/src/pages/index.astro b/src/pages/index.astro
+index d1eb006..c9f77e0 100755
+--- a/src/pages/index.astro
++++ b/src/pages/index.astro
+@@ -1,398 +1,10 @@
+ ---
+ import Layout from '~/layouts/PageLayout.astro';
++import HomeSections from '~/components/sections/HomeSections.astro';
++import { home } from '~/data/pages/home';
+ 
+-import Hero from '~/components/widgets/Hero.astro';
+-import Note from '~/components/widgets/Note.astro';
+-import Features from '~/components/widgets/Features.astro';
+-import Features2 from '~/components/widgets/Features2.astro';
+-import Steps from '~/components/widgets/Steps.astro';
+-import Content from '~/components/widgets/Content.astro';
+-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
+-import FAQs from '~/components/widgets/FAQs.astro';
+-import Stats from '~/components/widgets/Stats.astro';
+-import CallToAction from '~/components/widgets/CallToAction.astro';
+-
+-const metadata = {
+-  title: 'AstroWind — Free template for creating websites with Astro + Tailwind CSS',
+-  ignoreTitleTemplate: true,
+-};
++const locale = 'fr';
+ ---
+-
+-<Layout metadata={metadata}>
+-  <!-- Hero Widget ******************* -->
+-
+-  <Hero
+-    actions={[
+-      {
+-        variant: 'primary',
+-        text: 'Get template',
+-        href: 'https://github.com/arthelokyo/astrowind',
+-        target: '_blank',
+-        icon: 'tabler:download',
+-      },
+-      { text: 'Learn more', href: '#features' },
+-    ]}
+-    image={{ src: '~/assets/images/hero-image.png', alt: 'AstroWind Hero Image' }}
+-  >
+-    <Fragment slot="title">
+-      Free template for <span class="hidden xl:inline">creating websites with</span>
+-      <span class="text-accent dark:text-white"> Astro v6</span> + Tailwind CSS
+-    </Fragment>
+-
+-    <Fragment slot="subtitle">
+-      <span class="hidden sm:inline">
+-        <span class="font-semibold">AstroWind</span> is a free, customizable and production-ready template for Astro v6 +
+-        Tailwind CSS v4.</span
+-      >
+-      <span class="block mb-1 sm:hidden font-bold text-blue-600">AstroWind: Production-ready.</span>
+-      Suitable for Startups, Small Business, SaaS websites, Professional Portfolios, Marketing websites, Landing Pages & Blogs.
+-    </Fragment>
+-  </Hero>
+-
+-  <!-- Note Widget ******************* -->
+-
+-  <Note title="Philosophy:" description="Simplicity, Best Practices and High Performance" />
+-
+-  <!-- Features Widget *************** -->
+-
+-  <Features
+-    id="features"
+-    tagline="Features"
+-    title="What you get with AstroWind"
+-    subtitle="One of the most professional and comprehensive templates currently on the market. Most starred & forked Astro theme in 2022, 2023, 2024 and 2025."
+-    items={[
+-      {
+-        title: 'Astro + Tailwind CSS Integration',
+-        description:
+-          'A seamless integration between two great frameworks that offer high productivity, performance and versatility. Now powered by Tailwind CSS v4.',
+-        icon: 'tabler:brand-tailwind',
+-      },
+-      {
+-        title: 'Ready-to-use Components',
+-        description:
+-          'Widgets made with Tailwind CSS v4 ready to be used in Marketing Websites, SaaS, Blogs, Personal Profiles, Small Business...',
+-        icon: 'tabler:components',
+-      },
+-      {
+-        title: 'Best Practices',
+-        description:
+-          'Creating secure, efficient, and user-friendly websites that deliver exceptional experiences and lasting value.',
+-        icon: 'tabler:list-check',
+-      },
+-      {
+-        title: 'Excellent Page Speed',
+-        description:
+-          'Having a good page speed impacts organic search ranking, improves user experience (UI/UX) and increase conversion rates.',
+-        icon: 'tabler:rocket',
+-      },
+-      {
+-        title: 'Search Engine Optimization (SEO)',
+-        description:
+-          "SEO lies in its ability to enhance a website's visibility, driving organic traffic and enabling it to reach a wider audience.",
+-        icon: 'tabler:arrows-right-left',
+-      },
+-      {
+-        title: 'Open to new ideas and contributions',
+-        description:
+-          'Embracing a culture that is open to new ideas and contributions is integral fostering innovation, collaboration, and a dynamic user experience.',
+-        icon: 'tabler:bulb',
+-      },
+-    ]}
+-  />
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    isReversed
+-    tagline="Inside template"
+-    title="AstroWind's Blueprint: Fun Meets Functionality!"
+-    items={[
+-      {
+-        title: 'Built on top of Astro v6',
+-        description:
+-          'Benefiting from the performance and developer-friendly features of this modern static site generator.',
+-      },
+-      {
+-        title: 'Styled using Tailwind CSS v4',
+-        description:
+-          'Facilitating rapid design and consistent styling with this highly popular utility-first CSS framework.',
+-      },
+-      {
+-        title: 'Cross-browser compatibility',
+-        description:
+-          'Ensure your website looks and functions consistently across various web browsers, delivering a seamless experience to all users.',
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+-      alt: 'Colorful Image',
+-    }}
+-  >
+-    <Fragment slot="content">
+-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Building on modern foundations</h3>
+-      Gain a competitive advantage by incorporating industry leading practices
+-    </Fragment>
+-
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    isAfterContent
+-    items={[
+-      {
+-        title: 'High level of customization',
+-        description: `Tailor the template effortlessly to match your brand's identity and requirements, making your website distinct and saving you time.`,
+-      },
+-      {
+-        title: 'Multiple layout possibilities',
+-        description:
+-          'Explore various layout options to find the structure that best presents your content, enhancing user engagement and navigation.',
+-      },
+-      {
+-        title: 'Fully responsive design',
+-        description:
+-          "Ensure your website's optimal performance on various devices and screen sizes, providing a consistent and enjoyable user experience.",
+-      },
+-      {
+-        title: 'Integration of media',
+-        description:
+-          'Seamlessly incorporate images, videos, and multimedia elements that enhance your content and engage visitors effectively.',
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2194&q=80',
+-      alt: 'Blueprint Image',
+-    }}
+-  >
+-    <Fragment slot="content">Ensure your online presence truly represents you.</Fragment>
+-
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Content Widget **************** -->
+-
+-  <Content
+-    isReversed
+-    isAfterContent
+-    items={[
+-      {
+-        title: 'Enhanced user engagement',
+-        description:
+-          'Captivate your audience with interactive elements, intuitive navigation, and visually appealing layouts, encouraging longer visits.',
+-      },
+-      {
+-        title: 'Continuous improvement',
+-        description:
+-          'Ensure your website stays aligned with the latest trends and technologies through regular updates and enhancements.',
+-      },
+-      {
+-        title: 'Time and resource efficiency',
+-        description:
+-          'Skip the time-consuming process of building a website from scratch and launch your online presence sooner with AstroWind.',
+-      },
+-      {
+-        title: 'Community support',
+-        description: `Join the growing AstroWind community for insights, resources, and assistance, ensuring you're never alone on your web development journey.`,
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1611462985358-60d3498e0364?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+-      alt: 'Astronauts Image',
+-    }}
+-  >
+-    <Fragment slot="content">Designed to foster growth and success.</Fragment>
+-
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Content>
+-
+-  <!-- Steps Widget ****************** -->
+-
+-  <Steps
+-    title="Get your dream website up and running in no time with AstroWind."
+-    items={[
+-      {
+-        title: 'Step 1: <span class="font-medium">Download</span>',
+-        description:
+-          "Kickstart with GitHub! Either fork the AstroWind template or simply click 'Use this template'. Your canvas awaits, ready for your digital masterpiece. In just a few clicks, you've already set the foundation.",
+-        icon: 'tabler:package',
+-      },
+-      {
+-        title: 'Step 2: <span class="font-medium">Add content</span>',
+-        description:
+-          "Pour your vision into it. Add images, text, and all that jazz to breathe life into your digital space. Remember, it's the content that tells your story, so make it captivating.",
+-        icon: 'tabler:letter-case',
+-      },
+-      {
+-        title: 'Step 3: <span class="font-medium">Customize styles</span>',
+-        description:
+-          'Give it your personal touch. Tailor colors, fonts, and layouts until it feels just right. Your unique flair, amplified by AstroWind! Precision in design ensures a seamless user experience.',
+-        icon: 'tabler:paint',
+-      },
+-      {
+-        title: 'Ready!',
+-        icon: 'tabler:check',
+-      },
+-    ]}
+-    image={{
+-      src: 'https://images.unsplash.com/photo-1616198814651-e71f960c3180?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
+-      alt: 'Steps image',
+-    }}
+-  />
+-
+-  <!-- Features2 Widget ************** -->
+-
+-  <Features2
+-    title="Most used widgets"
+-    subtitle="Provides frequently used components for building websites using Tailwind CSS v4"
+-    tagline="Components"
+-    items={[
+-      {
+-        title: 'Headers',
+-        description: "Ever tried driving without GPS? Boom! That's why websites need headers for direction.",
+-        icon: 'flat-color-icons:template',
+-      },
+-      {
+-        title: 'Heros',
+-        description:
+-          "Picture a superhero landing – epic, right? That's the job of a Hero section, making grand entrances!",
+-        icon: 'flat-color-icons:gallery',
+-      },
+-      {
+-        title: 'Features',
+-        description:
+-          'Where websites strut their stuff and show off superpowers. No holding back on the bragging rights here!',
+-        icon: 'flat-color-icons:approval',
+-      },
+-      {
+-        title: 'Content',
+-        description:
+-          "Dive into the meat and potatoes of a site; without it, you'd just be window shopping. Content is king.",
+-        icon: 'flat-color-icons:document',
+-      },
+-      {
+-        title: 'Call-to-Action',
+-        description:
+-          'That enthusiastic friend who\'s always urging, "Do it! Do it!"? Yeah, that\'s this button nudging you towards adventure.',
+-        icon: 'flat-color-icons:advertising',
+-      },
+-      {
+-        title: 'Pricing',
+-        description: 'Behold the dessert menu of the website world. Tempting choices await, can you resist?',
+-        icon: 'flat-color-icons:currency-exchange',
+-      },
+-      {
+-        title: 'Testimonial',
+-        description: 'Step into the gossip corner! Here, other visitors spill the beans and share the juicy details.',
+-        icon: 'flat-color-icons:voice-presentation',
+-      },
+-      {
+-        title: 'Contact',
+-        description:
+-          'Like a digital mailbox, but faster! Drop a line, ask a question, or send a virtual high-five. Ding! Message in.',
+-        icon: 'flat-color-icons:business-contact',
+-      },
+-      {
+-        title: 'Footers',
+-        description: "The footer's like the credits of a movie but sprinkled with easter eggs. Time to hunt!",
+-        icon: 'flat-color-icons:database',
+-      },
+-    ]}
+-  >
+-    <Fragment slot="bg">
+-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+-    </Fragment>
+-  </Features2>
+-
+-  <!-- HighlightedPosts Widget ******* -->
+-
+-  <BlogLatestPosts
+-    title="Find out more content in our Blog"
+-    information={`The blog is used to display AstroWind documentation.
+-                        Each new article will be an important step that you will need to know to be an expert in creating a website using Astro v6 + Tailwind CSS v4.
+-                        Astro is a very interesting technology. Thanks.
+-                `}
+-  />
+-
+-  <!-- FAQs Widget ******************* -->
+-
+-  <FAQs
+-    title="Frequently Asked Questions"
+-    subtitle="Dive into the following questions to gain insights into the powerful features that AstroWind offers and how it can elevate your web development journey."
+-    tagline="FAQs"
+-    classes={{ container: 'max-w-6xl' }}
+-    items={[
+-      {
+-        title: 'Why AstroWind?',
+-        description:
+-          "Michael Knight a young loner on a crusade to champion the cause of the innocent. The helpless. The powerless in a world of criminals who operate above the law. Here he comes Here comes Speed Racer. He's a demon on wheels.",
+-      },
+-      {
+-        title: 'What do I need to start?',
+-        description:
+-          'Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds. Many say exploration is part of our destiny, but it’s actually our duty to future generations.',
+-      },
+-      {
+-        title: 'How to install the Astro + Tailwind CSS template?',
+-        description:
+-          "Well, the way they make shows is, they make one show. That show's called a pilot. Then they show that show to the people who make shows, and on the strength of that one show they decide if they're going to make more shows.",
+-      },
+-      {
+-        title: "What's something that you don't understand?",
+-        description:
+-          "A flower in my garden, a mystery in my panties. Heart attack never stopped old Big Bear. I didn't even know we were calling him Big Bear.",
+-      },
+-      {
+-        title: 'What is something that you would like to try again?',
+-        description:
+-          "A business big enough that it could be listed on the NASDAQ goes belly up. Disappears! It ceases to exist without me. No, you clearly don't know who you're talking to, so let me clue you in.",
+-      },
+-      {
+-        title: 'If you could only ask one question to each person you meet, what would that question be?',
+-        description:
+-          "This is not about revenge. This is about justice. A lot of things can change in twelve years, Admiral. Well, that's certainly good to know. About four years. I got tired of hearing how young I looked.",
+-      },
+-    ]}
+-  />
+-
+-  <!-- Stats Widget ****************** -->
+-
+-  <Stats
+-    stats={[
+-      { title: 'Downloads', amount: '132K' },
+-      { title: 'Stars', amount: '24.8K' },
+-      { title: 'Forks', amount: '10.3K' },
+-      { title: 'Users', amount: '48.4K' },
+-    ]}
+-  />
+-
+-  <!-- CallToAction Widget *********** -->
+-
+-  <CallToAction
+-    actions={[
+-      {
+-        variant: 'primary',
+-        text: 'Get template',
+-        href: 'https://github.com/arthelokyo/astrowind',
+-        target: '_blank',
+-        icon: 'tabler:download',
+-      },
+-    ]}
+-  >
+-    <Fragment slot="title">
+-      Astro&nbsp;+&nbsp;<br class="block sm:hidden" /><span class="sm:whitespace-nowrap">Tailwind CSS</span>
+-    </Fragment>
+-
+-    <Fragment slot="subtitle">
+-      Be very surprised by these huge fake numbers you are seeing on this page. <br class="hidden md:inline" />Don't
+-      waste more time! :P
+-    </Fragment>
+-  </CallToAction>
++<Layout lang={locale}>
++  <HomeSections t={home[locale]} locale={locale} />
+ </Layout>
+diff --git a/src/utils/analytics.ts b/src/utils/analytics.ts
+new file mode 100644
+index 0000000..aabffcc
+--- /dev/null
++++ b/src/utils/analytics.ts
+@@ -0,0 +1,41 @@
++import { ANALYTICS, TRACK_EVENT_MAP } from '~/config/analytics';
++
++declare global {
++  interface Window {
++    dataLayer: Record<string, unknown>[];
++  }
++}
++
++type Params = Record<string, unknown>;
++
++/**
++ * Pousse un événement dans le dataLayer (consommé par GTM).
++ * À utiliser pour les événements déclenchés manuellement (ex. soumission Jotform).
++ */
++export function trackEvent(event: string, params: Params = {}): void {
++  if (typeof window === 'undefined') return;
++  window.dataLayer = window.dataLayer || [];
++  window.dataLayer.push({ event, ...params });
++  if (ANALYTICS.debug) console.log('[analytics] →', event, params);
++}
++
++/**
++ * Écouteur délégué unique : au clic sur un élément portant data-track,
++ * pousse l'événement GA4 correspondant. Aucun listener à dupliquer ailleurs.
++ */
++export function initAnalytics(): void {
++  if (typeof document === 'undefined') return;
++  if ((window as unknown as { __gcAnalytics?: boolean }).__gcAnalytics) return;
++  (window as unknown as { __gcAnalytics?: boolean }).__gcAnalytics = true;
++
++  document.addEventListener('click', (e) => {
++    const el = (e.target as HTMLElement | null)?.closest<HTMLElement>('[data-track]');
++    if (!el) return;
++    const key = el.getAttribute('data-track') || '';
++    const event = TRACK_EVENT_MAP[key] || 'cta_click';
++    const label = el.getAttribute('data-track-label') || key;
++    trackEvent(event, { track_key: key, label });
++  });
++
++  if (ANALYTICS.debug) console.log('[analytics] écouteur data-track initialisé');
++}

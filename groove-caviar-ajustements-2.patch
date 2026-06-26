@@ -1,0 +1,139 @@
+diff --git a/src/components/analytics/GoogleTagManager.astro b/src/components/analytics/GoogleTagManager.astro
+index 7ea5d0c..16bdc1a 100644
+--- a/src/components/analytics/GoogleTagManager.astro
++++ b/src/components/analytics/GoogleTagManager.astro
+@@ -24,7 +24,7 @@ const { gtmId } = ANALYTICS;
+ const consentDefault = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{analytics_storage:localStorage.getItem('stcm.consent.analytics')==='true'?'granted':'denied',ad_storage:localStorage.getItem('stcm.consent.marketing')==='true'?'granted':'denied',ad_user_data:localStorage.getItem('stcm.consent.marketing')==='true'?'granted':'denied',ad_personalization:localStorage.getItem('stcm.consent.marketing')==='true'?'granted':'denied',functionality_storage:'granted',security_storage:'granted',wait_for_update:500});`;
+ 
+ // 3. Styles de marque du bandeau (variables CSS Silktide).
+-const stcmStyles = `#stcm-wrapper{--primaryColor:#AF9453;--backgroundColor:#FFFFFF;--textColor:#1A1A1A;--fontFamily:'Hanken Grotesk Variable',sans-serif;--iconColor:#AF9453;--iconBackgroundColor:#FFFFFF;}#stcm-wrapper #stcm-banner{width:440px;padding:24px;}#stcm-wrapper #stcm-banner p{font-size:13px;line-height:1.5;}`;
++const stcmStyles = `#stcm-wrapper{--primaryColor:#AF9453;--backgroundColor:#FFFFFF;--textColor:#1A1A1A;--fontFamily:'Hanken Grotesk Variable',sans-serif;--iconColor:#AF9453;--iconBackgroundColor:#FFFFFF;}#stcm-wrapper #stcm-banner{width:440px;padding:24px;}#stcm-wrapper #stcm-banner p{font-size:13px;line-height:1.5;}#stcm-wrapper #stcm-banner .stcm-button{padding:7px 14px;font-size:12.5px;line-height:18px;}#stcm-wrapper #stcm-banner .stcm-actions{gap:10px;margin-top:18px;}#stcm-wrapper #stcm-banner .stcm-preferences-button{font-size:12.5px;}`;
+ 
+ // 4. Configuration Silktide (FR) + mapping Consent Mode.
+ const silktideInit = `window.silktideConsentManager.init({prompt:{position:"bottomRight"},icon:{position:"bottomRight"},consentTypes:[{id:"essential",label:"Essentiels",description:"<p>Nécessaires au bon fonctionnement du site. Ils ne peuvent pas être désactivés.</p>",required:true},{id:"analytics",label:"Mesure d'audience",description:"<p>Nous aident à comprendre comment les visiteurs utilisent le site, de façon anonyme.</p>",defaultValue:false,gtag:"analytics_storage"},{id:"marketing",label:"Marketing",description:"<p>Utilisés pour personnaliser les publicités et en mesurer l'efficacité.</p>",defaultValue:false,gtag:["ad_storage","ad_user_data","ad_personalization"]}],text:{prompt:{description:"<p>Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic.</p>",acceptAllButtonText:"Tout accepter",acceptAllButtonAccessibleLabel:"Tout accepter les cookies",rejectNonEssentialButtonText:"Tout refuser",rejectNonEssentialButtonAccessibleLabel:"Refuser les cookies non essentiels",preferencesButtonText:"Préférences",preferencesButtonAccessibleLabel:"Gérer mes préférences de cookies"},preferences:{title:"Vos préférences de confidentialité",description:"<p>Choisissez les cookies que vous souhaitez accepter. Vos préférences s'appliqueront à tout le site.</p>",saveButtonText:"Enregistrer",saveButtonAccessibleLabel:"Enregistrer mes préférences"}}});`;
+diff --git a/src/components/sections/EditorialStatement.astro b/src/components/sections/EditorialStatement.astro
+index 029fc58..b0afa31 100644
+--- a/src/components/sections/EditorialStatement.astro
++++ b/src/components/sections/EditorialStatement.astro
+@@ -61,7 +61,7 @@ const muted = isDark ? 'text-white/70' : 'text-black/65';
+     {
+       quote && (
+         <figure class="editorial-fade max-w-2xl" style="animation-delay:300ms">
+-          <blockquote class="font-quote text-xl font-bold text-primary sm:text-2xl">“{quote}”</blockquote>
++          <blockquote class="font-quote text-2xl font-bold text-primary sm:text-3xl">“{quote}”</blockquote>
+           {quoteAuthor && (
+             <figcaption class:list={['mt-4 text-xs uppercase tracking-[0.25em]', isDark ? 'text-white/40' : 'text-black/40']}>
+               {quoteAuthor}
+diff --git a/src/components/sections/HeroHome.astro b/src/components/sections/HeroHome.astro
+index 57d36b6..3a4862e 100644
+--- a/src/components/sections/HeroHome.astro
++++ b/src/components/sections/HeroHome.astro
+@@ -4,13 +4,14 @@ import heroImg from '~/assets/images/homepage-hero.webp';
+ 
+ export interface Props {
+   titleLine1: string;
+-  titleLine2: string;
++  titleAccent: string; // ligne médiane, en or
++  titleLine3: string;
+   ctaQuote: { text: string; href: string; track: string };
+   ctaPhone: { text: string; href: string; type: 'tel' | 'whatsapp'; track: string };
+   socialProof: string;
+ }
+ 
+-const { titleLine1, titleLine2, ctaQuote, ctaPhone, socialProof } = Astro.props;
++const { titleLine1, titleAccent, titleLine3, ctaQuote, ctaPhone, socialProof } = Astro.props;
+ const isWhatsApp = ctaPhone.type === 'whatsapp';
+ ---
+ 
+@@ -27,16 +28,17 @@ const isWhatsApp = ctaPhone.type === 'whatsapp';
+   <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/60"></div>
+ 
+   <div class="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-6 text-center text-white">
+-    <h1 class="font-heading text-4xl leading-[1.06] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+-      <span class="font-bold">{titleLine1}</span><br />
+-      <span class="font-light text-white/95" set:html={titleLine2} />
++    <h1 class="font-heading leading-[1.05] tracking-tight">
++      <span class="block text-4xl font-bold uppercase sm:text-5xl md:text-6xl">{titleLine1}</span>
++      <span class="mt-1 block font-quote text-3xl text-primary sm:text-4xl">{titleAccent}</span>
++      <span class="mt-3 block text-lg font-light text-white/95 sm:text-xl md:text-2xl" set:html={titleLine3} />
+     </h1>
+ 
+     <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row">
+       <a
+         href={ctaQuote.href}
+         data-track={ctaQuote.track}
+-        class="rounded-[3px] bg-primary px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-black transition hover:bg-secondary"
++        class="rounded-md bg-primary px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-black transition hover:bg-secondary"
+       >
+         {ctaQuote.text}
+       </a>
+@@ -45,7 +47,7 @@ const isWhatsApp = ctaPhone.type === 'whatsapp';
+         data-track={ctaPhone.track}
+         target={isWhatsApp ? '_blank' : undefined}
+         rel={isWhatsApp ? 'noopener noreferrer' : undefined}
+-        class="inline-flex items-center gap-2 rounded-[3px] border border-white/40 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition hover:border-primary hover:text-primary"
++        class="inline-flex items-center gap-2 rounded-md border border-white/40 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition hover:border-primary hover:text-primary"
+       >
+         {
+           isWhatsApp ? (
+@@ -67,19 +69,30 @@ const isWhatsApp = ctaPhone.type === 'whatsapp';
+ </section>
+ 
+ <style>
++  /* Image en N&B au départ ; passage en couleur déclenché au chargement (voir script). */
+   .hero-bg {
+     filter: grayscale(1) brightness(1.18);
+-    animation: hero-colorize 2s ease forwards 0.4s;
++    transition: filter 1.8s ease;
++    will-change: filter;
+   }
+-  @keyframes hero-colorize {
+-    to {
+-      filter: grayscale(0) brightness(1.18);
+-    }
++  .hero-bg.is-color {
++    filter: grayscale(0) brightness(1.18);
+   }
+   @media (prefers-reduced-motion: reduce) {
+     .hero-bg {
+       filter: grayscale(0) brightness(1.18);
+-      animation: none;
++      transition: none;
+     }
+   }
+ </style>
++
++<script>
++  // Déclenche le passage N&B → couleur une fois l'image réellement chargée,
++  // pour que l'animation soit toujours visible (et pas jouée sur un vide).
++  const heroImg = document.querySelector('img.hero-bg') as HTMLImageElement | null;
++  if (heroImg) {
++    const reveal = () => requestAnimationFrame(() => setTimeout(() => heroImg.classList.add('is-color'), 150));
++    if (heroImg.complete) reveal();
++    else heroImg.addEventListener('load', reveal, { once: true });
++  }
++</script>
+diff --git a/src/data/pages/home.ts b/src/data/pages/home.ts
+index 444144c..c8ec693 100644
+--- a/src/data/pages/home.ts
++++ b/src/data/pages/home.ts
+@@ -9,7 +9,8 @@ export const home = {
+   fr: {
+     hero: {
+       titleLine1: 'DJ & direction musicale',
+-      titleLine2: "pour mariages<br />et événements d'exception",
++      titleAccent: 'haut de gamme',
++      titleLine3: "mariages, soirées & événements d'exception",
+       ctaQuote: { text: 'Demander un devis', href: '/devis/mariages', track: 'quote-wedding' },
+       ctaPhone: { text: '06 23 62 57 04', href: 'tel:+33623625704', type: 'tel', track: 'call-click' },
+       socialProof: "Basé à Biarritz — prestations en France & à l'international",
+@@ -25,7 +26,8 @@ export const home = {
+   en: {
+     hero: {
+       titleLine1: 'DJ & music direction',
+-      titleLine2: 'for weddings<br />and exceptional events',
++      titleAccent: 'premium',
++      titleLine3: 'weddings, parties & exceptional events',
+       ctaQuote: { text: 'Request a quote', href: '/en/quote/wedding', track: 'quote-wedding' },
+       ctaPhone: { text: '+33 6 23 62 57 04', href: 'https://wa.me/33623625704', type: 'whatsapp', track: 'whatsapp-click' },
+       socialProof: 'Based in Biarritz — available across France & internationally',

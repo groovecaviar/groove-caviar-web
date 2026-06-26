@@ -7,6 +7,7 @@ export const en = {
     parties: 'Parties',
     events: 'Events',
     music: 'Music',
+    about: 'About',
     faq: 'FAQ',
     contact: 'Contact',
   },

@@ -35,6 +35,8 @@ export const routeMap: Record<string, string> = {
   '/a-propos': '/en/about',
   '/faq': '/en/faq',
   '/contact': '/en/contact',
+  '/politique-de-confidentialite': '/en/privacy-policy',
+  '/conditions-generales-de-vente': '/en/terms-of-sale',
   '/devis/mariages': '/en/quote/wedding',
   '/devis/booking-dj': '/en/quote/dj-booking',
 };

@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import heroImg from '~/assets/images/homepage-hero.webp';
+
+export interface Props {
+  titleLine1: string;
+  titleAccent: string; // ligne médiane, en or
+  titleLine3: string;
+  ctaQuote: { text: string; href: string; track: string };
+  ctaPhone: { text: string; href: string; type: 'tel' | 'whatsapp'; track: string };
+  socialProof: string;
+}
+
+const { titleLine1, titleAccent, titleLine3, ctaQuote, ctaPhone, socialProof } = Astro.props;
+const isWhatsApp = ctaPhone.type === 'whatsapp';
+---
+
+<section class="hero relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-black">
+  <Image
+    src={heroImg}
+    alt=""
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="hero-bg absolute inset-0 h-full w-full object-cover object-center"
+  />
+  <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/60"></div>
+
+  <div class="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-6 text-center text-white">
+    <h1 class="font-heading leading-[1.05] tracking-tight">
+      <span class="block text-4xl font-bold uppercase sm:text-5xl md:text-6xl">{titleLine1}</span>
+      <span class="mt-2 block text-4xl font-semibold italic uppercase text-primary sm:text-5xl md:text-6xl">{titleAccent}</span>
+      <span class="mt-3 block font-quote text-2xl text-white/90 sm:text-3xl" set:html={titleLine3} />
+    </h1>
+
+    <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row">
+      <a href={ctaQuote.href} data-track={ctaQuote.track} class="btn-gc-primary">
+        {ctaQuote.text}
+      </a>
+      <a
+        href={ctaPhone.href}
+        data-track={ctaPhone.track}
+        target={isWhatsApp ? '_blank' : undefined}
+        rel={isWhatsApp ? 'noopener noreferrer' : undefined}
+        class="btn-gc-outline"
+      >
+        {
+          isWhatsApp ? (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+              <path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.78 14.06c-.24.68-1.4 1.3-1.93 1.34-.5.04-.97.22-3.26-.68-2.76-1.09-4.5-3.92-4.64-4.1-.13-.18-1.1-1.47-1.1-2.8 0-1.33.7-1.98.94-2.25.25-.27.54-.34.72-.34.18 0 .36 0 .52.01.17.01.39-.06.61.47.24.56.8 1.94.87 2.08.07.14.12.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.53 1.9 1.05.93 1.94 1.22 2.21 1.36.27.14.43.12.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.22.61-.13.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.12.07.68-.17 1.36Z" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+              <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z" />
+            </svg>
+          )
+        }
+        {ctaPhone.text}
+      </a>
+    </div>
+
+    <p class="mt-9 text-[0.7rem] uppercase tracking-[0.25em] text-white/70 sm:text-xs">{socialProof}</p>
+  </div>
+</section>
+
+<style>
+  /* Sur écran tactile (pas de survol) : image en couleur par défaut. */
+  .hero-bg {
+    filter: grayscale(0) brightness(1.18);
+    transition: filter 0.8s ease;
+    will-change: filter;
+  }
+  /* Sur appareils avec souris : N&B par défaut, couleur au survol du Hero
+     (revient en N&B dès que la souris quitte la zone, y compris au scroll). */
+  @media (hover: hover) {
+    .hero-bg {
+      filter: grayscale(1) brightness(1.18);
+    }
+    .hero:hover .hero-bg {
+      filter: grayscale(0) brightness(1.18);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg {
+      transition: none;
+    }
+  }
+</style>

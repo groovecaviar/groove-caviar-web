@@ -1,0 +1,74 @@
+---
+/**
+ * Google Tag Manager + Silktide Consent Manager — chargement unique, RGPD-friendly.
+ *
+ * - part="head" : Consent Mode v2 (défaut lu depuis localStorage) → bandeau Silktide (CDN, FR)
+ *                 → chargeur GTM en idle. Ordre garanti.
+ * - part="body" : <noscript> de repli (juste après l'ouverture du <body>).
+ *
+ * Silktide est open-source (CDN jsDelivr) : aucun compte ni ID. À l'acceptation,
+ * il appelle gtag('consent','update',…) et pousse l'événement `stcm_consent_update`
+ * (capté par le déclencheur GTM du même nom).
+ */
+import { ANALYTICS } from '~/config/analytics';
+
+export interface Props {
+  part?: 'head' | 'body';
+}
+
+const { part = 'head' } = Astro.props;
+const { gtmId } = ANALYTICS;
+
+// 1. Consent Mode v2 — défaut lu depuis localStorage (méthode officielle Silktide) :
+//    un visiteur déjà consentant n'est pas redemandé. Sinon tout est "denied".
+const consentDefault = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{analytics_storage:localStorage.getItem('stcm.consent.analytics')==='true'?'granted':'denied',ad_storage:localStorage.getItem('stcm.consent.marketing')==='true'?'granted':'denied',ad_user_data:localStorage.getItem('stcm.consent.marketing')==='true'?'granted':'denied',ad_personalization:localStorage.getItem('stcm.consent.marketing')==='true'?'granted':'denied',functionality_storage:'granted',security_storage:'granted',wait_for_update:500});`;
+
+// 3. Styles de marque du bandeau (variables CSS Silktide).
+const stcmStyles = `#stcm-wrapper{--primaryColor:#AF9453;--backgroundColor:#FFFFFF;--textColor:#1A1A1A;--fontFamily:'Hanken Grotesk Variable',sans-serif;--iconColor:#AF9453;--iconBackgroundColor:#FFFFFF;}#stcm-wrapper #stcm-banner{width:440px;padding:24px;}#stcm-wrapper #stcm-banner p{font-size:13px;line-height:1.5;}#stcm-wrapper #stcm-banner .stcm-button{padding:7px 14px;font-size:12.5px;line-height:18px;}#stcm-wrapper #stcm-banner .stcm-actions{gap:10px;margin-top:18px;}#stcm-wrapper #stcm-banner .stcm-preferences-button{font-size:12.5px;}`;
+
+// 4. Configuration Silktide (FR) + mapping Consent Mode.
+const silktideInit = `window.silktideConsentManager.init({prompt:{position:"bottomRight"},icon:{position:"bottomRight"},consentTypes:[{id:"essential",label:"Essentiels",description:"<p>Nécessaires au bon fonctionnement du site. Ils ne peuvent pas être désactivés.</p>",required:true},{id:"analytics",label:"Mesure d'audience",description:"<p>Nous aident à comprendre comment les visiteurs utilisent le site, de façon anonyme.</p>",defaultValue:false,gtag:"analytics_storage"},{id:"marketing",label:"Marketing",description:"<p>Utilisés pour personnaliser les publicités et en mesurer l'efficacité.</p>",defaultValue:false,gtag:["ad_storage","ad_user_data","ad_personalization"]}],text:{prompt:{description:"<p>Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic.</p>",acceptAllButtonText:"Tout accepter",acceptAllButtonAccessibleLabel:"Tout accepter les cookies",rejectNonEssentialButtonText:"Tout refuser",rejectNonEssentialButtonAccessibleLabel:"Refuser les cookies non essentiels",preferencesButtonText:"Préférences",preferencesButtonAccessibleLabel:"Gérer mes préférences de cookies"},preferences:{title:"Vos préférences de confidentialité",description:"<p>Choisissez les cookies que vous souhaitez accepter. Vos préférences s'appliqueront à tout le site.</p>",saveButtonText:"Enregistrer",saveButtonAccessibleLabel:"Enregistrer mes préférences"}}});`;
+
+// 5. Chargeur GTM en idle (préserve les Core Web Vitals).
+const gtmLoader = `(function(){function l(){if(window.__gtmLoaded)return;window.__gtmLoaded=true;window.dataLayer=window.dataLayer||[];window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=${gtmId}';f.parentNode.insertBefore(j,f);}if('requestIdleCallback' in window){requestIdleCallback(l,{timeout:3000});}else{window.addEventListener('load',function(){setTimeout(l,1200);});}})();`;
+---
+
+{
+  part === 'head' && (
+    <Fragment>
+      <script is:inline set:html={consentDefault} />
+
+      <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/silktide/consent-manager@v2.0.0/silktide-consent-manager.css"
+        integrity="sha384-IO1E/jCrQXyH5rwcI0SXP7OXw47JFqQNDQcKhbFvqnL2IunBxxwE2Ne5XyAmCqKs"
+        crossorigin="anonymous"
+      />
+      <script
+        is:inline
+        src="https://cdn.jsdelivr.net/gh/silktide/consent-manager@v2.0.0/silktide-consent-manager.js"
+        integrity="sha384-j4NIMOecmtzMWe9GJADIIe5hTlHG63aiTQ/2XorW10RNyQJg+IU+xwFVDy45wBah"
+        crossorigin="anonymous"
+      />
+      <style is:inline set:html={stcmStyles} />
+      <script is:inline set:html={silktideInit} />
+
+      <script is:inline set:html={gtmLoader} />
+    </Fragment>
+  )
+}
+
+{
+  part === 'body' && (
+    <noscript>
+      <iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+        title="gtm"
+      />
+    </noscript>
+  )
+}

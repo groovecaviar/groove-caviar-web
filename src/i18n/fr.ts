@@ -7,6 +7,7 @@ export const fr = {
     parties: 'Soirées',
     events: 'Événements',
     music: 'Musique',
+    about: 'À propos',
     faq: 'FAQ',
     contact: 'Contact',
   },

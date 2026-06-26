@@ -1,0 +1,116 @@
+diff --git a/src/assets/styles/tailwind.css b/src/assets/styles/tailwind.css
+index ded1357..8bc6996 100755
+--- a/src/assets/styles/tailwind.css
++++ b/src/assets/styles/tailwind.css
+@@ -121,6 +121,22 @@
+   font-style: italic;
+ }
+ 
++/* Boutons Groove Caviar — style unique réutilisable partout.
++   btn-gc        : base (forme, padding, typo)
++   btn-gc-primary: plein or (sur tout fond)
++   btn-gc-outline: contour clair (sur fond sombre, ex. Hero) */
++@utility btn-gc {
++  @apply inline-flex items-center justify-center gap-2 rounded-md px-8 py-3.5 text-sm font-semibold uppercase tracking-wider transition;
++}
++
++@utility btn-gc-primary {
++  @apply btn-gc bg-primary text-black hover:bg-secondary;
++}
++
++@utility btn-gc-outline {
++  @apply btn-gc border border-white/40 text-white hover:border-primary hover:text-primary;
++}
++
+ .brand {
+   text-transform: uppercase;
+   letter-spacing: 0.01em;
+diff --git a/src/components/sections/EditorialStatement.astro b/src/components/sections/EditorialStatement.astro
+index b0afa31..3391ba0 100644
+--- a/src/components/sections/EditorialStatement.astro
++++ b/src/components/sections/EditorialStatement.astro
+@@ -27,7 +27,7 @@ const muted = isDark ? 'text-white/70' : 'text-black/65';
+ <section
+   class:list={[
+     'editorial relative w-full overflow-hidden',
+-    isDark ? 'bg-[#0D0D0D] text-white' : 'bg-[#F5F3EE] text-[#0D0D0D]',
++    isDark ? 'bg-[#0D0D0D] text-white' : 'bg-[#FCF7EC] text-[#0D0D0D]',
+   ]}
+ >
+   <div
+diff --git a/src/components/sections/HeroHome.astro b/src/components/sections/HeroHome.astro
+index 3a4862e..44df04c 100644
+--- a/src/components/sections/HeroHome.astro
++++ b/src/components/sections/HeroHome.astro
+@@ -30,16 +30,12 @@ const isWhatsApp = ctaPhone.type === 'whatsapp';
+   <div class="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-6 text-center text-white">
+     <h1 class="font-heading leading-[1.05] tracking-tight">
+       <span class="block text-4xl font-bold uppercase sm:text-5xl md:text-6xl">{titleLine1}</span>
+-      <span class="mt-1 block font-quote text-3xl text-primary sm:text-4xl">{titleAccent}</span>
+-      <span class="mt-3 block text-lg font-light text-white/95 sm:text-xl md:text-2xl" set:html={titleLine3} />
++      <span class="block text-4xl font-semibold uppercase text-primary sm:text-5xl md:text-6xl">{titleAccent}</span>
++      <span class="mt-5 block font-quote text-2xl text-white/90 sm:text-3xl" set:html={titleLine3} />
+     </h1>
+ 
+     <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row">
+-      <a
+-        href={ctaQuote.href}
+-        data-track={ctaQuote.track}
+-        class="rounded-md bg-primary px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-black transition hover:bg-secondary"
+-      >
++      <a href={ctaQuote.href} data-track={ctaQuote.track} class="btn-gc-primary">
+         {ctaQuote.text}
+       </a>
+       <a
+@@ -47,7 +43,7 @@ const isWhatsApp = ctaPhone.type === 'whatsapp';
+         data-track={ctaPhone.track}
+         target={isWhatsApp ? '_blank' : undefined}
+         rel={isWhatsApp ? 'noopener noreferrer' : undefined}
+-        class="inline-flex items-center gap-2 rounded-md border border-white/40 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition hover:border-primary hover:text-primary"
++        class="btn-gc-outline"
+       >
+         {
+           isWhatsApp ? (
+@@ -69,30 +65,25 @@ const isWhatsApp = ctaPhone.type === 'whatsapp';
+ </section>
+ 
+ <style>
+-  /* Image en N&B au départ ; passage en couleur déclenché au chargement (voir script). */
++  /* Sur écran tactile (pas de survol) : image en couleur par défaut. */
+   .hero-bg {
+-    filter: grayscale(1) brightness(1.18);
+-    transition: filter 1.8s ease;
++    filter: grayscale(0) brightness(1.18);
++    transition: filter 0.8s ease;
+     will-change: filter;
+   }
+-  .hero-bg.is-color {
+-    filter: grayscale(0) brightness(1.18);
++  /* Sur appareils avec souris : N&B par défaut, couleur au survol du Hero
++     (revient en N&B dès que la souris quitte la zone, y compris au scroll). */
++  @media (hover: hover) {
++    .hero-bg {
++      filter: grayscale(1) brightness(1.18);
++    }
++    .hero:hover .hero-bg {
++      filter: grayscale(0) brightness(1.18);
++    }
+   }
+   @media (prefers-reduced-motion: reduce) {
+     .hero-bg {
+-      filter: grayscale(0) brightness(1.18);
+       transition: none;
+     }
+   }
+ </style>
+-
+-<script>
+-  // Déclenche le passage N&B → couleur une fois l'image réellement chargée,
+-  // pour que l'animation soit toujours visible (et pas jouée sur un vide).
+-  const heroImg = document.querySelector('img.hero-bg') as HTMLImageElement | null;
+-  if (heroImg) {
+-    const reveal = () => requestAnimationFrame(() => setTimeout(() => heroImg.classList.add('is-color'), 150));
+-    if (heroImg.complete) reveal();
+-    else heroImg.addEventListener('load', reveal, { once: true });
+-  }
+-</script>

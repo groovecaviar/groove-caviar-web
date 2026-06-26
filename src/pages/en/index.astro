@@ -3,7 +3,7 @@ import Layout from '~/layouts/PageLayout.astro';
 import HomeSections from '~/components/sections/HomeSections.astro';
 import { home } from '~/data/pages/home';
 
-const locale = 'fr';
+const locale = 'en';
 ---
 <Layout lang={locale}>
   <HomeSections t={home[locale]} locale={locale} />

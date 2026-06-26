@@ -10,6 +10,7 @@ import ApplyColorMode from '~/components/common/ApplyColorMode.astro';
 import Metadata from '~/components/common/Metadata.astro';
 import SiteVerification from '~/components/common/SiteVerification.astro';
 import Analytics from '~/components/common/Analytics.astro';
+import GoogleTagManager from '~/components/analytics/GoogleTagManager.astro';
 import BasicScripts from '~/components/common/BasicScripts.astro';
 
 // Comment the line below to disable View Transitions
@@ -19,16 +20,19 @@ import type { MetaData as MetaDataType } from '~/types';
 
 export interface Props {
   metadata?: MetaDataType;
+  lang?: string;
 }
 
-const { metadata = {} } = Astro.props;
+const { metadata = {}, lang } = Astro.props;
 const { language, textDirection } = I18N;
+const htmlLang = lang ?? language;
 ---
 
 <!doctype html>
-<html lang={language} dir={textDirection} class="2xl:text-[20px]">
+<html lang={htmlLang} dir={textDirection} class="2xl:text-[20px]">
   <head>
     <CommonMeta />
+    <GoogleTagManager part="head" />
     <Favicons />
     <CustomStyles />
     <ApplyColorMode />
@@ -43,8 +47,13 @@ const { language, textDirection } = I18N;
   </head>
 
   <body class="antialiased text-default bg-page tracking-tight">
+    <GoogleTagManager part="body" />
     <slot />
 
     <BasicScripts />
+    <script>
+      import { initAnalytics } from '~/utils/analytics';
+      initAnalytics();
+    </script>
   </body>
 </html>

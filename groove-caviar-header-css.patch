@@ -1,0 +1,294 @@
+diff --git a/src/components/gc/Header.astro b/src/components/gc/Header.astro
+index bbca5e3..aa40838 100644
+--- a/src/components/gc/Header.astro
++++ b/src/components/gc/Header.astro
+@@ -27,16 +27,16 @@ const homeHref = p('/', '/en/');
+ const phoneHref = 'tel:+33623625704';
+ ---
+ 
+-<header id="gc-header" class="fixed inset-x-0 top-0 z-50 transition-colors duration-300">
+-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 lg:px-8">
++<header id="gc-header" class="gc-header">
++  <div class="gc-bar">
+     <!-- Logo + wordmark -->
+-    <a href={homeHref} class="flex shrink-0 items-center gap-3" aria-label="Groove Caviar — accueil">
+-      <img src={logoUrl} alt="" width="46" height="46" class="h-[46px] w-[46px] shrink-0" />
++    <a href={homeHref} class="gc-brand" aria-label="Groove Caviar — accueil">
++      <img src={logoUrl} alt="" width="46" height="46" class="gc-logo" />
+       <span class="gc-wordmark">Groove Caviar</span>
+     </a>
+ 
+     <!-- Navigation desktop -->
+-    <nav class="hidden items-center gap-7 lg:flex">
++    <nav class="gc-nav">
+       {
+         nav.map((item) => (
+           <a href={item.href} class:list={['gc-navlink', isActive(item.href) && 'is-active']}>
+@@ -47,37 +47,30 @@ const phoneHref = 'tel:+33623625704';
+     </nav>
+ 
+     <!-- Droite : langue + téléphone + burger -->
+-    <div class="flex items-center gap-4">
+-      <div class="gc-langgroup hidden md:flex">
++    <div class="gc-actions">
++      <div class="gc-langgroup gc-langgroup--desktop">
+         <a href={frUrl} class:list={['gc-lang', locale === 'fr' && 'is-active']}>FR</a>
+         <span class="gc-langsep">/</span>
+         <a href={enUrl} class:list={['gc-lang', locale === 'en' && 'is-active']}>EN</a>
+       </div>
+ 
+-      <a href={phoneHref} data-track="call-click" class="gc-cta hidden lg:inline-flex">
+-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
++      <a href={phoneHref} data-track="call-click" class="gc-cta gc-cta--desktop">
++        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="gc-icon" aria-hidden="true">
+           <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z" />
+         </svg>
+         {t.cta.call}
+       </a>
+ 
+       <!-- Burger (mobile/tablette) -->
+-      <button
+-        id="gc-burger"
+-        type="button"
+-        class="gc-burger inline-flex lg:hidden"
+-        aria-label="Menu"
+-        aria-expanded="false"
+-        aria-controls="gc-mobile"
+-      >
++      <button id="gc-burger" type="button" class="gc-burger" aria-label="Menu" aria-expanded="false" aria-controls="gc-mobile">
+         <span></span><span></span><span></span>
+       </button>
+     </div>
+   </div>
+ 
+   <!-- Menu mobile -->
+-  <div id="gc-mobile" class="gc-mobile lg:hidden" hidden>
+-    <nav class="flex flex-col gap-1 px-6 py-6">
++  <div id="gc-mobile" class="gc-mobile">
++    <nav class="gc-mobile-nav">
+       {
+         nav.map((item) => (
+           <a href={item.href} class:list={['gc-mobile-link', isActive(item.href) && 'is-active']}>
+@@ -86,14 +79,14 @@ const phoneHref = 'tel:+33623625704';
+         ))
+       }
+     </nav>
+-    <div class="flex items-center justify-between border-t border-white/10 px-6 py-5">
++    <div class="gc-mobile-foot">
+       <div class="gc-langgroup">
+         <a href={frUrl} class:list={['gc-lang', locale === 'fr' && 'is-active']}>FR</a>
+         <span class="gc-langsep">/</span>
+         <a href={enUrl} class:list={['gc-lang', locale === 'en' && 'is-active']}>EN</a>
+       </div>
+-      <a href={phoneHref} data-track="call-click" class="gc-cta inline-flex">
+-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
++      <a href={phoneHref} data-track="call-click" class="gc-cta">
++        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="gc-icon" aria-hidden="true">
+           <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z" />
+         </svg>
+         {t.cta.call}
+@@ -103,17 +96,47 @@ const phoneHref = 'tel:+33623625704';
+ </header>
+ 
+ <style>
+-  /* Fond : transparent en haut, noir profond au scroll (ou menu ouvert). */
+-  #gc-header {
++  /* ---------- Conteneur ---------- */
++  .gc-header {
++    position: fixed;
++    inset: 0 0 auto 0;
++    z-index: 50;
+     background-color: transparent;
++    transition: background-color 0.3s ease;
+   }
+-  #gc-header.is-scrolled,
+-  #gc-header.is-open {
++  .gc-header.is-scrolled,
++  .gc-header.is-open {
+     background-color: #0d0d0d;
+     box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.06);
+   }
+ 
+-  /* Wordmark : ~la moitié de la hauteur du logo, sur une ligne. */
++  .gc-bar {
++    max-width: 80rem;
++    margin-inline: auto;
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    gap: 1rem;
++    padding: 0.75rem 1.25rem;
++  }
++  @media (min-width: 1024px) {
++    .gc-bar {
++      padding-inline: 2rem;
++    }
++  }
++
++  /* ---------- Logo + wordmark ---------- */
++  .gc-brand {
++    display: flex;
++    flex-shrink: 0;
++    align-items: center;
++    gap: 0.75rem;
++  }
++  .gc-logo {
++    width: 46px;
++    height: 46px;
++    flex-shrink: 0;
++  }
+   .gc-wordmark {
+     font-family: var(--aw-font-heading, sans-serif);
+     font-weight: 700;
+@@ -125,7 +148,17 @@ const phoneHref = 'tel:+33623625704';
+     font-size: clamp(1.7rem, 4.5vw, 2.05rem);
+   }
+ 
+-  /* Liens de navigation : capitales, gras, soulignement or à l'actif/survol. */
++  /* ---------- Navigation desktop ---------- */
++  .gc-nav {
++    display: none;
++    align-items: center;
++    gap: 1.75rem;
++  }
++  @media (min-width: 1024px) {
++    .gc-nav {
++      display: flex;
++    }
++  }
+   .gc-navlink {
+     position: relative;
+     display: inline-block;
+@@ -161,8 +194,16 @@ const phoneHref = 'tel:+33623625704';
+     color: #fff;
+   }
+ 
+-  /* Sélecteur de langue */
++  /* ---------- Bloc actions (droite) ---------- */
++  .gc-actions {
++    display: flex;
++    align-items: center;
++    gap: 1rem;
++  }
++
++  /* ---------- Sélecteur de langue ---------- */
+   .gc-langgroup {
++    display: flex;
+     align-items: center;
+     gap: 0.4rem;
+     font-size: 0.78rem;
+@@ -171,6 +212,14 @@ const phoneHref = 'tel:+33623625704';
+     letter-spacing: 0.08em;
+     line-height: 1;
+   }
++  .gc-langgroup--desktop {
++    display: none;
++  }
++  @media (min-width: 768px) {
++    .gc-langgroup--desktop {
++      display: flex;
++    }
++  }
+   .gc-langsep {
+     color: rgba(255, 255, 255, 0.3);
+   }
+@@ -185,8 +234,9 @@ const phoneHref = 'tel:+33623625704';
+     color: #af9453;
+   }
+ 
+-  /* Bouton téléphone (display fourni par les utilitaires inline-flex / lg:inline-flex) */
++  /* ---------- Bouton téléphone ---------- */
+   .gc-cta {
++    display: inline-flex;
+     align-items: center;
+     gap: 0.5rem;
+     border-radius: 6px;
+@@ -203,9 +253,23 @@ const phoneHref = 'tel:+33623625704';
+   .gc-cta:hover {
+     background-color: #8a7440;
+   }
++  /* Variante en-tête : masquée sous le desktop (le menu mobile garde le sien). */
++  .gc-cta--desktop {
++    display: none;
++  }
++  @media (min-width: 1024px) {
++    .gc-cta--desktop {
++      display: inline-flex;
++    }
++  }
++  .gc-icon {
++    width: 1rem;
++    height: 1rem;
++  }
+ 
+-  /* Burger (display fourni par inline-flex ; masqué en lg via lg:hidden) */
++  /* ---------- Burger (mobile/tablette) ---------- */
+   .gc-burger {
++    display: inline-flex;
+     flex-direction: column;
+     justify-content: center;
+     gap: 5px;
+@@ -213,6 +277,11 @@ const phoneHref = 'tel:+33623625704';
+     height: 30px;
+     padding: 4px;
+   }
++  @media (min-width: 1024px) {
++    .gc-burger {
++      display: none;
++    }
++  }
+   .gc-burger span {
+     display: block;
+     height: 2px;
+@@ -231,11 +300,27 @@ const phoneHref = 'tel:+33623625704';
+     transform: translateY(-7px) rotate(-45deg);
+   }
+ 
+-  /* Panneau mobile */
++  /* ---------- Panneau mobile ---------- */
+   .gc-mobile {
++    display: none;
+     background-color: #0d0d0d;
+     border-top: 1px solid rgba(255, 255, 255, 0.08);
+   }
++  .gc-mobile.is-open {
++    display: block;
++  }
++  @media (min-width: 1024px) {
++    .gc-mobile,
++    .gc-mobile.is-open {
++      display: none;
++    }
++  }
++  .gc-mobile-nav {
++    display: flex;
++    flex-direction: column;
++    gap: 0.25rem;
++    padding: 1.5rem;
++  }
+   .gc-mobile-link {
+     font-family: var(--aw-font-heading, sans-serif);
+     font-size: 1.1rem;
+@@ -248,6 +333,13 @@ const phoneHref = 'tel:+33623625704';
+   .gc-mobile-link.is-active {
+     color: #af9453;
+   }
++  .gc-mobile-foot {
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    border-top: 1px solid rgba(255, 255, 255, 0.1);
++    padding: 1.25rem 1.5rem;
++  }
+ </style>
+ 
+ <script>
+@@ -267,7 +359,7 @@ const phoneHref = 'tel:+33623625704';
+     burger.classList.toggle('is-open', open);
+     burger.setAttribute('aria-expanded', String(open));
+     header.classList.toggle('is-open', open);
+-    mobile.hidden = !open;
++    mobile.classList.toggle('is-open', open);
+     document.body.style.overflow = open ? 'hidden' : '';
+   };
+   burger?.addEventListener('click', () => {

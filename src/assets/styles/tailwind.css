@@ -14,10 +14,10 @@
   --color-muted: var(--aw-color-text-muted);
 
   --font-sans:
-    'var(--aw-font-sans, ui-sans-serif)', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    var(--aw-font-sans, ui-sans-serif), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-serif: 'var(--aw-font-serif, ui-serif)', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-heading: 'var(--aw-font-heading, ui-sans-serif)', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--aw-font-serif, ui-serif), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-heading: var(--aw-font-heading, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
 
   --animate-fade: fadeInUp 1s both;
 
@@ -117,5 +117,29 @@
 }
 
 @utility font-quote {
-  font-family: 'Rock Salt', cursive;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+}
+
+/* Boutons Groove Caviar — style unique réutilisable partout.
+   btn-gc        : base (forme, padding, typo)
+   btn-gc-primary: plein or (sur tout fond)
+   btn-gc-outline: contour clair (sur fond sombre, ex. Hero) */
+@utility btn-gc {
+  @apply inline-flex items-center justify-center gap-2 rounded-md px-8 py-3.5 text-sm font-semibold uppercase tracking-wider transition;
+}
+
+@utility btn-gc-primary {
+  @apply btn-gc bg-primary text-black hover:bg-secondary;
+}
+
+@utility btn-gc-outline {
+  @apply btn-gc border border-white/40 text-white hover:border-primary hover:text-primary;
+}
+
+.brand {
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: #af9453;
+  font-weight: 800;
 }

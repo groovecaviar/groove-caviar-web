@@ -1,0 +1,495 @@
+---
+import logoUrl from '~/assets/images/logo-circulaire.svg?url';
+import { getLocale, useTranslations } from '~/i18n/ui';
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const p = (frVal: string, enVal: string) => (locale === 'fr' ? frVal : enVal);
+
+const homeHref = p('/', '/en/');
+
+// ---- Navigation ----
+const footerNav = [
+  { label: t.nav.weddings, href: p('/mariages', '/en/weddings') },
+  { label: t.nav.parties, href: p('/soirees', '/en/parties') },
+  { label: t.nav.events, href: p('/evenements', '/en/events') },
+  { label: t.nav.music, href: p('/musique', '/en/music') },
+  { label: t.nav.about, href: p('/a-propos', '/en/about') },
+  { label: t.nav.faq, href: p('/faq', '/en/faq') },
+  { label: t.nav.contact, href: p('/contact', '/en/contact') },
+];
+
+// ---- Coordonnées (NAP) ----
+const nap = {
+  address: '3 allée Gabrielle Doziat, 64200 Biarritz',
+  maps: 'https://maps.app.goo.gl/5PteWHKmc19sPByR7',
+  phoneDisplay: '06 23 62 57 04',
+  phoneHref: 'tel:+33623625704',
+  email: 'contact@groovecaviar.com',
+};
+
+// ---- Réseaux sociaux (icônes monochromes, viewBox 0 0 24 24) ----
+const socials = [
+  {
+    name: 'Instagram',
+    href: 'https://www.instagram.com/groove.caviar',
+    path: 'M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077',
+  },
+  {
+    name: 'Facebook',
+    href: 'https://www.facebook.com/groovecaviar',
+    path: 'M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z',
+  },
+  {
+    name: 'Mixcloud',
+    href: 'https://www.mixcloud.com/groovecaviar/',
+    path: 'M2.462 8.596l1.372 6.49h.319l1.372-6.49h2.462v6.808H6.742v-5.68l.232-.81h-.402l-1.43 6.49H2.854l-1.44-6.49h-.391l.222.81v5.68H0V8.596zM24 8.63v1.429L21.257 12 24 13.941v1.43l-3.235-2.329h-.348l-3.226 2.329v-1.43l2.734-1.94-2.733-1.942V8.63l3.225 2.338h.348zm-7.869 2.75v1.24H9.304v-1.24z',
+  },
+  {
+    name: 'Spotify',
+    href: 'https://open.spotify.com/user/yvc9dh69dsfayamamf07z2p9w',
+    path: 'M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z',
+  },
+  {
+    name: 'LinkedIn',
+    href: 'https://www.linkedin.com/company/groovecaviar/about/',
+    path: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z',
+  },
+];
+
+// ---- Newsletter Brevo ----
+const brevoAction =
+  'https://9779d3f4.sibforms.com/serve/MUIFAJXUKhe4Tg-SyrEIG03ZG5Xm7vu618IWtdKsZMo5MhNsieXvApcsJ6CHHoaJ3SrnV0gjv-7Cm8Nuz7TeUIR0gPCDn3MJ4LCcDPbJlu--pgnkD_t-EuJyPT2BYMxOv5CTYbm1rdsBUG4S9uti-xRw1HrEAgrxe5v3Z8ANKU4jqpH7fh14n0Og8l6JRIwTOJXQKdSxRTc-uq9t8Q==';
+
+// Textes
+const tagline = p(
+  'DJ & direction musicale haut de gamme pour mariages, soirées et événements d’exception.',
+  'Premium DJ & music curation for weddings, parties and exceptional events.'
+);
+const navTitle = p('Navigation', 'Navigation');
+const socialTitle = p('Réseaux sociaux', 'Follow us');
+const newsTitle = 'Newsletter';
+const newsIntro = p(
+  'Dates, sélections musicales et coulisses — directement dans votre boîte mail.',
+  'Dates, music selections and behind-the-scenes — straight to your inbox.'
+);
+const emailPlaceholder = p('Votre email', 'Your email');
+const subscribeLabel = p('S’inscrire', 'Subscribe');
+const successMsg = p('Votre inscription est confirmée.', 'Your subscription is confirmed.');
+const errorMsg = p(
+  'Nous n’avons pas pu confirmer votre inscription.',
+  'We could not confirm your subscription.'
+);
+const rights = p('Tous droits réservés.', 'All rights reserved.');
+const year = new Date().getFullYear();
+
+// ---- Liens légaux (pages dédiées) ----
+const legalLinks = [
+  {
+    label: p('Politique de confidentialité', 'Privacy Policy'),
+    href: p('/politique-de-confidentialite', '/en/privacy-policy'),
+  },
+  {
+    label: p('Conditions générales de vente', 'Terms of Sale'),
+    href: p('/conditions-generales-de-vente', '/en/terms-of-sale'),
+  },
+];
+
+// ---- JSON-LD LocalBusiness ----
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': 'https://www.groovecaviar.com',
+  name: 'Groove Caviar',
+  description: tagline,
+  url: 'https://www.groovecaviar.com',
+  telephone: '+33623625704',
+  email: nap.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '3 allée Gabrielle Doziat',
+    postalCode: '64200',
+    addressLocality: 'Biarritz',
+    addressRegion: 'Nouvelle-Aquitaine',
+    addressCountry: 'FR',
+  },
+  areaServed: 'Pays Basque, Landes, France',
+  sameAs: socials.map((s) => s.href),
+};
+
+// ---- Config Brevo (localisée), injectée avant main.js ----
+const brevoConfig = `
+window.REQUIRED_CODE_ERROR_MESSAGE = '${p('Veuillez choisir un code pays', 'Please choose a country code')}';
+window.LOCALE = '${locale}';
+window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "${p('Les informations fournies ne sont pas valides. Veuillez vérifier le format du champ et réessayer.', 'The information provided is invalid. Please check the field format and try again.')}";
+window.REQUIRED_ERROR_MESSAGE = "${p('Vous devez renseigner ce champ.', 'This field is required.')}";
+window.GENERIC_INVALID_MESSAGE = "${p('Les informations fournies ne sont pas valides. Veuillez vérifier le format du champ et réessayer.', 'The information provided is invalid. Please check the field format and try again.')}";
+window.translation = { common: { selectedList: '{quantity} liste sélectionnée', selectedLists: '{quantity} listes sélectionnées', selectedOption: '{quantity} sélectionné', selectedOptions: '{quantity} sélectionnés' } };
+var AUTOHIDE = Boolean(0);
+`;
+---
+
+<footer class="gc-footer">
+  <div class="gc-footer-inner">
+    <div class="gc-footer-grid">
+      <!-- Colonne 1 : Marque + coordonnées -->
+      <div class="gc-footer-col">
+        <a href={homeHref} class="gc-footer-brand" aria-label="Groove Caviar — accueil">
+          <img src={logoUrl} alt="" width="40" height="40" class="gc-footer-logo" />
+          <span class="brand gc-footer-wordmark">Groove Caviar</span>
+        </a>
+        <p class="gc-footer-tagline">{tagline}</p>
+        <address class="gc-footer-nap">
+          <a href={nap.maps} target="_blank" rel="noopener" class="gc-footer-napline">{nap.address}</a>
+          <a href={nap.phoneHref} data-track="call-click" class="gc-footer-napline">{nap.phoneDisplay}</a>
+          <a href={`mailto:${nap.email}`} data-track="email-click" class="gc-footer-napline">{nap.email}</a>
+        </address>
+      </div>
+
+      <!-- Colonne 2 : Navigation -->
+      <nav class="gc-footer-col" aria-label={navTitle}>
+        <h3 class="gc-footer-title">{navTitle}</h3>
+        <ul class="gc-footer-links">
+          {footerNav.map((item) => (
+            <li>
+              <a href={item.href} class="gc-footer-link">{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Colonne 3 : Réseaux + Newsletter -->
+      <div class="gc-footer-col">
+        <h3 class="gc-footer-title">{socialTitle}</h3>
+        <div class="gc-footer-socials">
+          {socials.map((s) => (
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener"
+              class="gc-footer-social"
+              aria-label={s.name}
+              data-track="social-click"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d={s.path} />
+              </svg>
+            </a>
+          ))}
+        </div>
+
+        <h3 class="gc-footer-title gc-footer-title--news">{newsTitle}</h3>
+        <p class="gc-footer-news-intro">{newsIntro}</p>
+
+        <div class="gc-news">
+          <div id="error-message" class="sib-form-message-panel gc-news-msg gc-news-msg--error">{errorMsg}</div>
+          <div id="success-message" class="sib-form-message-panel gc-news-msg gc-news-msg--success">{successMsg}</div>
+
+          <div id="sib-form-container">
+            <div id="sib-container">
+              <form id="sib-form" method="POST" action={brevoAction} data-type="subscription" class="gc-news-form">
+                <div class="sib-input sib-form-block gc-news-field">
+                  <input
+                    class="input gc-news-input"
+                    type="email"
+                    id="EMAIL"
+                    name="EMAIL"
+                    autocomplete="email"
+                    placeholder={emailPlaceholder}
+                    aria-label={emailPlaceholder}
+                    data-required="true"
+                    required
+                  />
+                  <input type="hidden" id="ORIGINE" name="ORIGINE" value="footer_groovecaviar_com" />
+                  <label class="entry__error entry__error--primary gc-news-error"></label>
+                </div>
+
+                <button class="sib-form-block__button sib-form-block__button-with-loader gc-news-button" form="sib-form" type="submit">
+                  {subscribeLabel}
+                </button>
+
+                <!-- Anti-spam (honeypot) : ne pas remplir -->
+                <input type="text" name="email_address_check" value="" class="input--hidden" tabindex="-1" aria-hidden="true" />
+                <!-- Langue de l'inscrit : fr sur les pages FR, en sur les pages EN -->
+                <input type="hidden" name="locale" value={locale} />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gc-footer-bottom">
+      <p>© {year} GROOVE CAVIAR. {rights}</p>
+      <nav class="gc-footer-legal" aria-label={p('Liens légaux', 'Legal links')}>
+        {legalLinks.map((item) => (
+          <a href={item.href} class="gc-footer-legal-link">{item.label}</a>
+        ))}
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+<script is:inline set:html={brevoConfig} />
+<script is:inline defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
+
+<style>
+  .gc-footer {
+    background-color: #0a0a0a;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .gc-footer-inner {
+    max-width: 80rem;
+    margin-inline: auto;
+    padding: 4rem 1.25rem 2.5rem;
+  }
+  @media (min-width: 1024px) {
+    .gc-footer-inner {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* Grille : 1 colonne en mobile, 3 colonnes dès le bureau */
+  .gc-footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  @media (min-width: 768px) {
+    .gc-footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .gc-footer-grid {
+      grid-template-columns: 1.4fr 1fr 1.4fr;
+      gap: 4rem;
+    }
+  }
+
+  /* Colonne 1 : marque */
+  .gc-footer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .gc-footer-logo {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+  .gc-footer-wordmark {
+    font-family: var(--aw-font-heading, sans-serif);
+    line-height: 1;
+    white-space: nowrap;
+    font-size: 1.4rem;
+  }
+  .gc-footer-tagline {
+    margin-top: 1.25rem;
+    max-width: 22rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .gc-footer-nap {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    font-style: normal;
+  }
+  .gc-footer-napline {
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.2s ease;
+  }
+  .gc-footer-napline:hover {
+    color: #af9453;
+  }
+
+  /* Titres de colonne */
+  .gc-footer-title {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #af9453;
+    margin-bottom: 1.25rem;
+  }
+  .gc-footer-title--news {
+    margin-top: 2.25rem;
+  }
+
+  /* Colonne 2 : liens */
+  .gc-footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .gc-footer-link {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.2s ease;
+  }
+  .gc-footer-link:hover {
+    color: #af9453;
+  }
+
+  /* Réseaux sociaux */
+  .gc-footer-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .gc-footer-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 9999px;
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .gc-footer-social svg {
+    width: 18px;
+    height: 18px;
+  }
+  .gc-footer-social:hover {
+    color: #0d0d0d;
+    background-color: #af9453;
+    border-color: #af9453;
+  }
+
+  /* Newsletter */
+  .gc-footer-news-intro {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1rem;
+    max-width: 24rem;
+  }
+  .gc-news-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 24rem;
+  }
+  .gc-news-field {
+    display: flex;
+    flex-direction: column;
+  }
+  .gc-news-input {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 6px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.95rem;
+    color: #fff;
+    transition: border-color 0.2s ease;
+  }
+  .gc-news-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+  .gc-news-input:focus {
+    outline: none;
+    border-color: #af9453;
+  }
+  .gc-news-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #af9453;
+    color: #0d0d0d;
+    border: 0;
+    border-radius: 6px;
+    padding: 0.7rem 1rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: background-color 0.25s ease;
+  }
+  .gc-news-button:hover {
+    background-color: #8a7440;
+  }
+  .gc-news-error {
+    display: block;
+    color: #ff8a8a;
+    font-size: 0.8rem;
+  }
+  .gc-news-error:empty {
+    display: none;
+  }
+
+  /* Panneaux de message Brevo : cachés par défaut, affichés par main.js */
+  .sib-form-message-panel {
+    display: none;
+    border-radius: 6px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.88rem;
+    margin-bottom: 0.75rem;
+    max-width: 24rem;
+  }
+  .gc-news-msg--success {
+    background-color: rgba(19, 206, 102, 0.12);
+    border: 1px solid #13ce66;
+    color: #8ff0bb;
+  }
+  .gc-news-msg--error {
+    background-color: rgba(255, 73, 73, 0.12);
+    border: 1px solid #ff4949;
+    color: #ff9a9a;
+  }
+
+  /* Honeypot anti-spam */
+  .input--hidden {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* Bas de footer */
+  .gc-footer-bottom {
+    margin-top: 3.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.45);
+  }
+  @media (min-width: 768px) {
+    .gc-footer-bottom {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  .gc-footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+  .gc-footer-legal-link {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.45);
+    transition: color 0.2s ease;
+  }
+  .gc-footer-legal-link:hover {
+    color: #af9453;
+  }
+</style>

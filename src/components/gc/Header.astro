@@ -1,0 +1,368 @@
+---
+import logoUrl from '~/assets/images/logo-circulaire.svg?url';
+import { getLocale, useTranslations, getAlternateUrl } from '~/i18n/ui';
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const p = (frVal: string, enVal: string) => (locale === 'fr' ? frVal : enVal);
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const nav = [
+  { label: t.nav.weddings, href: p('/mariages', '/en/weddings') },
+  { label: t.nav.parties, href: p('/soirees', '/en/parties') },
+  { label: t.nav.events, href: p('/evenements', '/en/events') },
+  { label: t.nav.music, href: p('/musique', '/en/music') },
+  { label: t.nav.about, href: p('/a-propos', '/en/about') },
+  { label: t.nav.contact, href: p('/contact', '/en/contact') },
+];
+
+const isActive = (href: string) => pathname === href.replace(/\/$/, '');
+
+const alt = getAlternateUrl(Astro.url.pathname, locale);
+const frUrl = locale === 'fr' ? Astro.url.pathname : (alt ?? '/');
+const enUrl = locale === 'en' ? Astro.url.pathname : (alt ?? '/en/');
+
+const homeHref = p('/', '/en/');
+const phoneHref = 'tel:+33623625704';
+---
+
+<header id="gc-header" class="gc-header">
+  <div class="gc-bar">
+    <!-- Logo + wordmark -->
+    <a href={homeHref} class="gc-brand" aria-label="Groove Caviar — accueil">
+      <img src={logoUrl} alt="" width="37" height="37" class="gc-logo" />
+      <span class="brand gc-wordmark">Groove Caviar</span>
+    </a>
+
+    <!-- Navigation desktop -->
+    <nav class="gc-nav">
+      {
+        nav.map((item) => (
+          <a href={item.href} class:list={['gc-navlink', isActive(item.href) && 'is-active']}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <!-- Droite : langue + téléphone + burger -->
+    <div class="gc-actions">
+      <div class="gc-langgroup gc-langgroup--desktop">
+        <a href={frUrl} class:list={['gc-lang', locale === 'fr' && 'is-active']}>FR</a>
+        <span class="gc-langsep">/</span>
+        <a href={enUrl} class:list={['gc-lang', locale === 'en' && 'is-active']}>EN</a>
+      </div>
+
+      <a href={phoneHref} data-track="call-click" class="gc-cta gc-cta--desktop">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="gc-icon" aria-hidden="true">
+          <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z" />
+        </svg>
+        {t.cta.call}
+      </a>
+
+      <!-- Burger (mobile/tablette) -->
+      <button id="gc-burger" type="button" class="gc-burger" aria-label="Menu" aria-expanded="false" aria-controls="gc-mobile">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menu mobile -->
+  <div id="gc-mobile" class="gc-mobile">
+    <nav class="gc-mobile-nav">
+      {
+        nav.map((item) => (
+          <a href={item.href} class:list={['gc-mobile-link', isActive(item.href) && 'is-active']}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="gc-mobile-foot">
+      <div class="gc-langgroup">
+        <a href={frUrl} class:list={['gc-lang', locale === 'fr' && 'is-active']}>FR</a>
+        <span class="gc-langsep">/</span>
+        <a href={enUrl} class:list={['gc-lang', locale === 'en' && 'is-active']}>EN</a>
+      </div>
+      <a href={phoneHref} data-track="call-click" class="gc-cta">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="gc-icon" aria-hidden="true">
+          <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z" />
+        </svg>
+        {t.cta.call}
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* ---------- Conteneur ---------- */
+  .gc-header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+  }
+  .gc-header.is-scrolled,
+  .gc-header.is-open {
+    background-color: #0d0d0d;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .gc-bar {
+    max-width: 80rem;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+  }
+  @media (min-width: 1024px) {
+    .gc-bar {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* ---------- Logo + wordmark ---------- */
+  .gc-brand {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .gc-logo {
+    width: 37px;
+    height: 37px;
+    flex-shrink: 0;
+  }
+  .gc-wordmark {
+    /* Couleur, graisse, capitales et letter-spacing viennent de la classe .brand */
+    font-family: var(--aw-font-heading, sans-serif);
+    line-height: 1;
+    white-space: nowrap;
+    font-size: clamp(1.4rem, 3.5vw, 1.6rem);
+  }
+
+  /* ---------- Navigation desktop ---------- */
+  .gc-nav {
+    display: none;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    .gc-nav {
+      display: flex;
+    }
+  }
+  .gc-navlink {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.15;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.85);
+    transition: color 0.2s ease;
+  }
+  .gc-navlink::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -7px;
+    width: 100%;
+    height: 1.5px;
+    background-color: #af9453;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .gc-navlink:hover {
+    color: #fff;
+  }
+  .gc-navlink:hover::after,
+  .gc-navlink.is-active::after {
+    transform: scaleX(1);
+  }
+  .gc-navlink.is-active {
+    color: #fff;
+  }
+
+  /* ---------- Bloc actions (droite) ---------- */
+  .gc-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  /* ---------- Sélecteur de langue ---------- */
+  .gc-langgroup {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+  .gc-langgroup--desktop {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .gc-langgroup--desktop {
+      display: flex;
+    }
+  }
+  .gc-langsep {
+    color: rgba(255, 255, 255, 0.3);
+  }
+  .gc-lang {
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.2s ease;
+  }
+  .gc-lang:hover {
+    color: #fff;
+  }
+  .gc-lang.is-active {
+    color: #af9453;
+  }
+
+  /* ---------- Bouton téléphone ---------- */
+  .gc-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 6px;
+    background-color: #af9453;
+    color: #0d0d0d;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    white-space: nowrap;
+    transition: background-color 0.25s ease;
+  }
+  .gc-cta:hover {
+    background-color: #8a7440;
+  }
+  /* Variante en-tête : masquée sous le desktop (le menu mobile garde le sien). */
+  .gc-cta--desktop {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .gc-cta--desktop {
+      display: inline-flex;
+    }
+  }
+  .gc-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* ---------- Burger (mobile/tablette) ---------- */
+  .gc-burger {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 30px;
+    height: 30px;
+    padding: 4px;
+  }
+  @media (min-width: 1024px) {
+    .gc-burger {
+      display: none;
+    }
+  }
+  .gc-burger span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+  }
+  .gc-burger.is-open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .gc-burger.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+  .gc-burger.is-open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* ---------- Panneau mobile ---------- */
+  .gc-mobile {
+    display: none;
+    background-color: #0d0d0d;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .gc-mobile.is-open {
+    display: block;
+  }
+  @media (min-width: 1024px) {
+    .gc-mobile,
+    .gc-mobile.is-open {
+      display: none;
+    }
+  }
+  .gc-mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.5rem;
+  }
+  .gc-mobile-link {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.6rem 0;
+  }
+  .gc-mobile-link.is-active {
+    color: #af9453;
+  }
+  .gc-mobile-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.25rem 1.5rem;
+  }
+</style>
+
+<script>
+  const header = document.getElementById('gc-header');
+  const burger = document.getElementById('gc-burger');
+  const mobile = document.getElementById('gc-mobile');
+
+  const onScroll = () => {
+    if (!header) return;
+    header.classList.toggle('is-scrolled', window.scrollY > 20);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const toggleMenu = (open: boolean) => {
+    if (!burger || !mobile || !header) return;
+    burger.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    header.classList.toggle('is-open', open);
+    mobile.classList.toggle('is-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  burger?.addEventListener('click', () => {
+    toggleMenu(burger.getAttribute('aria-expanded') !== 'true');
+  });
+  mobile?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => toggleMenu(false)));
+</script>
