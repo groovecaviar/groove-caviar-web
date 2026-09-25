@@ -3,6 +3,23 @@
 > Lu automatiquement par Claude Code au démarrage. Décrit le projet, les conventions et l'avancement.
 > Pour la doc du framework AstroWind, voir aussi [AGENTS.md](./AGENTS.md).
 
+## ⛔ Règles strictes (priorité absolue)
+
+1. Ne JAMAIS modifier un fichier qui n'est pas explicitement nommé dans ma demande.
+
+2. Ne JAMAIS « améliorer », refactorer ou nettoyer du code de ma propre initiative.
+
+3. Interdiction absolue de toucher à : tailwind.css, les classes btn-gc*, Header.astro, Footer.astro, sauf demande explicite les nommant.
+
+4. Si une tâche semble nécessiter de modifier autre chose que ce qui est demandé, je M'ARRÊTE et je demande la permission avant.
+
+5. Toujours travailler dans le périmètre minimal strictement nécessaire.
+
+## Design system — règles
+
+- **Boutons côte à côte** : 2 boutons voisins ont TOUJOURS exactement la même largeur. Les envelopper dans `<div class="gc-btn-pair">` (défini dans `tailwind.css`, composant n°7).
+- **Points d'interrogation (français)** : l'espace avant chaque « ? » est TOUJOURS une espace insécable (`&nbsp;?` dans du HTML, `\u00A0?` dans une chaîne JS), pour que le « ? » ne passe jamais seul à la ligne. S'applique à tout texte français, présent et futur.
+
 ## Le projet
 
 Site vitrine **bilingue** (français à la racine `/`, anglais sous `/en/`) pour **Groove Caviar**,
@@ -78,7 +95,7 @@ Production : https://www.groovecaviar.com
 
 ## Coordonnées & identifiants
 
-- Adresse : 3 allée Gabrielle Doziat, 64200 Biarritz
+- Adresse : 3 allée Gabrielle Dorziat, 64200 Biarritz
 - Tél : 06 23 62 57 04 / `tel:+33623625704` — WhatsApp : wa.me/33623625704
 - Email : contact@groovecaviar.com — Maps : https://maps.app.goo.gl/5PteWHKmc19sPByR7
 - SIRET : 503 532 616 00029

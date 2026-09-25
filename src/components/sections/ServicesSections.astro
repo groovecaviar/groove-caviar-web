@@ -1,0 +1,500 @@
+---
+import { Image } from 'astro:assets';
+import heroImg    from '~/assets/images/SERVICES-hero.webp';
+import imgDj      from '~/assets/images/SERVICES-prestation-dj.webp';
+import imgSpeaker from '~/assets/images/SERVICES-prestation-speaker.webp';
+import imgSono    from '~/assets/images/SERVICES-sono.webp';
+import imgDesign  from '~/assets/images/SERVICES-design-sonore.webp';
+import imgProd    from '~/assets/images/SERVICES-prod-event.webp';
+import type { ServicesContent } from '~/data/pages/services';
+
+export interface Props {
+  t: ServicesContent;
+  locale: 'fr' | 'en';
+}
+
+const { t, locale } = Astro.props;
+const svcImages = [imgDj, imgSpeaker, imgSono, imgDesign, imgProd];
+
+// Colle les guillemets français à leur contenu (jamais séparés en fin de ligne)
+const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\u00A0»');
+---
+
+<!-- ═══ HERO ═══════════════════════════════════════════════════════════════ -->
+<section class="gc-hero-section gc-srv-hero">
+  <Image
+    src={heroImg}
+    alt=""
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="gc-hero-media gc-srv-hero-bg"
+  />
+  <div class="gc-srv-hero-overlay" aria-hidden="true"></div>
+  <div class="gc-srv-hero-content">
+    <span class="gc-srv-eyebrow">{t.hero.eyebrow}</span>
+    <h1 class="gc-srv-h1 gc-srv-h1-zoom">
+      <span class="gc-srv-h1-white">{t.hero.titleWhite}</span>
+      {' '}
+      <span class="gc-srv-h1-gold gc-shimmer">{t.hero.titleGold}</span>
+    </h1>
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- ═══ BANDEAU INTRO ═════════════════════════════════════════════════════ -->
+<section class="gc-srv-intro gc-reveal">
+  <div class="gc-srv-intro-inner">
+    <h2 class="gc-srv-intro-title">{t.intro.title}</h2>
+    <p class="gc-srv-intro-text" set:html={nbsp(t.intro.paragraph)} />
+  </div>
+</section>
+
+<!-- ═══ SECTIONS 01-05 ════════════════════════════════════════════════════ -->
+{t.services.map((svc, i) => (
+  <section class:list={[
+    'gc-srv-section gc-reveal',
+    i % 2 === 0 ? 'gc-srv-section--white' : 'gc-srv-section--tint',
+    svc.reverse && 'gc-srv-section--reverse',
+  ]}>
+    <div class="gc-srv-inner">
+
+      <!-- Image -->
+      <div class="gc-srv-media">
+        <div class="gc-media-wrap gc-media-hover">
+          <Image
+            src={svcImages[i]}
+            alt={svc.imageAlt}
+            widths={[400, 700, 900]}
+            sizes="(min-width: 1024px) 30vw, 92vw"
+          />
+        </div>
+      </div>
+
+      <!-- Contenu texte -->
+      <div class="gc-srv-content">
+        <span class="gc-srv-accroche">{svc.accroche}</span>
+        <h2 class="gc-srv-title">{svc.title}</h2>
+        {svc.subtitle && (
+          <p class="gc-srv-subtitle-text">{nbsp(svc.subtitle)}</p>
+        )}
+        <div class="gc-srv-body" set:html={nbsp(svc.body)} />
+        {svc.list && (
+          <ul class="gc-srv-list">
+            {svc.list.map((item) => {
+              const it = nbsp(item);
+              const dash = it.indexOf(' — ');
+              return (
+                <li class="gc-srv-list-item">
+                  {dash > -1 ? (
+                    <span class="gc-srv-list-text">
+                      <strong>{it.slice(0, dash)}{locale === 'fr' ? '\u00A0:' : ':'}</strong>
+                      <span class="gc-srv-list-rest">{' '}{it.slice(dash + 3)}</span>
+                    </span>
+                  ) : it}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        {svc.blockquote && (
+          <blockquote class="gc-srv-blockquote">{nbsp(svc.blockquote)}</blockquote>
+        )}
+        {svc.link && (
+          <a href={svc.link.href} class="gc-srv-link">
+            {svc.link.text} →
+          </a>
+        )}
+      </div>
+
+    </div>
+  </section>
+))}
+
+<!-- ═══ BANDEAU CITATION (après la section 05) ════════════════════════════ -->
+<section class="gc-quote-banner gc-reveal">
+  <div class="gc-quote-inner">
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+    <blockquote set:html={nbsp(t.quoteBanner.quote)} />
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- ═══ CTA FINAL ═════════════════════════════════════════════════════════ -->
+<section class="gc-srv-cta gc-reveal">
+  <div class="gc-srv-cta-inner">
+    <h2 class="gc-srv-cta-title">
+      <span class="gc-srv-cta-title-1">{t.cta.titleWhite}</span>
+      <span class="gc-srv-cta-title-2 gc-shimmer">{t.cta.titleShimmer}</span>
+    </h2>
+    <p class="gc-srv-cta-subtitle" set:html={nbsp(t.cta.subtitle)} />
+    <div class="gc-btn-pair">
+      <a href={t.cta.btnQuote.href} class="btn-gc-primary">{t.cta.btnQuote.text}</a>
+      <a href={t.cta.btnContact.href} class="btn-gc-outline">{t.cta.btnContact.text}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Toutes les couleurs proviennent des variables de palette (voir tailwind.css) :
+     --gc-surface #FFFFFF · --gc-surface-alt #F2F2F2 · --gc-ink #0D0D0D · --gc-gold #AF9453 */
+
+  /* ── Hero ────────────────────────────────────────────────────────────── */
+  .gc-srv-hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: var(--gc-ink);
+  }
+  :global(.gc-srv-hero-bg) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .gc-srv-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, #0D0D0D40 0%, #0D0D0D73 100%);
+  }
+  .gc-srv-hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 56rem;
+    margin-inline: auto;
+    padding: 7rem 1.5rem 5rem;
+    text-align: center;
+  }
+  .gc-srv-eyebrow {
+    display: block;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--gc-gold);
+    margin-bottom: 1.5rem;
+  }
+
+  /* H1 sur UNE seule ligne (point 1) — mots inline, pas de block */
+  .gc-srv-h1 {
+    margin: 0;
+    font-family: var(--aw-font-heading, sans-serif);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    white-space: nowrap;
+    font-size: clamp(2rem, 8vw, 3.75rem);
+  }
+  .gc-srv-h1-white { font-weight: 700; color: #FFFFFF; }
+  /* pas de couleur ici : le .gc-shimmer colore le mot « Services » */
+  .gc-srv-h1-gold  { font-weight: 600; font-style: italic; }
+
+  /* Ligne dorée du hero : même écart que l'eyebrow (1.5rem), et animation
+     plus lente + retardée pour qu'on la voie bien */
+  .gc-srv-hero-content :global(.gc-editorial-line) {
+    margin-top: 1.5rem;
+    animation-delay: 0.8s;
+    animation-duration: 1.8s;
+  }
+
+  /* Léger zoom d'entrée sur le H1 */
+  .gc-srv-h1-zoom {
+    display: inline-block;
+    animation: gc-srv-h1-zoom 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes gc-srv-h1-zoom {
+    from { transform: scale(1.04); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gc-srv-h1-zoom { animation: none; }
+  }
+
+  /* ── Bandeau intro (fond clair, via variable) ───────────────────────── */
+  .gc-srv-intro {
+    background-color: var(--gc-surface-alt);
+    text-align: center;
+    padding: clamp(4rem, 10vh, 7rem) 1.5rem;
+  }
+  .gc-srv-intro-inner {
+    max-width: 46rem;
+    margin-inline: auto;
+  }
+  .gc-srv-intro-title {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--gc-ink);
+    margin-bottom: 1.25rem;
+  }
+  .gc-srv-intro-text {
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    line-height: 1.6;
+    color: var(--gc-ink);
+  }
+
+  /* ── Sections 01-05 ─────────────────────────────────────────────────── */
+  .gc-srv-section {
+    min-height: auto;
+    display: flex;
+    align-items: center;
+  }
+  .gc-srv-section--white { background-color: var(--gc-surface); color: var(--gc-ink); }
+  .gc-srv-section--tint  { background-color: var(--gc-surface-alt); color: var(--gc-ink); }
+
+  .gc-srv-inner {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding: 3.5rem 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  @media (min-width: 1024px) {
+    .gc-srv-section { min-height: 100svh; }
+    /* Image = 1 tiers, texte = 2 tiers */
+    .gc-srv-inner {
+      grid-template-columns: 1fr 2fr;
+      grid-template-areas: 'media content';
+      align-items: center;
+      gap: 4rem;
+      padding: 5rem 2rem;
+    }
+    /* Sections inversées : on inverse AUSSI les colonnes (point 7)
+       → l'image reste à 1 tiers, le texte à 2 tiers */
+    .gc-srv-section--reverse .gc-srv-inner {
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas: 'content media';
+    }
+    .gc-srv-media   { grid-area: media; }
+    .gc-srv-content { grid-area: content; }
+    /* sections image-à-droite : coller le texte vers l'image (gap régulier) */
+    .gc-srv-section--reverse .gc-srv-content { margin-left: auto; }
+  }
+
+  /* ── Image (centrée dans son tiers, 80vh) ───────────────────────────── */
+  .gc-srv-media {
+    display: flex;
+    justify-content: center;
+  }
+  .gc-media-wrap {
+    width: 100%;
+    max-width: 24rem;
+    height: 50vh;
+    margin-inline: auto;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  @media (min-width: 1024px) {
+    .gc-media-wrap {
+      height: 80vh;
+      max-width: 26rem;
+    }
+  }
+  .gc-media-wrap :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  /* ── Contenu section ────────────────────────────────────────────────── */
+  .gc-srv-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 44rem;
+  }
+  .gc-srv-accroche {
+    display: block;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--gc-gold);
+    margin-bottom: 1.25rem;
+  }
+  .gc-srv-title {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    color: var(--gc-ink);
+    margin-bottom: 0.6rem;
+  }
+  .gc-srv-subtitle-text {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.82rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gc-gold);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Corps texte HTML — noir #0D0D0D, interligne resserré (points 8 & 3) */
+  .gc-srv-body {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--gc-ink);
+    margin-bottom: 0.25rem;
+  }
+  .gc-srv-body :global(p)            { margin-bottom: 1rem; }
+  .gc-srv-body :global(p:last-child) { margin-bottom: 0; }
+  .gc-srv-body :global(strong)       { font-weight: 700; }
+
+  /* Liste à puces ▶ or — texte avant le tiret en gras (point 12) */
+  .gc-srv-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .gc-srv-list-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--gc-ink);
+  }
+  .gc-srv-list-item::before {
+    content: '▶';
+    color: var(--gc-gold);
+    font-size: 0.55em;
+    flex-shrink: 0;
+    line-height: 2;
+  }
+  .gc-srv-list-item strong { font-weight: 700; }
+  /* Mobile : le texte après « Titre : » passe à la ligne */
+  @media (max-width: 767px) {
+    .gc-srv-list-rest { display: block; }
+  }
+
+  /* Encadré citation or (section 03) */
+  .gc-srv-blockquote {
+    border-left: 2px solid var(--gc-gold);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--gc-ink);
+  }
+
+  /* Lien action */
+  .gc-srv-link {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 1.5rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gc-gold);
+    position: relative;
+    width: fit-content;
+  }
+  .gc-srv-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 1px;
+    background-color: var(--gc-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .gc-srv-link:hover::after { transform: scaleX(1); }
+
+  /* ── CTA final (point 11) ────────────────────────────────────────────── */
+  .gc-srv-cta {
+    /* centre doré #AF9453 (halo) → bords noirs #0D0D0D — hex only */
+    background:
+      radial-gradient(ellipse at center, #AF945345 0%, #AF945300 60%),
+      #0D0D0D;
+    color: #FFFFFF;
+    padding: 7rem 1.5rem;
+    text-align: center;
+  }
+  .gc-srv-cta-inner {
+    max-width: 50rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  /* « VOTRE ÉVÉNEMENT » en 300 ; « COMMENCE ICI » en italique, même graisse */
+  .gc-srv-cta-title {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 300;
+    line-height: 1.08;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+    margin-bottom: 1.5rem;
+  }
+  .gc-srv-cta-title-1 { display: block; }
+  .gc-srv-cta-title-2 { display: block; font-style: italic; font-weight: 500; }
+  .gc-srv-cta-subtitle {
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    line-height: 1.7;
+    color: #FFFFFFAD;
+    max-width: 38rem;
+    margin-bottom: 3rem;
+  }
+  /* Bandeau citation : retour à la ligne forcé uniquement en grand écran */
+  .gc-quote-inner :global(br.gc-br-lg) { display: none; }
+  @media (min-width: 1024px) {
+    .gc-quote-inner :global(br.gc-br-lg) { display: inline; }
+  }
+</style>
+
+<script>
+  // Avec le ClientRouter, ce script ne s'exécute qu'une fois : sans ce
+  // (ré)armement à chaque chargement de page, les sections .gc-reveal restaient
+  // invisibles (opacity 0) après un changement de langue.
+  let observer: IntersectionObserver | null = null;
+
+  const initReveal = () => {
+    observer?.disconnect();
+    const revealEls = document.querySelectorAll<HTMLElement>('.gc-reveal');
+    if (!revealEls.length) return;
+    observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        });
+      },
+      // rootMargin négatif en bas : la section se révèle quand elle est
+      // déjà bien entrée dans l'écran → on voit le fondu + glissement
+      { threshold: 0.1, rootMargin: '0px 0px -25% 0px' }
+    );
+    revealEls.forEach((el) => observer!.observe(el));
+  };
+
+  document.addEventListener('astro:page-load', initReveal);
+</script>

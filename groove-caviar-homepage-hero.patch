@@ -85,7 +85,7 @@ index 36e9917..58fde8a 100755
 +
 +## Coordonnées & identifiants
 +
-+- Adresse : 3 allée Gabrielle Doziat, 64200 Biarritz
++- Adresse : 3 allée Gabrielle Dorziat, 64200 Biarritz
 +- Tél : 06 23 62 57 04 / `tel:+33623625704` — WhatsApp : wa.me/33623625704
 +- Email : contact@groovecaviar.com — Maps : https://maps.app.goo.gl/5PteWHKmc19sPByR7
 +- SIRET : 503 532 616 00029
@@ -1023,7 +1023,7 @@ index 0000000..43219a7
 +
 +// ---- Coordonnées (NAP) ----
 +const nap = {
-+  address: '3 allée Gabrielle Doziat, 64200 Biarritz',
++  address: '3 allée Gabrielle Dorziat, 64200 Biarritz',
 +  maps: 'https://maps.app.goo.gl/5PteWHKmc19sPByR7',
 +  phoneDisplay: '06 23 62 57 04',
 +  phoneHref: 'tel:+33623625704',
@@ -1109,7 +1109,7 @@ index 0000000..43219a7
 +  email: nap.email,
 +  address: {
 +    '@type': 'PostalAddress',
-+    streetAddress: '3 allée Gabrielle Doziat',
++    streetAddress: '3 allée Gabrielle Dorziat',
 +    postalCode: '64200',
 +    addressLocality: 'Biarritz',
 +    addressRegion: 'Nouvelle-Aquitaine',

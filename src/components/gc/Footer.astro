@@ -6,13 +6,14 @@ const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 const p = (frVal: string, enVal: string) => (locale === 'fr' ? frVal : enVal);
 
-const homeHref = p('/', '/en/');
+const homeHref = p('/', '/en');
 
 // ---- Navigation ----
 const footerNav = [
   { label: t.nav.weddings, href: p('/mariages', '/en/weddings') },
   { label: t.nav.parties, href: p('/soirees', '/en/parties') },
   { label: t.nav.events, href: p('/evenements', '/en/events') },
+  { label: t.nav.services, href: p('/services', '/en/services') },
   { label: t.nav.music, href: p('/musique', '/en/music') },
   { label: t.nav.about, href: p('/a-propos', '/en/about') },
   { label: t.nav.faq, href: p('/faq', '/en/faq') },
@@ -21,7 +22,7 @@ const footerNav = [
 
 // ---- Coordonnées (NAP) ----
 const nap = {
-  address: '3 allée Gabrielle Doziat, 64200 Biarritz',
+  address: '3 allée Gabrielle Dorziat, 64200 Biarritz',
   maps: 'https://maps.app.goo.gl/5PteWHKmc19sPByR7',
   phoneDisplay: '06 23 62 57 04',
   phoneHref: 'tel:+33623625704',
@@ -107,7 +108,7 @@ const jsonLd = {
   email: nap.email,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: '3 allée Gabrielle Doziat',
+    streetAddress: '3 allée Gabrielle Dorziat',
     postalCode: '64200',
     addressLocality: 'Biarritz',
     addressRegion: 'Nouvelle-Aquitaine',

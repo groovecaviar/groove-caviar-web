@@ -3,7 +3,7 @@
 export type Locale = 'fr' | 'en';
 
 export const routeMap: Record<string, string> = {
-  '/': '/en/',
+  '/': '/en',
   '/services': '/en/services',
   '/services/prestation-dj': '/en/services/dj-services',
   '/services/speaker-mc': '/en/services/speaker-mc',
