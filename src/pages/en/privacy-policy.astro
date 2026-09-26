@@ -1,0 +1,16 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import PrivacySections from '~/components/sections/PrivacySections.astro';
+import { privacy } from '~/data/pages/privacy';
+
+const locale = 'en';
+const metadata = {
+  title: 'Privacy Policy & Legal Notice | Groove Caviar',
+  description:
+    "Legal notice, personal data protection (GDPR) and cookie management for the Groove Caviar website, DJ & event agency in Biarritz.",
+};
+---
+
+<PageLayout metadata={metadata} lang={locale}>
+  <PrivacySections t={privacy[locale]} locale={locale} />
+</PageLayout>

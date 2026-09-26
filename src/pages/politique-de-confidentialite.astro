@@ -1,0 +1,16 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import PrivacySections from '~/components/sections/PrivacySections.astro';
+import { privacy } from '~/data/pages/privacy';
+
+const locale = 'fr';
+const metadata = {
+  title: 'Politique de confidentialité & mentions légales | Groove Caviar',
+  description:
+    "Mentions légales, protection des données personnelles (RGPD) et gestion des cookies du site Groove Caviar, agence DJ & événementiel à Biarritz.",
+};
+---
+
+<PageLayout metadata={metadata} lang={locale}>
+  <PrivacySections t={privacy[locale]} locale={locale} />
+</PageLayout>
