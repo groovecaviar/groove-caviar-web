@@ -1,0 +1,38 @@
+---
+import type { CgvContent } from '~/data/pages/cgv';
+
+export interface Props {
+  t: CgvContent;
+  locale: 'fr' | 'en';
+}
+
+const { t } = Astro.props;
+
+// Colle les guillemets français à leur contenu (jamais séparés en fin de ligne)
+const nbsp = (s: string) => s.replace(/«\s+/g, '« ').replace(/\s+»/g, ' »');
+---
+
+<!-- ═══ BANDEAU TITRE ══════════════════════════════════════════════════════ -->
+<section class="gc-page-hero">
+  <div class="gc-page-hero-inner">
+    <span class="gc-page-eyebrow">{t.eyebrow}</span>
+    <h1 class="gc-page-h1">{t.title}</h1>
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- ═══ CONTENU ════════════════════════════════════════════════════════════ -->
+<section class="gc-infopage">
+  <div class="gc-infopage-inner">
+    <p class="gc-infopage-updated" set:html={t.updated} />
+    {t.sections.map((s, i) => (
+      <article class="gc-infopage-section">
+        <h2 class="gc-infopage-title">
+          <span class="gc-eyebrow-num">{String(i + 1).padStart(2, '0')}</span>
+          {s.title}
+        </h2>
+        <div class="gc-infopage-body gc-body-text" set:html={nbsp(s.html)} />
+      </article>
+    ))}
+  </div>
+</section>

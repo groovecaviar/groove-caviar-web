@@ -1,0 +1,15 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import CgvSections from '~/components/sections/CgvSections.astro';
+import { cgv } from '~/data/pages/cgv';
+
+const locale = 'en';
+const metadata = {
+  title: 'Terms and Conditions of Sale | Groove Caviar',
+  description: 'Terms and Conditions of Sale for Groove Caviar’s DJ, sound, lighting and sound-design services, an event agency based in Biarritz, France.',
+};
+---
+
+<PageLayout metadata={metadata} lang={locale}>
+  <CgvSections t={cgv[locale]} locale={locale} />
+</PageLayout>

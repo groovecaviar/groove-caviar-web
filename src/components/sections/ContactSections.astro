@@ -1,0 +1,528 @@
+---
+import type { ContactContent } from '~/data/pages/contact';
+
+export interface Props {
+  t: ContactContent;
+  locale: 'fr' | 'en';
+}
+
+const { t, locale } = Astro.props;
+
+// Colle les guillemets français à leur contenu (jamais séparés en fin de ligne)
+const nbsp = (s: string) => s.replace(/«\s+/g, '« ').replace(/\s+»/g, ' »');
+
+// ---- Coordonnées (NAP) — identiques à celles du Footer, source unique de vérité éditoriale ----
+const nap = {
+  address: locale === 'en'
+    ? '3 allée Gabrielle Dorziat, 64200 Biarritz, France'
+    : '3 allée Gabrielle Dorziat, 64200 Biarritz',
+  maps: 'https://maps.app.goo.gl/5PteWHKmc19sPByR7',
+  phoneDisplay: '06 23 62 57 04',
+  phoneHref: 'tel:+33623625704',
+  email: 'contact@groovecaviar.com',
+};
+
+// ---- Formulaire Brevo dédié au contact (distinct de la newsletter du Footer) ----
+// ⚠️ À REMPLACER : colle ici l'URL d'action générée par Brevo (onglet Partager → Code HTML).
+const BREVO_CONTACT_ACTION =
+  'https://9779d3f4.sibforms.com/serve/MUIFANSVCF0JGm0XtbOtyZhN8b0SGoyZCAu3Nx1ZVUTs41pOgf0EuRfrTX-PNcXNn_59IHnfsr4A-L1wMBOpNyDjg4xPKLOoxPbEg8w3-glhfJ7I5Fek3f_WtJiRCPFIRp9EsNqSX1itcNhKseNJJ0h7yMTENWlrqnYMXxQ0ClVpedWmTwGIp3K_M1n_piOytZstUN9jhc0WDgFmGQ==';
+
+// JSON-LD ContactPage + FAQPage (LocalBusiness est déjà injecté sitewide par le Footer)
+const pageUrl = locale === 'fr' ? 'https://www.groovecaviar.com/contact' : 'https://www.groovecaviar.com/en/contact';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ContactPage',
+      '@id': `${pageUrl}#contactpage`,
+      url: pageUrl,
+      name: t.meta.title,
+      description: t.meta.description,
+      inLanguage: locale,
+      about: { '@id': 'https://www.groovecaviar.com' },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${pageUrl}#faqpage`,
+      mainEntity: t.faq.items.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
+      })),
+    },
+  ],
+};
+---
+
+<!-- ═══ BANDEAU TITRE ══════════════════════════════════════════════════════ -->
+<section class="gc-page-hero">
+  <div class="gc-page-hero-inner">
+    <span class="gc-page-eyebrow">{t.hero.eyebrow}</span>
+    <h1 class="gc-page-h1">{t.hero.title}</h1>
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- ═══ À VOTRE ÉCOUTE ═════════════════════════════════════════════════════ -->
+<section class="gc-intro-band gc-reveal">
+  <div class="gc-intro-band-inner">
+    <h2 class="gc-intro-band-title">{t.intro.title}</h2>
+    <p class="gc-intro-band-text" set:html={nbsp(t.intro.paragraph)} />
+  </div>
+</section>
+
+<!-- ═══ COORDONNÉES + FORMULAIRE ═════════════════════════════════════════════ -->
+<section class="gc-ct-main gc-reveal" id="form">
+  <div class="gc-ct-main-inner">
+
+    <!-- Colonne coordonnées -->
+    <div class="gc-ct-info">
+      <h2 class="gc-ct-info-title">{t.nap.title}</h2>
+      <address class="gc-ct-nap">
+        <a href={nap.maps} target="_blank" rel="noopener" class="gc-ct-nap-line">
+          <svg class="gc-ct-nap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-7.1-7-12a7 7 0 1 1 14 0c0 4.9-7 12-7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span>{nap.address}</span>
+        </a>
+        <a href={nap.phoneHref} data-track="call-click" class="gc-ct-nap-line">
+          <svg class="gc-ct-nap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 5c0 8.837 7.163 16 16 16 1 0 2-.4 2-1.5v-2.2c0-.7-.5-1.2-1.1-1.4l-3-.9c-.6-.2-1.2 0-1.6.4l-1 1a12.5 12.5 0 0 1-6.7-6.7l1-1c.4-.4.6-1 .4-1.6l-.9-3C8.9 4.5 8.4 4 7.7 4H5.5C4.4 4 4 5 4 5Z"/></svg>
+          <span>{nap.phoneDisplay}</span>
+        </a>
+        <a href={`mailto:${nap.email}`} data-track="email-click" class="gc-ct-nap-line">
+          <svg class="gc-ct-nap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5v-11Z"/><path d="m4 6.5 8 6 8-6"/></svg>
+          <span>{nap.email}</span>
+        </a>
+      </address>
+    </div>
+
+    <!-- Colonne formulaire -->
+    <div class="gc-ct-form-wrap">
+      <h2 class="gc-ct-form-title">{t.form.title}</h2>
+      <p class="gc-ct-form-subtitle gc-body-text">{t.form.subtitle}</p>
+
+      <div id="gc-ct-success" class="gc-ct-msg gc-ct-msg--success" role="status" hidden>{t.form.successMessage}</div>
+      <div id="gc-ct-error" class="gc-ct-msg gc-ct-msg--error" role="alert" hidden>{t.form.errorMessage}</div>
+
+      <form
+        id="gc-ct-form"
+        class="gc-ct-form"
+        method="POST"
+        action={BREVO_CONTACT_ACTION}
+        data-success-text={t.form.successMessage}
+        data-error-text={t.form.errorMessage}
+        data-submit-text={t.form.submitLabel}
+        data-sending-text={t.form.submitLabelSending}
+        novalidate
+      >
+        <div class="gc-ct-row">
+          <div class="gc-ct-field">
+            <label for="ct-prenom">{t.form.firstName}</label>
+            <input id="ct-prenom" name="PRENOM" type="text" autocomplete="given-name" required />
+          </div>
+          <div class="gc-ct-field">
+            <label for="ct-nom">{t.form.lastName}</label>
+            <input id="ct-nom" name="NOM" type="text" autocomplete="family-name" required />
+          </div>
+        </div>
+
+        <div class="gc-ct-row">
+          <div class="gc-ct-field">
+            <label for="ct-email">{t.form.email}</label>
+            <input id="ct-email" name="EMAIL" type="email" autocomplete="email" required />
+          </div>
+          <div class="gc-ct-field">
+            <label for="ct-tel">{t.form.phone} <span class="gc-ct-field-note">{t.form.phoneOptional}</span></label>
+            <input id="ct-tel" name="TELEPHONE" type="tel" autocomplete="tel" />
+          </div>
+        </div>
+
+        <div class="gc-ct-row">
+          <div class="gc-ct-field">
+            <label for="ct-event-type">{t.form.eventType}</label>
+            <select id="ct-event-type" name="TYPE_EVENEMENT" required>
+              {t.form.eventTypeOptions.map((opt) => <option value={opt}>{opt}</option>)}
+            </select>
+          </div>
+          <div class="gc-ct-field">
+            <label for="ct-event-date">{t.form.eventDate} <span class="gc-ct-field-note">{t.form.eventDateOptional}</span></label>
+            <input id="ct-event-date" name="DATE_EVENEMENT" type="date" />
+          </div>
+        </div>
+
+        <div class="gc-ct-field">
+          <label for="ct-message">{t.form.message}</label>
+          <textarea id="ct-message" name="MESSAGE" rows="5" placeholder={t.form.messagePlaceholder} required></textarea>
+        </div>
+
+        <label class="gc-ct-check">
+          <input type="checkbox" name="CONSENTEMENT_RGPD" value="1" required />
+          <span>{t.form.consentBefore}<a href={t.form.consentHref}>{t.form.consentLinkText}</a>{t.form.consentAfter}</span>
+        </label>
+
+        <label class="gc-ct-check">
+          <input type="checkbox" name="OPT_IN" value="1" />
+          <span>{t.form.newsletterLabel}</span>
+        </label>
+
+        <!-- Champs cachés techniques -->
+        <input type="hidden" name="ORIGINE" value="contact-message-site" />
+        <input type="hidden" name="locale" value={locale} />
+        <input type="hidden" name="gc_ts" value="" />
+
+        <!-- Anti-spam (honeypot) : ne pas remplir — même mécanisme que le formulaire Newsletter -->
+        <input type="text" name="email_address_check" value="" class="gc-ct-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <button type="submit" class="btn-gc-primary gc-ct-submit">{t.form.submitLabel}</button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ ZONES DESSERVIES ═════════════════════════════════════════════════════ -->
+<section class="gc-ct-zones gc-reveal">
+  <div class="gc-ct-zones-inner">
+    <h2 class="gc-ct-zones-title">{t.zones.title}</h2>
+    <ul class="gc-ct-zones-list">
+      {t.zones.items.map((zone) => <li>{zone}</li>)}
+    </ul>
+    <a href={t.zones.linkHref} class="gc-ct-zones-link">{t.zones.linkText} →</a>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══════════════════════════════════════════════════════════════════ -->
+<section class="gc-ct-faq gc-reveal">
+  <div class="gc-ct-faq-inner">
+    <h2 class="gc-ct-faq-title">{t.faq.title}</h2>
+    <div class="gc-ct-faq-list">
+      {t.faq.items.map((item, i) => (
+        <details class="gc-ct-faq-item">
+          <summary>
+            <span class="gc-eyebrow-num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="gc-ct-faq-q">{item.q}</span>
+          </summary>
+          <p class="gc-ct-faq-a gc-body-text">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA FINAL ═════════════════════════════════════════════════════════════ -->
+<section class="gc-ct-cta gc-reveal">
+  <div class="gc-ct-cta-inner">
+    <h2 class="gc-ct-cta-title">
+      <span class="gc-ct-cta-title-1">{t.cta.titleWhite}</span>
+      <span class="gc-ct-cta-title-2 gc-shimmer">{t.cta.titleShimmer}</span>
+    </h2>
+    <p class="gc-ct-cta-subtitle">{t.cta.subtitle}</p>
+    <div class="gc-btn-pair">
+      <a href={t.cta.btnQuote.href} class="btn-gc-primary">{t.cta.btnQuote.text}</a>
+      <a href={t.cta.btnCall.href} class="btn-gc-outline">{t.cta.btnCall.text}</a>
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+<script>
+  // Anti-spam : délai minimum entre affichage de la page et soumission (bot = quasi-instantané)
+  const form = document.getElementById('gc-ct-form') as HTMLFormElement | null;
+  if (form) {
+    const loadedAt = Date.now();
+    const tsField = form.querySelector<HTMLInputElement>('input[name="gc_ts"]');
+
+    const successEl = document.getElementById('gc-ct-success');
+    const errorEl = document.getElementById('gc-ct-error');
+    const submitBtn = form.querySelector<HTMLButtonElement>('.gc-ct-submit');
+    const submitText = form.dataset.submitText || '';
+    const sendingText = form.dataset.sendingText || '';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      successEl?.setAttribute('hidden', '');
+      errorEl?.setAttribute('hidden', '');
+
+      // Honeypot : si rempli, on abandonne silencieusement sans jamais rien indiquer au bot
+      const honeypot = form.querySelector<HTMLInputElement>('input[name="email_address_check"]');
+      if (honeypot && honeypot.value) return;
+
+      // Délai anti-bot : moins de 2s entre affichage et envoi = suspect
+      const elapsed = Date.now() - loadedAt;
+      if (elapsed < 2000) return;
+
+      if (tsField) tsField.value = String(elapsed);
+      if (!form.reportValidity()) return;
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = sendingText;
+      }
+
+      try {
+        await fetch(form.action, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: new FormData(form),
+        });
+        successEl?.removeAttribute('hidden');
+        form.reset();
+      } catch {
+        errorEl?.removeAttribute('hidden');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = submitText;
+        }
+      }
+    });
+  }
+</script>
+
+<script>
+  // Avec le ClientRouter, ce script ne s'exécute qu'une fois : sans ce
+  // (ré)armement à chaque chargement de page, les sections .gc-reveal restaient
+  // invisibles (opacity 0) après un changement de langue.
+  let observer: IntersectionObserver | null = null;
+
+  const initReveal = () => {
+    observer?.disconnect();
+    const revealEls = document.querySelectorAll<HTMLElement>('.gc-reveal');
+    if (!revealEls.length) return;
+    observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        });
+      },
+      // rootMargin négatif en bas : la section se révèle quand elle est
+      // déjà bien entrée dans l'écran → on voit le fondu + glissement
+      { threshold: 0.1, rootMargin: '0px 0px -25% 0px' }
+    );
+    revealEls.forEach((el) => observer!.observe(el));
+  };
+
+  document.addEventListener('astro:page-load', initReveal);
+</script>
+
+<style>
+  /* Toutes les couleurs proviennent des variables de palette (voir tailwind.css) :
+     --gc-surface #FFFFFF · --gc-surface-alt #F2F2F2 · --gc-ink #0D0D0D · --gc-gold #AF9453 */
+
+  /* Bandeau titre : voir .gc-page-hero / .gc-page-h1 (classes partagées, tailwind.css) */
+
+  /* Bandeau intro : voir .gc-intro-band* (classes partagées, tailwind.css) */
+
+  /* ── Coordonnées + formulaire ────────────────────────────────────────── */
+  .gc-ct-main { background-color: var(--gc-surface); padding: clamp(4rem, 9vh, 6rem) 1.25rem; }
+  .gc-ct-main-inner {
+    max-width: 68rem;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+  @media (min-width: 900px) {
+    .gc-ct-main-inner { grid-template-columns: 0.85fr 1.15fr; gap: 4.5rem; }
+  }
+
+  .gc-ct-info-title, .gc-ct-form-title {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--gc-ink);
+    margin-bottom: 1.25rem;
+  }
+  .gc-ct-nap { display: flex; flex-direction: column; gap: 1rem; }
+  .gc-ct-nap-line {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--gc-ink);
+    font-size: 0.98rem;
+    line-height: 1.4;
+  }
+  .gc-ct-nap-line:hover { color: var(--gc-gold); }
+  .gc-ct-nap-icon { width: 1.15rem; height: 1.15rem; flex-shrink: 0; color: var(--gc-gold); }
+  .gc-ct-form-subtitle { color: var(--gc-ink); opacity: 0.75; margin-bottom: 1.75rem; }
+
+  .gc-ct-msg {
+    padding: 0.85rem 1.1rem;
+    border-radius: 0.4rem;
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+  .gc-ct-msg--success { background: #EDF6EE; color: #2A6B37; border: 1px solid #BFE2C4; }
+  .gc-ct-msg--error { background: #FBEAEA; color: #8A2E2E; border: 1px solid #F0C6C6; }
+
+  .gc-ct-form { display: flex; flex-direction: column; gap: 1.25rem; }
+  .gc-ct-row { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+  @media (min-width: 560px) { .gc-ct-row { grid-template-columns: 1fr 1fr; } }
+
+  .gc-ct-field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .gc-ct-field label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--gc-ink);
+  }
+  .gc-ct-field-note { font-weight: 400; text-transform: none; letter-spacing: 0; opacity: 0.6; }
+
+  .gc-ct-field input,
+  .gc-ct-field select,
+  .gc-ct-field textarea {
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--gc-ink);
+    background: var(--gc-surface);
+    border: 1px solid #D8D3C8;
+    border-radius: 0.35rem;
+    padding: 0.7rem 0.85rem;
+    transition: border-color 0.2s ease;
+  }
+  .gc-ct-field input:focus,
+  .gc-ct-field select:focus,
+  .gc-ct-field textarea:focus {
+    outline: none;
+    border-color: var(--gc-gold);
+  }
+  .gc-ct-field textarea { resize: vertical; min-height: 7rem; }
+
+  .gc-ct-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--gc-ink);
+    cursor: pointer;
+  }
+  .gc-ct-check input { margin-top: 0.2rem; accent-color: var(--gc-gold); flex-shrink: 0; }
+  .gc-ct-check a { color: var(--gc-gold); text-decoration: underline; text-underline-offset: 2px; }
+
+  .gc-ct-hp {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    left: -9999px;
+  }
+
+  .gc-ct-submit {
+    width: 100%;
+    margin-top: 0.5rem;
+    box-shadow: 0 16px 32px -14px #0D0D0D45;
+    transition: box-shadow 0.2s ease, background-color 0.2s ease;
+  }
+  .gc-ct-submit:hover { box-shadow: 0 20px 36px -14px #AF945355; }
+  .gc-ct-submit:disabled { opacity: 0.6; cursor: wait; box-shadow: none; }
+
+  /* ── Zones desservies ────────────────────────────────────────────────── */
+  .gc-ct-zones { background-color: var(--gc-ink); text-align: center; padding: clamp(3.5rem, 9vh, 5.5rem) 1.5rem; }
+  .gc-ct-zones-inner { max-width: 40rem; margin-inline: auto; }
+  .gc-ct-zones-title {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(1.3rem, 2.6vw, 1.8rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin-bottom: 1.5rem;
+  }
+  .gc-ct-zones-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem 0.9rem;
+  }
+  .gc-ct-zones-list li {
+    font-size: 0.85rem;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF40;
+    border-radius: 999px;
+    padding: 0.4rem 1rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .gc-ct-zones-list li:hover {
+    transform: scale(1.04);
+    border-color: #AF9453A0;
+    box-shadow: 0 0 14px 1px #AF945355;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gc-ct-zones-list li { transition: none; }
+    .gc-ct-zones-list li:hover { transform: none; }
+  }
+  .gc-ct-zones-link { color: var(--gc-gold); font-weight: 600; font-size: 0.9rem; text-decoration: none; }
+  .gc-ct-zones-link:hover { text-decoration: underline; }
+
+  /* ── FAQ ──────────────────────────────────────────────────────────────── */
+  .gc-ct-faq { background-color: var(--gc-surface-alt); padding: clamp(4rem, 9vh, 6rem) 1.25rem; }
+  .gc-ct-faq-inner { max-width: 46rem; margin-inline: auto; }
+  .gc-ct-faq-title {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(1.4rem, 2.8vw, 2rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--gc-ink);
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .gc-ct-faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .gc-ct-faq-item {
+    background: var(--gc-surface);
+    border-radius: 0.65rem;
+    padding: 1.1rem 1.4rem;
+  }
+  .gc-ct-faq-item summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 700;
+    color: var(--gc-ink);
+  }
+  .gc-ct-faq-item summary::-webkit-details-marker { display: none; }
+  /* Badge numéroté : voir .gc-eyebrow-num (classe partagée, tailwind.css) */
+  .gc-ct-faq-a { margin: 0.85rem 0 0; padding-left: 2.05rem; color: var(--gc-ink); opacity: 0.85; }
+
+  /* ── CTA final ───────────────────────────────────────────────────────── */
+  .gc-ct-cta {
+    /* centre doré #AF9453 (halo) → bords noirs #0D0D0D — cohérent avec le CTA final de Services */
+    background:
+      radial-gradient(ellipse at center, #AF945345 0%, #AF945300 60%),
+      #0D0D0D;
+    text-align: center;
+    padding: 7rem 1.5rem;
+  }
+  .gc-ct-cta-inner { max-width: 50rem; margin-inline: auto; }
+  .gc-ct-cta-title {
+    margin: 0 0 1.5rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 1.08;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+  }
+  .gc-ct-cta-title-1 { display: block; font-weight: 300; color: #FFFFFF; }
+  .gc-ct-cta-title-2 { display: block; font-weight: 500; font-style: italic; }
+  .gc-ct-cta-subtitle {
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    line-height: 1.7;
+    color: #FFFFFFAD;
+    max-width: 38rem;
+    margin-inline: auto;
+    margin-bottom: 3rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gc-ct-submit { transition: none; }
+  }
+</style>

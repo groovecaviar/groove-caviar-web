@@ -205,6 +205,109 @@
 .gc-btn-pair { display:inline-grid; grid-auto-flow:row; grid-auto-columns:1fr; gap:1rem; }
 @media (min-width: 640px) { .gc-btn-pair { grid-auto-flow:column; } }
 
+/* Texte "body" unifié — une seule taille pour tout le texte de contenu (chapô,
+   sous-titres de formulaire, réponses FAQ, paragraphes légaux, corps de texte
+   des sections Services/Homepage…), plutôt qu'une classe par page. Taille fixe
+   sur desktop/tablette (0.8rem) ; légèrement agrandie en mobile (0.85rem)
+   pour rester confortable à lire sur petit écran. */
+.gc-body-text { font-size: 0.8rem; line-height: 1.7; }
+.gc-body-text p { margin-bottom: 1rem; }
+.gc-body-text p:last-child { margin-bottom: 0; }
+.gc-body-text strong { font-weight: 700; }
+.gc-body-text a { color: var(--gc-gold); text-decoration: underline; text-underline-offset: 3px; }
+.gc-body-text a:hover { color: var(--gc-ink); }
+@media (max-width: 640px) {
+  .gc-body-text { font-size: 0.85rem; }
+}
+
+/* Bandeau titre des pages "éditoriales sans photo" (Contact, Politique de
+   confidentialité, CGV…) : hauteur et marges FIXES, communes à ce type de page —
+   ne pas dupliquer ces règles par page, toujours passer par ces classes. */
+.gc-page-hero { background-color: var(--gc-ink); text-align: center; padding: 9rem 1.5rem 4.5rem; }
+.gc-page-hero-inner { max-width: 48rem; margin-inline: auto; }
+.gc-page-eyebrow {
+  display: block;
+  font-family: var(--aw-font-heading, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--gc-gold);
+  margin-bottom: 1.5rem;
+}
+.gc-page-h1 {
+  margin: 0;
+  font-family: var(--aw-font-heading, sans-serif);
+  font-size: clamp(1.7rem, 4.5vw, 2.8rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: #FFFFFF;
+}
+.gc-page-hero-inner .gc-editorial-line { margin-top: 1.75rem; }
+
+/* Badge numéroté or (ex. "01") accolé à un titre — partagé par les articles
+   des pages "infopage" (Privacy/CGV) et par les questions de la FAQ Contact :
+   une seule définition au lieu d'une par page. */
+.gc-eyebrow-num { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; color: var(--gc-gold); flex-shrink: 0; }
+
+/* Bandeau "intro" gris sous le hero (Services, Contact…) : titre + paragraphe
+   centrés — une seule définition partagée entre toutes les pages qui l'utilisent. */
+.gc-intro-band { background-color: var(--gc-surface-alt); text-align: center; padding: clamp(4rem, 10vh, 7rem) 1.5rem; }
+.gc-intro-band-inner { max-width: 46rem; margin-inline: auto; }
+.gc-intro-band-title {
+  font-family: var(--aw-font-heading, sans-serif);
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--gc-ink);
+  margin-bottom: 1.25rem;
+}
+.gc-intro-band-text {
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: 1.6;
+  color: var(--gc-ink);
+}
+
+/* Corps des pages "informatives" (Politique de confidentialité, CGV…) :
+   structure d'articles numérotés, partagée par toutes les pages de ce type —
+   ne pas dupliquer, toujours passer par ces classes. La taille/interligne du
+   texte vient de .gc-body-text (appliquée en plus sur .gc-infopage-body). */
+.gc-infopage { background-color: var(--gc-surface); color: var(--gc-ink); padding: clamp(3rem, 8vh, 5rem) 1.25rem clamp(4rem, 10vh, 6rem); }
+.gc-infopage-inner { max-width: 48rem; margin-inline: auto; }
+.gc-infopage-updated { font-size: 0.85rem; font-style: italic; color: var(--gc-ink); opacity: 0.7; margin-bottom: 3rem; }
+.gc-infopage-section { padding-top: 2.25rem; margin-top: 2.25rem; border-top: 1px solid var(--gc-surface-alt); }
+.gc-infopage-section:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.gc-infopage-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  font-family: var(--aw-font-heading, sans-serif);
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  color: var(--gc-ink);
+  margin-bottom: 1.1rem;
+}
+/* Taille et interligne du corps : voir .gc-body-text (appliquée en plus sur l'élément) */
+.gc-infopage-body ul { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-direction: column; gap: 0.55rem; }
+.gc-infopage-body ul:last-child { margin-bottom: 0; }
+.gc-infopage-body li { position: relative; padding-left: 1.25rem; }
+.gc-infopage-body li::before {
+  content: '▶';
+  position: absolute;
+  left: 0;
+  top: 0.32em;
+  font-size: 0.55em;
+  line-height: 2;
+  color: var(--gc-gold);
+}
+
 /* Respect du réglage « réduire les animations » */
 @media (prefers-reduced-motion: reduce){
   .gc-reveal { opacity:1; transform:none; transition:none; }

@@ -33,7 +33,7 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
   />
   <div class="gc-srv-hero-overlay" aria-hidden="true"></div>
   <div class="gc-srv-hero-content">
-    <span class="gc-srv-eyebrow">{t.hero.eyebrow}</span>
+    <span class="gc-page-eyebrow">{t.hero.eyebrow}</span>
     <h1 class="gc-srv-h1 gc-srv-h1-zoom">
       <span class="gc-srv-h1-white">{t.hero.titleWhite}</span>
       {' '}
@@ -44,10 +44,10 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
 </section>
 
 <!-- ═══ BANDEAU INTRO ═════════════════════════════════════════════════════ -->
-<section class="gc-srv-intro gc-reveal">
-  <div class="gc-srv-intro-inner">
-    <h2 class="gc-srv-intro-title">{t.intro.title}</h2>
-    <p class="gc-srv-intro-text" set:html={nbsp(t.intro.paragraph)} />
+<section class="gc-intro-band gc-reveal">
+  <div class="gc-intro-band-inner">
+    <h2 class="gc-intro-band-title">{t.intro.title}</h2>
+    <p class="gc-intro-band-text" set:html={nbsp(t.intro.paragraph)} />
   </div>
 </section>
 
@@ -79,7 +79,7 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
         {svc.subtitle && (
           <p class="gc-srv-subtitle-text">{nbsp(svc.subtitle)}</p>
         )}
-        <div class="gc-srv-body" set:html={nbsp(svc.body)} />
+        <div class="gc-srv-body gc-body-text" set:html={nbsp(svc.body)} />
         {svc.list && (
           <ul class="gc-srv-list">
             {svc.list.map((item) => {
@@ -171,17 +171,6 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
     padding: 7rem 1.5rem 5rem;
     text-align: center;
   }
-  .gc-srv-eyebrow {
-    display: block;
-    font-family: var(--aw-font-heading, sans-serif);
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-    color: var(--gc-gold);
-    margin-bottom: 1.5rem;
-  }
-
   /* H1 sur UNE seule ligne (point 1) — mots inline, pas de block */
   .gc-srv-h1 {
     margin: 0;
@@ -217,31 +206,7 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
     .gc-srv-h1-zoom { animation: none; }
   }
 
-  /* ── Bandeau intro (fond clair, via variable) ───────────────────────── */
-  .gc-srv-intro {
-    background-color: var(--gc-surface-alt);
-    text-align: center;
-    padding: clamp(4rem, 10vh, 7rem) 1.5rem;
-  }
-  .gc-srv-intro-inner {
-    max-width: 46rem;
-    margin-inline: auto;
-  }
-  .gc-srv-intro-title {
-    font-family: var(--aw-font-heading, sans-serif);
-    font-size: clamp(1.6rem, 3.4vw, 2.4rem);
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-    line-height: 1.15;
-    color: var(--gc-ink);
-    margin-bottom: 1.25rem;
-  }
-  .gc-srv-intro-text {
-    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
-    line-height: 1.6;
-    color: var(--gc-ink);
-  }
+  /* Bandeau intro : voir .gc-intro-band* (classes partagées, tailwind.css) */
 
   /* ── Sections 01-05 ─────────────────────────────────────────────────── */
   .gc-srv-section {
@@ -348,9 +313,8 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
   }
 
   /* Corps texte HTML — noir #0D0D0D, interligne resserré (points 8 & 3) */
+  /* Taille et interligne : voir .gc-body-text (appliquée en plus sur l'élément) */
   .gc-srv-body {
-    font-size: 0.95rem;
-    line-height: 1.6;
     color: var(--gc-ink);
     margin-bottom: 0.25rem;
   }

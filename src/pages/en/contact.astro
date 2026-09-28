@@ -1,0 +1,15 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import ContactSections from '~/components/sections/ContactSections.astro';
+import { contact } from '~/data/pages/contact';
+
+const locale = 'en';
+const metadata = {
+  title: contact[locale].meta.title,
+  description: contact[locale].meta.description,
+};
+---
+
+<PageLayout metadata={metadata} lang={locale}>
+  <ContactSections t={contact[locale]} locale={locale} />
+</PageLayout>

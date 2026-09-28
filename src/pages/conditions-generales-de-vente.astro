@@ -1,0 +1,15 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import CgvSections from '~/components/sections/CgvSections.astro';
+import { cgv } from '~/data/pages/cgv';
+
+const locale = 'fr';
+const metadata = {
+  title: 'Conditions générales de vente | Groove Caviar',
+  description: "Conditions générales de vente des prestations DJ, sonorisation, éclairage et design sonore de Groove Caviar, agence événementielle à Biarritz.",
+};
+---
+
+<PageLayout metadata={metadata} lang={locale}>
+  <CgvSections t={cgv[locale]} locale={locale} />
+</PageLayout>

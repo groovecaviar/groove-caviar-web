@@ -51,7 +51,7 @@ const muted = isDark ? 'text-white/70' : 'text-black/65';
     {
       body && (
         <div
-          class:list={['editorial-fade max-w-2xl text-sm leading-relaxed sm:text-base', muted, isCenter && 'mx-auto']}
+          class:list={['editorial-fade max-w-2xl gc-body-text', muted, isCenter && 'mx-auto']}
           style="animation-delay:200ms"
           set:html={body}
         />
