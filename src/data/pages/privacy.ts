@@ -51,7 +51,7 @@ export const privacy: Record<'fr' | 'en', PrivacyContent> = {
         title: 'Données collectées, finalités et bases légales',
         html: `<p>Le site est un <strong>site vitrine</strong> : il ne propose ni compte utilisateur, ni vente en ligne. Vos données ne sont collectées que lorsque vous nous les transmettez, ou via la mesure d'audience (après consentement).</p>
 <ul>
-<li><strong>Formulaire de contact / demande de devis</strong> — données : nom, e-mail, téléphone, message. Finalité : répondre à votre demande et établir un devis. Base légale : votre consentement et l'exécution de mesures précontractuelles.</li>
+<li><strong>Formulaire de contact / demande de devis</strong> — données : nom, e-mail, téléphone, adresse postale le cas échéant, détails de l'événement (date, lieu, horaires, besoins, message). Finalité : répondre à votre demande et établir un devis. Base légale : votre consentement et l'exécution de mesures précontractuelles.</li>
 <li><strong>Newsletter</strong> — donnée : adresse e-mail. Finalité : vous envoyer nos actualités. Base légale : votre consentement.</li>
 <li><strong>Mesure d'audience</strong> — données : données de navigation (pages consultées, type d'appareil, adresse IP tronquée). Finalité : améliorer le site. Base légale : votre consentement (via le bandeau cookies).</li>
 </ul>`,
@@ -63,6 +63,8 @@ export const privacy: Record<'fr' | 'en', PrivacyContent> = {
 <li><strong>Brevo</strong> (Sendinblue SAS, France) — envoi de la newsletter.</li>
 <li><strong>Google Ireland Ltd / Google LLC</strong> — mesure d'audience (Google Analytics 4 et Google Tag Manager).</li>
 <li><strong>Silktide</strong> — gestion du consentement aux cookies (sans compte, exécuté localement dans votre navigateur).</li>
+<li><strong>Google Ireland Ltd / Google LLC</strong> — traitement et archivage des demandes de devis (Google Drive, Google Sheets et Google Apps Script).</li>
+<li><strong>Zoho Corporation B.V.</strong> (Pays-Bas) — messagerie professionnelle utilisée pour répondre à vos demandes.</li>
 <li><strong>Hostinger, UAB</strong> (Union européenne) — hébergement du site.</li>
 </ul>`,
       },
@@ -76,7 +78,7 @@ export const privacy: Record<'fr' | 'en', PrivacyContent> = {
       },
       {
         title: 'Transferts hors Union européenne',
-        html: `<p>La mesure d'audience via Google peut entraîner un transfert de données vers les États-Unis. Google LLC adhère au <strong>Data Privacy Framework</strong> UE–États-Unis, qui encadre ces transferts. Les autres prestataires (Brevo, Hostinger) hébergent les données au sein de l'Union européenne.</p>`,
+        html: `<p>La mesure d'audience et le traitement des demandes de devis via Google peuvent entraîner un transfert de données vers les États-Unis. Google LLC adhère au <strong>Data Privacy Framework</strong> UE–États-Unis, qui encadre ces transferts. Les autres prestataires (Brevo, Hostinger) hébergent les données au sein de l'Union européenne.</p>`,
       },
       {
         title: 'Vos droits',
@@ -147,7 +149,7 @@ export const privacy: Record<'fr' | 'en', PrivacyContent> = {
         title: 'Data collected, purposes and legal bases',
         html: `<p>This is a <strong>showcase website</strong>: it offers neither user accounts nor online sales. Your data is only collected when you provide it to us, or through audience measurement (after consent).</p>
 <ul>
-<li><strong>Contact / quote-request form</strong> — data: name, e-mail, phone, message. Purpose: to answer your request and prepare a quote. Legal basis: your consent and pre-contractual measures.</li>
+<li><strong>Contact / quote-request form</strong> — data: name, e-mail, phone, postal address where applicable, event details (date, venue, hours, needs, message). Purpose: to answer your request and prepare a quote. Legal basis: your consent and pre-contractual measures.</li>
 <li><strong>Newsletter</strong> — data: e-mail address. Purpose: to send you our news. Legal basis: your consent.</li>
 <li><strong>Audience measurement</strong> — data: browsing data (pages viewed, device type, truncated IP address). Purpose: to improve the site. Legal basis: your consent (via the cookie banner).</li>
 </ul>`,
@@ -159,6 +161,8 @@ export const privacy: Record<'fr' | 'en', PrivacyContent> = {
 <li><strong>Brevo</strong> (Sendinblue SAS, France) — newsletter delivery.</li>
 <li><strong>Google Ireland Ltd / Google LLC</strong> — audience measurement (Google Analytics 4 and Google Tag Manager).</li>
 <li><strong>Silktide</strong> — cookie consent management (no account, run locally in your browser).</li>
+<li><strong>Google Ireland Ltd / Google LLC</strong> — processing and archiving of quote requests (Google Drive, Google Sheets and Google Apps Script).</li>
+<li><strong>Zoho Corporation B.V.</strong> (Netherlands) — business e-mail used to reply to your requests.</li>
 <li><strong>Hostinger, UAB</strong> (European Union) — website hosting.</li>
 </ul>`,
       },
@@ -172,7 +176,7 @@ export const privacy: Record<'fr' | 'en', PrivacyContent> = {
       },
       {
         title: 'Transfers outside the European Union',
-        html: `<p>Audience measurement via Google may involve a transfer of data to the United States. Google LLC is certified under the <strong>EU–US Data Privacy Framework</strong>, which governs such transfers. Our other providers (Brevo, Hostinger) store data within the European Union.</p>`,
+        html: `<p>Audience measurement and the processing of quote requests via Google may involve a transfer of data to the United States. Google LLC is certified under the <strong>EU–US Data Privacy Framework</strong>, which governs such transfers. Our other providers (Brevo, Hostinger) store data within the European Union.</p>`,
       },
       {
         title: 'Your rights',

@@ -160,6 +160,10 @@ export const cgv: Record<'fr' | 'en', CgvContent> = {
 <p>Pour les clients particuliers (consommateurs), les litiges relèvent des juridictions compétentes selon les règles de droit commun, conformément au Code de procédure civile et au Code de la consommation ; le Client consommateur peut notamment saisir la juridiction du lieu où il demeurait au moment de la conclusion du contrat ou de la survenance du fait dommageable.</p>`,
       },
       {
+        title: 'Médiation de la consommation',
+        html: `<p>Conformément aux articles L. 611-1 et suivants du Code de la consommation, le Client consommateur peut recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable d'un litige qui l'oppose au Prestataire, après avoir tenté de le résoudre directement auprès de celui-ci par une réclamation écrite. Le médiateur de la consommation dont relève ${GC} est : Amare médiation, 83 avenue du Maréchal Juin, 64200 Biarritz – <a href="https://amare-mediation.fr/" target="_blank" rel="noopener noreferrer">amare-mediation.fr</a>.</p>`,
+      },
+      {
         title: 'Notes',
         html: `<p><strong>* Éléments audio/visuels :</strong> fichiers musicaux de qualité et formats exploitables (MP3, qualité de compression 192&nbsp;Kbps minimum) ; vidéo compatible Mac et/ou Windows ; diaporama au format PPT ou exécutable.</p>
 <p><strong>** Cas de force majeure :</strong> événements ou incidents indépendants de la volonté des parties, tels que grèves, troubles sociaux, calamités publiques, incendies, fermetures administratives ou pandémies.</p>`,
@@ -307,6 +311,10 @@ export const cgv: Record<'fr' | 'en', CgvContent> = {
 <p>Where a cheque is returned unpaid, the Client must provide a guarantee of full payment before the equipment is installed; failing that, the Provider may cancel the event, and the Client remains liable for the full amount of the approved quote.</p>
 <p>For corporate clients, any dispute falls under the exclusive jurisdiction of the Commercial Court of Bayonne (France), regardless of the number of defendants or any third-party proceedings.</p>
 <p>For individual (consumer) clients, disputes fall under the courts having jurisdiction under ordinary French law; the consumer Client may in particular bring proceedings before the court of the place where they resided when the contract was concluded or where the harmful event occurred.</p>`,
+      },
+      {
+        title: 'Consumer mediation',
+        html: `<p>In accordance with articles L. 611-1 et seq. of the French Consumer Code, a consumer Client may use a consumer mediator free of charge to seek an amicable settlement of a dispute with the Provider, after first trying to resolve it directly with the Provider through a written complaint. The consumer mediator for ${GC} is: Amare médiation, 83 avenue du Maréchal Juin, 64200 Biarritz (France) – <a href="https://amare-mediation.fr/" target="_blank" rel="noopener noreferrer">amare-mediation.fr</a>.</p>`,
       },
       {
         title: 'Notes',
