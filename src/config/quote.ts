@@ -29,7 +29,7 @@ export const WEDDING_VENUES: readonly string[] = [
   'Espace Maïténa (64600 Anglet)',
   'Ferme Inharria (64310 Saint-Pée-sur-Nivelle)',
   'Hôtel du Palais (64200 Biarritz)',
-  'La Ferme Aux Piments (64495 Saint-Pée-sur-Nivelle)',
+  'La Ferme Aux Piments (64310 Saint-Pée-sur-Nivelle)',
   'La Ferme Ostalapia (64210 Ahetze)',
   'Les Hortensias du Lac (40150 Hossegor)',
   'Maison Chiberta (64600 Anglet)',
