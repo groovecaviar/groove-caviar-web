@@ -1,0 +1,16 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import MusicSections from '~/components/sections/MusicSections.astro';
+import { music } from '~/data/pages/music';
+
+const locale = 'fr';
+const metadata = {
+  title: 'Musique — mixes & playlists mariage | Groove Caviar Biarritz',
+  description:
+    'Écoutez les mixes de Groove Caviar et découvrez nos playlists Spotify pour votre mariage : église, cérémonie, dîner, premières danses et tubes par décennie.',
+};
+---
+
+<PageLayout metadata={metadata} lang={locale}>
+  <MusicSections t={music[locale]} locale={locale} />
+</PageLayout>

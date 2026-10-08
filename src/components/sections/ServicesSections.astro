@@ -21,7 +21,7 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
 ---
 
 <!-- ═══ HERO ═══════════════════════════════════════════════════════════════ -->
-<section class="gc-hero-section gc-srv-hero">
+<section class="gc-hero-section gc-photo-hero">
   <Image
     src={heroImg}
     alt=""
@@ -29,15 +29,15 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
     sizes="100vw"
     loading="eager"
     fetchpriority="high"
-    class="gc-hero-media gc-srv-hero-bg"
+    class="gc-hero-media gc-photo-hero-bg"
   />
-  <div class="gc-srv-hero-overlay" aria-hidden="true"></div>
-  <div class="gc-srv-hero-content">
+  <div class="gc-photo-hero-overlay" aria-hidden="true"></div>
+  <div class="gc-photo-hero-content">
     <span class="gc-page-eyebrow">{t.hero.eyebrow}</span>
-    <h1 class="gc-srv-h1 gc-srv-h1-zoom">
-      <span class="gc-srv-h1-white">{t.hero.titleWhite}</span>
+    <h1 class="gc-photo-hero-h1 gc-photo-hero-h1-zoom">
+      <span class="gc-photo-hero-h1-white">{t.hero.titleWhite}</span>
       {' '}
-      <span class="gc-srv-h1-gold gc-shimmer">{t.hero.titleGold}</span>
+      <span class="gc-photo-hero-h1-gold gc-shimmer">{t.hero.titleGold}</span>
     </h1>
     <span class="gc-editorial-line" aria-hidden="true"></span>
   </div>
@@ -74,8 +74,8 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
 
       <!-- Contenu texte -->
       <div class="gc-srv-content">
-        <span class="gc-srv-accroche">{svc.accroche}</span>
-        <h2 class="gc-srv-title">{svc.title}</h2>
+        <span class="gc-sec-accroche">{svc.accroche}</span>
+        <h2 class="gc-sec-title">{svc.title}</h2>
         {svc.subtitle && (
           <p class="gc-srv-subtitle-text">{nbsp(svc.subtitle)}</p>
         )}
@@ -122,13 +122,13 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
 </section>
 
 <!-- ═══ CTA FINAL ═════════════════════════════════════════════════════════ -->
-<section class="gc-srv-cta gc-reveal">
-  <div class="gc-srv-cta-inner">
-    <h2 class="gc-srv-cta-title">
-      <span class="gc-srv-cta-title-1">{t.cta.titleWhite}</span>
-      <span class="gc-srv-cta-title-2 gc-shimmer">{t.cta.titleShimmer}</span>
+<section class="gc-final-cta gc-reveal">
+  <div class="gc-final-cta-inner">
+    <h2 class="gc-final-cta-title">
+      <span class="gc-final-cta-title-1">{t.cta.titleWhite}</span>
+      <span class="gc-final-cta-title-2 gc-shimmer">{t.cta.titleShimmer}</span>
     </h2>
-    <p class="gc-srv-cta-subtitle" set:html={nbsp(t.cta.subtitle)} />
+    <p class="gc-final-cta-subtitle" set:html={nbsp(t.cta.subtitle)} />
     <div class="gc-btn-pair">
       <a href={t.cta.btnQuote.href} class="btn-gc-primary">{t.cta.btnQuote.text}</a>
       <a href={t.cta.btnContact.href} class="btn-gc-outline">{t.cta.btnContact.text}</a>
@@ -139,72 +139,6 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
 <style>
   /* Toutes les couleurs proviennent des variables de palette (voir tailwind.css) :
      --gc-surface #FFFFFF · --gc-surface-alt #F2F2F2 · --gc-ink #0D0D0D · --gc-gold #AF9453 */
-
-  /* ── Hero ────────────────────────────────────────────────────────────── */
-  .gc-srv-hero {
-    position: relative;
-    min-height: 100svh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background-color: var(--gc-ink);
-  }
-  :global(.gc-srv-hero-bg) {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-  .gc-srv-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, #0D0D0D40 0%, #0D0D0D73 100%);
-  }
-  .gc-srv-hero-content {
-    position: relative;
-    z-index: 10;
-    max-width: 56rem;
-    margin-inline: auto;
-    padding: 7rem 1.5rem 5rem;
-    text-align: center;
-  }
-  /* H1 sur UNE seule ligne (point 1) — mots inline, pas de block */
-  .gc-srv-h1 {
-    margin: 0;
-    font-family: var(--aw-font-heading, sans-serif);
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    white-space: nowrap;
-    font-size: clamp(2rem, 8vw, 3.75rem);
-  }
-  .gc-srv-h1-white { font-weight: 700; color: #FFFFFF; }
-  /* pas de couleur ici : le .gc-shimmer colore le mot « Services » */
-  .gc-srv-h1-gold  { font-weight: 600; font-style: italic; }
-
-  /* Ligne dorée du hero : même écart que l'eyebrow (1.5rem), et animation
-     plus lente + retardée pour qu'on la voie bien */
-  .gc-srv-hero-content :global(.gc-editorial-line) {
-    margin-top: 1.5rem;
-    animation-delay: 0.8s;
-    animation-duration: 1.8s;
-  }
-
-  /* Léger zoom d'entrée sur le H1 */
-  .gc-srv-h1-zoom {
-    display: inline-block;
-    animation: gc-srv-h1-zoom 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  @keyframes gc-srv-h1-zoom {
-    from { transform: scale(1.04); opacity: 0; }
-    to   { transform: scale(1);    opacity: 1; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .gc-srv-h1-zoom { animation: none; }
-  }
 
   /* Bandeau intro : voir .gc-intro-band* (classes partagées, tailwind.css) */
 
@@ -281,26 +215,6 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
     flex-direction: column;
     justify-content: center;
     max-width: 44rem;
-  }
-  .gc-srv-accroche {
-    display: block;
-    font-family: var(--aw-font-heading, sans-serif);
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.28em;
-    color: var(--gc-gold);
-    margin-bottom: 1.25rem;
-  }
-  .gc-srv-title {
-    font-family: var(--aw-font-heading, sans-serif);
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-    line-height: 1.05;
-    color: var(--gc-ink);
-    margin-bottom: 0.6rem;
   }
   .gc-srv-subtitle-text {
     font-family: var(--aw-font-heading, sans-serif);
@@ -391,48 +305,6 @@ const nbsp = (s: string) => s.replace(/«\s+/g, '«\u00A0').replace(/\s+»/g, '\
   }
   .gc-srv-link:hover::after { transform: scaleX(1); }
 
-  /* ── CTA final (point 11) ────────────────────────────────────────────── */
-  .gc-srv-cta {
-    /* centre doré #AF9453 (halo) → bords noirs #0D0D0D — hex only */
-    background:
-      radial-gradient(ellipse at center, #AF945345 0%, #AF945300 60%),
-      #0D0D0D;
-    color: #FFFFFF;
-    padding: 7rem 1.5rem;
-    text-align: center;
-  }
-  .gc-srv-cta-inner {
-    max-width: 50rem;
-    margin-inline: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  /* « VOTRE ÉVÉNEMENT » en 300 ; « COMMENCE ICI » en italique, même graisse */
-  .gc-srv-cta-title {
-    font-family: var(--aw-font-heading, sans-serif);
-    font-size: clamp(2.2rem, 6vw, 4rem);
-    font-weight: 300;
-    line-height: 1.08;
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-    color: #FFFFFF;
-    margin-bottom: 1.5rem;
-  }
-  .gc-srv-cta-title-1 { display: block; }
-  .gc-srv-cta-title-2 { display: block; font-style: italic; font-weight: 500; }
-  .gc-srv-cta-subtitle {
-    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
-    line-height: 1.7;
-    color: #FFFFFFAD;
-    max-width: 38rem;
-    margin-bottom: 3rem;
-  }
-  /* Bandeau citation : retour à la ligne forcé uniquement en grand écran */
-  .gc-quote-inner :global(br.gc-br-lg) { display: none; }
-  @media (min-width: 1024px) {
-    .gc-quote-inner :global(br.gc-br-lg) { display: inline; }
-  }
 </style>
 
 <script>

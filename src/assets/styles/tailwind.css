@@ -315,3 +315,146 @@
   .gc-media-hover img { transition:none; }
   .gc-shimmer { animation:none; color:#AF9453; -webkit-text-fill-color:#AF9453; }
 }
+
+
+/* ═══ Blocs partagés « page avec photo » (Services, Musique…) — une seule définition ═══
+   Hero photo plein écran, titres de section (accroche + titre) et CTA final sombre. */
+/* ── Hero ────────────────────────────────────────────────────────────── */
+.gc-photo-hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--gc-ink);
+}
+.gc-photo-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.gc-photo-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #0D0D0D40 0%, #0D0D0D73 100%);
+}
+.gc-photo-hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 56rem;
+  margin-inline: auto;
+  padding: 7rem 1.5rem 5rem;
+  text-align: center;
+}
+/* H1 sur UNE seule ligne (point 1) — mots inline, pas de block */
+.gc-photo-hero-h1 {
+  margin: 0;
+  font-family: var(--aw-font-heading, sans-serif);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: nowrap;
+  font-size: clamp(2rem, 8vw, 3.75rem);
+}
+.gc-photo-hero-h1-white { font-weight: 700; color: #FFFFFF; }
+/* pas de couleur ici : le .gc-shimmer colore le mot en or du titre */
+.gc-photo-hero-h1-gold  { font-weight: 600; font-style: italic; }
+
+/* Ligne dorée du hero : même écart que l'eyebrow (1.5rem), et animation
+   plus lente + retardée pour qu'on la voie bien */
+.gc-photo-hero-content .gc-editorial-line {
+  margin-top: 1.5rem;
+  animation-delay: 0.8s;
+  animation-duration: 1.8s;
+}
+
+/* Léger zoom d'entrée sur le H1 */
+.gc-photo-hero-h1-zoom {
+  display: inline-block;
+  animation: gc-photo-hero-zoom 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes gc-photo-hero-zoom {
+  from { transform: scale(1.04); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gc-photo-hero-h1-zoom { animation: none; }
+}
+
+
+/* Section de page (fond clair 1 ou 2) + conteneur centré + en-tête centré (accroche, titre, chapô) */
+.gc-sec { color: var(--gc-ink); padding: clamp(4rem, 9vh, 6.5rem) 1.25rem; }
+.gc-sec--white { background-color: var(--gc-surface); }
+.gc-sec--tint  { background-color: var(--gc-surface-alt); }
+.gc-sec-inner { max-width: 64rem; margin-inline: auto; }
+.gc-sec-head { text-align: center; max-width: 40rem; margin: 0 auto 3rem; }
+.gc-sec-head .gc-body-text { margin-top: 0.75rem; }
+
+/* Retour à la ligne forcé uniquement en grand écran : <br class="gc-br-lg"> */
+br.gc-br-lg { display: none; }
+@media (min-width: 1024px) { br.gc-br-lg { display: inline; } }
+
+/* Titres de section : accroche dorée + titre en capitales */
+.gc-sec-accroche {
+  display: block;
+  font-family: var(--aw-font-heading, sans-serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--gc-gold);
+  margin-bottom: 1.25rem;
+}
+.gc-sec-title {
+  font-family: var(--aw-font-heading, sans-serif);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  color: var(--gc-ink);
+  margin-bottom: 0.6rem;
+}
+
+/* ── CTA final (point 11) ────────────────────────────────────────────── */
+.gc-final-cta {
+  /* centre doré #AF9453 (halo) → bords noirs #0D0D0D — hex only */
+  background:
+    radial-gradient(ellipse at center, #AF945345 0%, #AF945300 60%),
+    #0D0D0D;
+  color: #FFFFFF;
+  padding: 7rem 1.5rem;
+  text-align: center;
+}
+.gc-final-cta-inner {
+  max-width: 50rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* « VOTRE ÉVÉNEMENT » en 300 ; « COMMENCE ICI » en italique, même graisse */
+.gc-final-cta-title {
+  font-family: var(--aw-font-heading, sans-serif);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 300;
+  line-height: 1.08;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+}
+.gc-final-cta-title-1 { display: block; }
+/* padding-top / margin-top négatif : l'accent d'une majuscule (É) n'est plus rogné par le fond du .gc-shimmer */
+.gc-final-cta-title-2 { display: block; font-style: italic; font-weight: 500; padding-top: 0.2em; margin-top: -0.2em; }
+.gc-final-cta-subtitle {
+  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  line-height: 1.7;
+  color: #FFFFFFAD;
+  max-width: 38rem;
+  margin-bottom: 3rem;
+}
