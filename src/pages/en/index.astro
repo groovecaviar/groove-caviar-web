@@ -4,7 +4,13 @@ import HomeSections from '~/components/sections/HomeSections.astro';
 import { home } from '~/data/pages/home';
 
 const locale = 'en';
+
+const metadata = {
+  title: 'Groove Caviar — Premium DJ & Music Curation in Biarritz',
+  description:
+    'DJ & music curation for weddings, parties and exceptional events. Based in Biarritz, serving the Basque Country, the Landes and worldwide.',
+};
 ---
-<Layout lang={locale}>
+<Layout metadata={metadata} lang={locale}>
   <HomeSections t={home[locale]} locale={locale} />
 </Layout>

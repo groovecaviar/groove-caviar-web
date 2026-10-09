@@ -14,6 +14,7 @@ import compress from 'astro-compress';
 import type { AstroIntegration } from 'astro';
 
 import astrowind from './vendor/integration';
+import { routeMap, reverseRouteMap } from './src/i18n/routes';
 
 import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter';
 
@@ -34,9 +35,22 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      i18n: {
-        defaultLocale: 'fr',
-        locales: { fr: 'fr-FR', en: 'en-US' },
+      // Pages modèle / non indexables retirées du sitemap
+      filter: (page) => !/\/(about|privacy|terms)\/?$/.test(page),
+      // hreflang FR ↔ EN d'après src/i18n/routes.ts
+      serialize(item) {
+        const base = 'https://www.groovecaviar.com';
+        const path = item.url.replace(base, '').replace(/\/$/, '') || '/';
+        const fr = routeMap[path] ? path : reverseRouteMap[path];
+        const en = routeMap[path] ?? (reverseRouteMap[path] ? path : undefined);
+        if (fr && en) {
+          item.links = [
+            { url: base + (fr === '/' ? '/' : fr), lang: 'fr' },
+            { url: base + en, lang: 'en' },
+            { url: base + (fr === '/' ? '/' : fr), lang: 'x-default' },
+          ];
+        }
+        return item;
       },
     }),
     mdx(),

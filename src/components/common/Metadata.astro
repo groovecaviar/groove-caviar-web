@@ -9,6 +9,8 @@ import type { MetaData, MetaDataOpenGraph } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
 
 import { adaptOpenGraphImages } from '~/utils/images';
+import { getLocale } from '~/i18n/ui';
+import { routeMap, reverseRouteMap } from '~/i18n/routes';
 
 export interface Props extends MetaData {
   dontUseTitleTemplate?: boolean;
@@ -24,12 +26,21 @@ const {
   twitter = {},
 } = Astro.props;
 
+// Langue de la page (d'après l'adresse) et page équivalente dans l'autre langue
+const pageLocale = getLocale(Astro.url);
+const cleanPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const twinPath = pageLocale === 'fr' ? routeMap[cleanPath] : reverseRouteMap[cleanPath];
+const absolute = (path: string) => String(getCanonical(path));
+const frPath = pageLocale === 'fr' ? cleanPath : twinPath;
+const enPath = pageLocale === 'en' ? cleanPath : twinPath;
+const ogLocales = { fr: 'fr_FR', en: 'en_US' } as const;
+
 const mergedOg: MetaDataOpenGraph = merge(
   {
     url: canonical,
     siteName: SITE?.name,
     images: [],
-    locale: I18N?.language || 'en',
+    locale: ogLocales[pageLocale] || I18N?.language || 'en',
     type: 'website',
   },
   METADATA?.openGraph,
@@ -107,6 +118,19 @@ const seoProps: SEOProps = {
         : true,
   description: description || METADATA?.description,
   openGraph: buildOpenGraph(adaptedOg),
+  // hreflang : uniquement si la page a son équivalent dans l'autre langue
+  extend: {
+    link: twinPath
+      ? [
+          { rel: 'alternate', hreflang: 'fr', href: absolute(frPath) },
+          { rel: 'alternate', hreflang: 'en', href: absolute(enPath) },
+          { rel: 'alternate', hreflang: 'x-default', href: absolute(frPath) },
+        ]
+      : [],
+    meta: twinPath
+      ? [{ property: 'og:locale:alternate', content: ogLocales[pageLocale === 'fr' ? 'en' : 'fr'] }]
+      : [],
+  },
   twitter: mergedTwitter,
   surpressWarnings: true,
 };
