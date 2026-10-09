@@ -1,0 +1,14 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import PartiesSections from '~/components/sections/PartiesSections.astro';
+import { parties } from '~/data/pages/parties';
+
+// Textes de la page : src/data/textes/soirees.en.yaml
+const locale = 'en';
+const t = parties[locale];
+const metadata = { title: t.seo.titre, ignoreTitleTemplate: true, description: t.seo.description };
+---
+
+<PageLayout metadata={metadata} lang={locale}>
+  <PartiesSections t={t} locale={locale} />
+</PageLayout>

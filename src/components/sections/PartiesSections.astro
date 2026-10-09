@@ -1,0 +1,732 @@
+---
+// Page pilier « Soirées » (FR /soirees ↔ EN /en/parties)
+// Textes : src/data/textes/soirees.fr.yaml / soirees.en.yaml (mise à jour à chaud).
+// Structure calquée sur la page Services ; ajouts : sommaire « tracklist » + FAQ.
+import { Image } from 'astro:assets';
+import heroImg from '~/assets/images/SOIREES-hero.webp';
+import imgEntreprise from '~/assets/images/SOIREES-entreprise.webp';
+import imgPrivees from '~/assets/images/SOIREES-privees.webp';
+import imgBars from '~/assets/images/SOIREES-bars.webp';
+import imgClubs from '~/assets/images/SOIREES-clubs.webp';
+import imgReveillon from '~/assets/images/SOIREES-reveillon.webp';
+import type { PartiesContent } from '~/data/pages/parties';
+import { ligne, paragraphes, texteBrut, typo, pageExiste, type Locale } from '~/utils/textes';
+
+export interface Props {
+  t: PartiesContent;
+  locale: Locale;
+}
+
+const { t, locale } = Astro.props;
+
+const photos = {
+  entreprise: imgEntreprise,
+  privees: imgPrivees,
+  bars: imgBars,
+  clubs: imgClubs,
+  reveillon: imgReveillon,
+};
+
+const L = (s: string) => ligne(s, locale);
+const P = (s: string) => paragraphes(s, locale);
+const T = (s: string) => typo(s, locale);
+const B = (s: string) => texteBrut(s, locale);
+// Titres : un mot composé (« bar-mitzvah ») ne se coupe jamais au trait d'union
+const H = (s: string) => L(s).replace(/([A-Za-zÀ-ÿ]+(?:-[A-Za-zÀ-ÿ]+)+)/g, '<span class="gc-prt-nowrap">$1</span>');
+
+// Sections numérotées (01…) + pistes du sommaire (A1…) ; les liens vers des
+// sous-pages pas encore créées sont masqués automatiquement.
+const sections = t.sections.map((s, i) => ({
+  ...s,
+  num: String(i + 1).padStart(2, '0'),
+  track: `A${i + 1}`,
+  liensVisibles: (s.liens ?? []).filter((l) => pageExiste(l.page)),
+}));
+
+// ── Données structurées (JSON-LD) : page, fil d'Ariane, service, FAQ ──────
+const SITE_URL = 'https://www.groovecaviar.com';
+const pagePath = locale === 'fr' ? '/soirees' : '/en/parties';
+const pageUrl = `${SITE_URL}${pagePath}`;
+const homeUrl = locale === 'fr' ? `${SITE_URL}/` : `${SITE_URL}/en`;
+const villes = ['Biarritz', 'Bayonne', 'Anglet', 'Saint-Jean-de-Luz', 'Guéthary', 'Hossegor', 'Seignosse', 'Capbreton', 'Bordeaux'];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: t.seo.titre,
+      description: t.seo.description,
+      inLanguage: locale,
+      isPartOf: { '@id': `${SITE_URL}#website` },
+      about: { '@id': SITE_URL },
+      breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+      primaryImageOfPage: `${SITE_URL}${heroImg.src}`,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: locale === 'fr' ? 'Accueil' : 'Home', item: homeUrl },
+        { '@type': 'ListItem', position: 2, name: `${t.hero.titre_blanc} ${t.hero.titre_or}`, item: pageUrl },
+      ],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${pageUrl}#service`,
+      name: `${t.hero.titre_blanc} ${t.hero.titre_or} — Groove Caviar`,
+      serviceType: locale === 'fr' ? 'DJ pour soirées et événements' : 'Party and event DJ',
+      description: B(t.intro.texte),
+      url: pageUrl,
+      provider: { '@id': SITE_URL },
+      areaServed: [
+        ...villes.map((name) => ({ '@type': 'City', name })),
+        { '@type': 'AdministrativeArea', name: locale === 'fr' ? 'Pays Basque' : 'Basque Country' },
+        { '@type': 'AdministrativeArea', name: 'Landes' },
+        { '@type': 'Country', name: 'France' },
+      ],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: t.sommaire.titre,
+        itemListElement: sections.map((s) => ({
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: s.titre,
+            description: B(s.texte.split(/\n\s*\n/)[0]),
+            url: `${pageUrl}#${s.ancre}`,
+          },
+        })),
+      },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${pageUrl}#faq`,
+      inLanguage: locale,
+      mainEntity: t.faq.questions.map((q) => ({
+        '@type': 'Question',
+        name: B(q.question),
+        acceptedAnswer: { '@type': 'Answer', text: B(q.reponse) },
+      })),
+    },
+  ],
+};
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+<!-- ═══ HERO ═══════════════════════════════════════════════════════════════ -->
+<section class="gc-hero-section gc-photo-hero">
+  <Image
+    src={heroImg}
+    alt=""
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="gc-hero-media gc-photo-hero-bg"
+  />
+  <div class="gc-photo-hero-overlay" aria-hidden="true"></div>
+  <div class="gc-photo-hero-content">
+    <span class="gc-page-eyebrow">{t.hero.surtitre}</span>
+    <h1 class="gc-photo-hero-h1 gc-photo-hero-h1-zoom">
+      <span class="gc-photo-hero-h1-white">{t.hero.titre_blanc}</span>
+      {' '}
+      <span class="gc-photo-hero-h1-gold gc-shimmer gc-prt-accent-safe">{t.hero.titre_or}</span>
+    </h1>
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- ═══ BANDEAU INTRO ═════════════════════════════════════════════════════ -->
+<section class="gc-intro-band gc-reveal">
+  <div class="gc-intro-band-inner">
+    <h2 class="gc-intro-band-title" set:html={L(t.intro.titre)} />
+    <div class="gc-intro-band-text gc-prt-intro-text" set:html={P(t.intro.texte)} />
+  </div>
+</section>
+
+<!-- ═══ SOMMAIRE « TRACKLIST » (pochette + vinyle) ═══════════════════════ -->
+<section class="gc-tl gc-reveal" aria-labelledby="gc-tl-title">
+  <div class="gc-tl-inner">
+    <div class="gc-tl-deck" aria-hidden="true">
+      <div class="gc-tl-vinyl">
+        <div class="gc-tl-label">
+          <svg class="gc-tl-label-text" viewBox="0 0 100 100">
+            <defs>
+              <path id="gc-tl-circle" d="M50,50 m-34,0 a34,34 0 1,1 68,0 a34,34 0 1,1 -68,0" />
+            </defs>
+            <text class="brand">
+              <textPath href="#gc-tl-circle" textLength="210">Groove Caviar · {t.sommaire.pochette} · {t.sommaire.surtitre} ·</textPath>
+            </text>
+          </svg>
+          <span class="gc-tl-hole"></span>
+        </div>
+      </div>
+      <div class="gc-tl-sleeve">
+        <span class="brand gc-tl-sleeve-brand">Groove Caviar</span>
+        <span class="gc-tl-sleeve-title">{t.sommaire.pochette}</span>
+        <span class="gc-tl-sleeve-meta">{t.sommaire.surtitre} · {sections.length} {locale === 'fr' ? 'titres' : 'tracks'}</span>
+      </div>
+    </div>
+
+    <div class="gc-tl-body">
+      <span class="gc-sec-accroche">{t.sommaire.surtitre}</span>
+      <h2 id="gc-tl-title" class="gc-tl-title" set:html={H(t.sommaire.titre)} />
+      <ol class="gc-tl-list">
+        {sections.map((s) => (
+          <li>
+            <a href={`#${s.ancre}`} class="gc-track">
+              <span class="gc-track-lead" aria-hidden="true">
+                <span class="gc-track-num">{s.track}</span>
+                <span class="gc-track-eq"><i></i><i></i><i></i><i></i></span>
+              </span>
+              <span class="gc-track-title" set:html={H(s.titre)} />
+              <span class="gc-track-tag">{s.piste}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTIONS 01-05 ════════════════════════════════════════════════════ -->
+{sections.map((s, i) => (
+  <section
+    id={s.ancre}
+    class:list={[
+      'gc-srv-section gc-reveal',
+      i % 2 === 0 ? 'gc-srv-section--white' : 'gc-srv-section--tint',
+      i % 2 === 1 && 'gc-srv-section--reverse',
+    ]}
+  >
+    <div class="gc-srv-inner">
+      <div class="gc-srv-media">
+        <div class="gc-media-wrap gc-media-hover">
+          <Image
+            src={photos[s.photo]}
+            alt={s.image_alt}
+            widths={[400, 700, 900]}
+            sizes="(min-width: 1024px) 30vw, 92vw"
+          />
+        </div>
+      </div>
+
+      <div class="gc-srv-content">
+        <span class="gc-sec-accroche">{s.num} / {T(s.accroche)}</span>
+        <h2 class="gc-sec-title" set:html={H(s.titre)} />
+        {s.sous_titre && <p class="gc-srv-subtitle-text" set:html={L(s.sous_titre)} />}
+        <div class="gc-srv-body gc-body-text" set:html={P(s.texte)} />
+
+        {(s.liensVisibles.length > 0 || s.action) && (
+          <div class="gc-prt-actions">
+            {s.liensVisibles.length > 0 && (
+              <ul class="gc-prt-links">
+                {s.liensVisibles.map((l) => (
+                  <li><a href={l.page} class="gc-srv-link">{l.texte} →</a></li>
+                ))}
+              </ul>
+            )}
+            {s.action && pageExiste(s.action.page) && (
+              <a href={s.action.page} class="gc-prt-cta">{s.action.texte} →</a>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+))}
+
+<!-- ═══ BANDEAU CITATION ══════════════════════════════════════════════════ -->
+<section class="gc-quote-banner gc-reveal">
+  <div class="gc-quote-inner">
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+    <blockquote set:html={L(t.citation)} />
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══════════════════════════════════════════════════════════════ -->
+<section class="gc-sec gc-sec--white gc-reveal" aria-labelledby="gc-prt-faq-title">
+  <div class="gc-sec-inner gc-prt-faq-inner">
+    <div class="gc-sec-head">
+      <span class="gc-sec-accroche">{t.faq.surtitre}</span>
+      <h2 id="gc-prt-faq-title" class="gc-sec-title" set:html={L(t.faq.titre)} />
+      {t.faq.intro && <p class="gc-body-text" set:html={L(t.faq.intro)} />}
+    </div>
+    <div class="gc-prt-faq-list">
+      {t.faq.questions.map((q, i) => (
+        <details class="gc-prt-faq-item" name="gc-prt-faq">
+          <summary>
+            <span class="gc-eyebrow-num">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="gc-prt-faq-q" set:html={L(q.question)} />
+            <span class="gc-prt-faq-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="gc-prt-faq-a gc-body-text" set:html={P(q.reponse)} />
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA FINAL ═════════════════════════════════════════════════════════ -->
+<section class="gc-final-cta gc-reveal">
+  <div class="gc-final-cta-inner">
+    <h2 class="gc-final-cta-title gc-prt-cta-oneline">
+      <span class="gc-final-cta-title-1">{T(t.cta.titre_blanc)}</span>{' '}
+      <span class="gc-final-cta-title-2 gc-shimmer">{T(t.cta.titre_or)}</span>
+    </h2>
+    <p class="gc-final-cta-subtitle" set:html={L(t.cta.texte)} />
+    <div class="gc-btn-pair">
+      <a href={t.cta.bouton_devis.page} class="btn-gc-primary">{t.cta.bouton_devis.texte}</a>
+      <a href={t.cta.bouton_contact.page} class="btn-gc-outline">{t.cta.bouton_contact.texte}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Couleurs : variables de palette (tailwind.css) — --gc-surface #FFFFFF ·
+     --gc-surface-alt #F2F2F2 · --gc-ink #0D0D0D · --gc-gold #AF9453 — et hex 8 chiffres. */
+
+  .gc-prt-intro-text :global(p) { margin-bottom: 1rem; }
+  :global(.gc-prt-nowrap) { white-space: nowrap; }
+  /* L'accent d'une majuscule (É) n'est plus rogné par le fond du .gc-shimmer */
+  .gc-prt-accent-safe { display: inline-block; padding-top: 0.2em; margin-top: -0.2em; }
+  .gc-prt-intro-text :global(p:last-child) { margin-bottom: 0; }
+
+  /* ══ SOMMAIRE « TRACKLIST » ══════════════════════════════════════════════ */
+  .gc-tl {
+    background:
+      radial-gradient(ellipse at 22% 50%, #AF94531F 0%, #AF945300 50%),
+      var(--gc-ink);
+    color: #FFFFFF;
+    padding: clamp(4.5rem, 11vh, 7.5rem) 1.25rem;
+  }
+  .gc-tl-inner {
+    max-width: 72rem;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .gc-tl-inner { grid-template-columns: 1fr 1.15fr; gap: 5rem; }
+  }
+
+  /* Pochette + vinyle qui en sort */
+  .gc-tl-deck {
+    position: relative;
+    width: min(100%, 36rem);
+    aspect-ratio: 1.7 / 1;
+    margin-inline: auto;
+  }
+  .gc-tl-sleeve {
+    position: absolute;
+    inset: 0 auto 0 0;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1rem, 3vw, 1.6rem);
+    background:
+      linear-gradient(160deg, #FFFFFF0F 0%, #FFFFFF00 40%),
+      linear-gradient(145deg, #1E1E1E 0%, #0D0D0D 70%);
+    border: 1px solid #AF945359;
+    box-shadow: 0 2rem 3.5rem #00000099;
+  }
+  .gc-tl-sleeve::after {
+    /* filet doré intérieur */
+    content: '';
+    position: absolute;
+    inset: 0.55rem;
+    border: 1px solid #AF94532E;
+    pointer-events: none;
+  }
+  .gc-tl-sleeve-brand { font-size: clamp(0.6rem, 1.4vw, 0.75rem); letter-spacing: 0.22em; }
+  .gc-tl-sleeve-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(2.4rem, 6.5vw, 3.6rem);
+    line-height: 1;
+    color: #FFFFFF;
+  }
+  .gc-tl-sleeve-meta {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: #FFFFFF8C;
+  }
+
+  .gc-tl-vinyl {
+    position: absolute;
+    top: 4%;
+    left: 6%;
+    height: 92%;
+    aspect-ratio: 1 / 1;
+    z-index: 1;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, #00000000 0 30%, #0D0D0D00 30%),
+      repeating-radial-gradient(circle, #111111 0 1.5px, #1C1C1C 1.5px 3px);
+    box-shadow: 0 1.5rem 3rem #000000B3, inset 0 0 0 2px #262626;
+    transition: left 1.2s cubic-bezier(.16, 1, .3, 1);
+  }
+  .gc-tl-vinyl::before {
+    /* reflet fixe (la lumière ne tourne pas avec le disque) */
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 20deg, #FFFFFF00 0deg, #FFFFFF1A 25deg, #FFFFFF00 55deg,
+      #FFFFFF00 180deg, #FFFFFF14 205deg, #FFFFFF00 235deg, #FFFFFF00 360deg);
+    pointer-events: none;
+  }
+  /* Le disque sort de la pochette à l'apparition de la section… */
+  .gc-tl.is-visible .gc-tl-vinyl { left: 40%; }
+  /* …et sort encore un peu plus quand on survole un titre */
+  .gc-tl-inner:has(.gc-track:hover, .gc-track:focus-visible) .gc-tl-vinyl { left: 46%; }
+
+  .gc-tl-label {
+    position: absolute;
+    inset: 31%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #1F1F1F 0%, #0D0D0D 100%);
+    box-shadow: 0 0 0 1px #AF9453, 0 0 0 5px #0D0D0D, 0 0 0 6px #AF945366;
+    display: grid;
+    place-items: center;
+    animation: gc-tl-spin 14s linear infinite;
+  }
+  .gc-tl-label-text {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .gc-tl-label-text text {
+    fill: currentColor;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+  .gc-tl-hole {
+    display: block;
+    width: 9%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: #AF9453;
+    box-shadow: 0 0 0 2px #0D0D0D;
+  }
+  @keyframes gc-tl-spin { to { transform: rotate(360deg); } }
+
+  /* Liste des titres */
+  .gc-tl-body { max-width: 36rem; margin-inline: auto; width: 100%; }
+  .gc-tl-title {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    color: #FFFFFF;
+    margin-bottom: 2.25rem;
+  }
+  .gc-tl-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid #FFFFFF1F; }
+  .gc-track {
+    display: grid;
+    grid-template-columns: 2.75rem 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 0.25rem;
+    border-bottom: 1px solid #FFFFFF1F;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: background-color 0.4s ease;
+  }
+  .gc-track:hover,
+  .gc-track:focus-visible { background-color: #FFFFFF08; outline: none; }
+  .gc-track-lead { position: relative; display: flex; align-items: center; height: 1rem; }
+  .gc-track-num {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--gc-gold);
+    transition: opacity 0.3s ease;
+  }
+  /* Égaliseur : remplace le numéro au survol */
+  .gc-track-eq {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .gc-track-eq i {
+    display: block;
+    width: 3px;
+    height: 30%;
+    background: var(--gc-gold);
+    animation: gc-eq 0.9s ease-in-out infinite alternate;
+    animation-play-state: paused;
+  }
+  .gc-track-eq i:nth-child(2) { animation-delay: -0.3s; animation-duration: 0.7s; }
+  .gc-track-eq i:nth-child(3) { animation-delay: -0.6s; animation-duration: 1.1s; }
+  .gc-track-eq i:nth-child(4) { animation-delay: -0.15s; animation-duration: 0.8s; }
+  @keyframes gc-eq { from { height: 20%; } to { height: 100%; } }
+
+  .gc-track:hover .gc-track-num,
+  .gc-track:focus-visible .gc-track-num { opacity: 0; }
+  .gc-track:hover .gc-track-eq,
+  .gc-track:focus-visible .gc-track-eq { opacity: 1; }
+  .gc-track:hover .gc-track-eq i,
+  .gc-track:focus-visible .gc-track-eq i { animation-play-state: running; }
+
+  .gc-track-title {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(0.92rem, 1.5vw, 1.08rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+    transition: color 0.3s ease, transform 0.4s cubic-bezier(.16, 1, .3, 1);
+  }
+  .gc-track:hover .gc-track-title,
+  .gc-track:focus-visible .gc-track-title { color: var(--gc-gold); transform: translateX(6px); }
+  .gc-track-tag {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.64rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: #FFFFFF73;
+    transition: color 0.3s ease;
+  }
+  .gc-track:hover .gc-track-tag,
+  .gc-track:focus-visible .gc-track-tag { color: #FFFFFFD9; }
+  @media (max-width: 480px) {
+    .gc-track { grid-template-columns: 2.25rem 1fr; }
+    .gc-track-tag { display: none; }
+  }
+
+  /* ══ SECTIONS 01-05 (même mise en page que Services) ═════════════════════ */
+  .gc-srv-section {
+    min-height: auto;
+    display: flex;
+    align-items: center;
+    scroll-margin-top: 4.5rem;
+  }
+  .gc-srv-section--white { background-color: var(--gc-surface); color: var(--gc-ink); }
+  .gc-srv-section--tint  { background-color: var(--gc-surface-alt); color: var(--gc-ink); }
+  .gc-srv-inner {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding: 3.5rem 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  @media (min-width: 1024px) {
+    .gc-srv-section { min-height: 100svh; }
+    .gc-srv-inner {
+      grid-template-columns: 1fr 2fr;
+      grid-template-areas: 'media content';
+      align-items: center;
+      gap: 4rem;
+      padding: 5rem 2rem;
+    }
+    .gc-srv-section--reverse .gc-srv-inner {
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas: 'content media';
+    }
+    .gc-srv-media   { grid-area: media; }
+    .gc-srv-content { grid-area: content; }
+    .gc-srv-section--reverse .gc-srv-content { margin-left: auto; }
+  }
+  .gc-srv-media { display: flex; justify-content: center; }
+  .gc-media-wrap {
+    width: 100%;
+    max-width: 24rem;
+    height: 50vh;
+    margin-inline: auto;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  @media (min-width: 1024px) {
+    .gc-media-wrap { height: 80vh; max-width: 26rem; }
+  }
+  .gc-media-wrap :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .gc-srv-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 44rem;
+  }
+  .gc-srv-subtitle-text {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.82rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gc-gold);
+    margin-bottom: 1.5rem;
+  }
+  .gc-srv-body { color: var(--gc-ink); margin-bottom: 0.25rem; }
+  .gc-srv-body :global(p)            { margin-bottom: 1rem; }
+  .gc-srv-body :global(p:last-child) { margin-bottom: 0; }
+  .gc-srv-body :global(strong)       { font-weight: 700; }
+
+  /* Liens vers les sous-pages + action secondaire */
+  .gc-prt-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-top: 1.75rem;
+  }
+  .gc-prt-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 2rem;
+  }
+  .gc-srv-link,
+  .gc-prt-cta {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    position: relative;
+    width: fit-content;
+  }
+  .gc-srv-link { color: var(--gc-gold); }
+  .gc-prt-cta  { color: var(--gc-ink); }
+  .gc-srv-link::after,
+  .gc-prt-cta::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 1px;
+    background-color: var(--gc-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .gc-prt-cta::after { transform: scaleX(1); opacity: 0.6; }
+  .gc-srv-link:hover::after { transform: scaleX(1); }
+  .gc-prt-cta:hover { color: var(--gc-gold); }
+  .gc-prt-cta:hover::after { opacity: 1; }
+
+  /* ══ FAQ ═════════════════════════════════════════════════════════════════ */
+  .gc-prt-faq-inner { max-width: 50rem; }
+  .gc-prt-faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .gc-prt-faq-item {
+    background: var(--gc-surface-alt);
+    border-radius: 0.65rem;
+    padding: 1.15rem 1.4rem;
+    transition: background-color 0.3s ease;
+  }
+  .gc-prt-faq-item[open] { background: #AF945314; }
+  .gc-prt-faq-item summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .gc-prt-faq-item summary::-webkit-details-marker { display: none; }
+  .gc-prt-faq-q {
+    flex: 1;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--gc-ink);
+  }
+  /* Icône + / − */
+  .gc-prt-faq-icon {
+    position: relative;
+    flex-shrink: 0;
+    width: 0.8rem;
+    height: 0.8rem;
+    align-self: center;
+  }
+  .gc-prt-faq-icon::before,
+  .gc-prt-faq-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: var(--gc-gold);
+    transition: transform 0.3s ease;
+  }
+  .gc-prt-faq-icon::after { transform: rotate(90deg); }
+  .gc-prt-faq-item[open] .gc-prt-faq-icon::after { transform: rotate(0deg); }
+  .gc-prt-faq-a { margin: 0.85rem 0 0; padding-left: 2.05rem; color: var(--gc-ink); }
+  .gc-prt-faq-a :global(p) { opacity: 0.88; }
+
+  /* ══ CTA final : « Et si on dansait ? » sur UNE seule ligne ═══════════════ */
+  .gc-prt-cta-oneline {
+    white-space: nowrap;
+    font-size: clamp(1.45rem, 6.6vw, 4rem);
+  }
+  .gc-prt-cta-oneline .gc-final-cta-title-1,
+  .gc-prt-cta-oneline .gc-final-cta-title-2 { display: inline-block; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gc-tl-label { animation: none; }
+    .gc-tl-vinyl { transition: none; }
+    .gc-track-eq i { animation: none; height: 60%; }
+  }
+</style>
+
+<script>
+  // Apparition au scroll des sections .gc-reveal (même réglage que Services).
+  let observer: IntersectionObserver | null = null;
+
+  const initReveal = () => {
+    observer?.disconnect();
+    const revealEls = document.querySelectorAll<HTMLElement>('.gc-reveal');
+    if (!revealEls.length) return;
+    observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -25% 0px' }
+    );
+    revealEls.forEach((el) => observer!.observe(el));
+  };
+
+  document.addEventListener('astro:page-load', initReveal);
+</script>

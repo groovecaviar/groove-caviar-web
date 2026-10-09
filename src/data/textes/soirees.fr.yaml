@@ -1,0 +1,192 @@
+# ══════════════════════════════════════════════════════════════════════
+#  PAGE « SOIRÉES » — TEXTES FRANÇAIS  (adresse : /soirees)
+# ══════════════════════════════════════════════════════════════════════
+#  Comment modifier :
+#   • Change le texte après les deux-points, puis enregistre (Cmd + S).
+#     Avec « npm run dev », la page se met à jour toute seule dans le navigateur.
+#   • Ne modifie PAS les mots-clés à gauche (titre:, texte:, liens:…),
+#     ni les tirets « - », ni le décalage (les espaces en début de ligne).
+#   • Les textes longs sont sous un « | » : écris librement en dessous,
+#     en gardant le même décalage. Une ligne vide = un nouveau paragraphe.
+#
+#  Mise en forme automatique (rien à faire) :
+#   • « Groove Caviar » s'affiche toujours en doré (classe .brand).
+#   • Les espaces insécables avant ? ! : ; » et après « sont ajoutées.
+#   • **mot** → mot en gras.      [texte du lien](/adresse) → lien.
+#
+#  Sections : l'ordre des sections ci-dessous = l'ordre sur la page
+#  (numéros 01, 02… et pistes A1, A2… recalculés automatiquement).
+#  Liens « liens: » vers les sous-pages : ils n'apparaissent QUE lorsque
+#  la sous-page existe — inutile de les retirer en attendant.
+#  « photo: » doit rester l'un de : entreprise, privees, bars, clubs, reveillon
+# ══════════════════════════════════════════════════════════════════════
+
+seo:
+  titre: "DJ soirée privée & entreprise à Biarritz | Groove Caviar"
+  description: "DJ pour soirées d'entreprise, séminaires, soirées privées, anniversaires, bar-mitzvah, bars, clubs et réveillons à Biarritz, au Pays Basque, dans les Landes et partout en France."
+
+hero:
+  surtitre: "Biarritz · Pays Basque · Landes"
+  titre_blanc: "DJ"
+  titre_or: "Soirées"
+
+intro:
+  titre: "Des soirées qui ne ressemblent à aucune autre"
+  texte: |
+    Soirée d'entreprise, fête privée, bar, club ou réveillon : Groove Caviar fournit des DJs professionnels et le matériel son et lumière adapté à chaque lieu, à Biarritz, au Pays Basque, dans les Landes et partout en France. Direction musicale sur-mesure, lecture de piste en temps réel, exigence de service haut de gamme : de la préparation au dernier morceau, nous nous occupons de tout.
+
+sommaire:
+  surtitre: "Face A"
+  titre: "Choisissez votre soirée"
+  pochette: "Soirées"
+
+sections:
+  - ancre: entreprise
+    photo: entreprise
+    piste: "Corporate"
+    accroche: "Fédérer vos équipes"
+    titre: "Soirées d'entreprise & séminaires"
+    sous_titre: "Votre image de marque mérite la bonne bande-son"
+    texte: |
+      Soirée de fin d'année, soirée clients, inauguration, séminaire ou départ en retraite : une soirée entre collègues et partenaires est un moment d'échange et de fête qui reflète l'image de votre entreprise.
+
+      Parce que vos invités n'ont ni la même culture ni les mêmes goûts musicaux, nos DJs construisent une programmation qui rassemble tout le monde, de l'ambiance du networking jusqu'à la piste de danse. **Prestation clé en main** (DJ, sonorisation, micro pour les discours, éclairage) ou intégration à vos équipes de prestataires : nous nous adaptons à votre organisation.
+    image_alt: "DJ Groove Caviar en prestation lors d'une soirée d'entreprise"
+    liens:
+      - texte: "Soirées d'entreprise"
+        page: /soirees/entreprise
+      - texte: "Séminaires"
+        page: /soirees/seminaire
+    action:
+      texte: "Demander un devis"
+      page: /devis/booking-dj
+
+  - ancre: privees
+    photo: privees
+    piste: "Privé"
+    accroche: "La fête, chez vous"
+    titre: "Soirées privées, anniversaires & bar-mitzvah"
+    sous_titre: "Votre maison, votre villa, votre club éphémère"
+    texte: |
+      Une fête dans votre jardin, votre villa ou votre location de vacances ? Groove Caviar transforme votre salon en dancefloor et votre terrasse en club éphémère, du cocktail au coucher du soleil jusqu'au bout de la nuit.
+
+      Anniversaire, anniversaire de mariage, bar-mitzvah, pool party ou EVJF : nous concevons avec vous le déroulé de la soirée, et nos DJs l'animent avec un matériel discret, adapté aux lieux privés, en intérieur comme en extérieur.
+    image_alt: "Soirée privée animée par un DJ Groove Caviar"
+    liens:
+      - texte: "Soirées privées"
+        page: /soirees/privees
+      - texte: "Anniversaires"
+        page: /soirees/privees/anniversaire
+      - texte: "Bar-mitzvah"
+        page: /soirees/privees/bar-mitzvah
+    action:
+      texte: "Demander un devis"
+      page: /devis/booking-dj
+
+  - ancre: bars-restaurants
+    photo: bars
+    piste: "Hospitality"
+    accroche: "Fidéliser votre clientèle"
+    titre: "Bars, hôtels & restaurants"
+    sous_titre: "Faites de votre établissement une destination"
+    texte: |
+      Apéro en musique, afterwork, dîner dansant, brunch jazzy ou sunset sur un rooftop : une programmation musicale régulière crée une habitude chez vos clients, locaux comme touristes.
+
+      Groove Caviar sélectionne les DJs adaptés à votre lieu, à votre clientèle et à votre budget, pour un événement ponctuel comme pour une résidence. Pour un hôtel, un bar qui s'anime le soir, ce sont des clients qui restent chez vous.
+    image_alt: "DJ en soirée dans un bar"
+    liens:
+      - texte: "Bars, hôtels & restaurants"
+        page: /soirees/bars-restaurants
+    action:
+      texte: "Parlons de votre programmation"
+      page: /contact
+
+  - ancre: clubs
+    photo: clubs
+    piste: "Nightlife"
+    accroche: "Nos racines"
+    titre: "Clubs & discothèques"
+    sous_titre: "Booking DJ, résidences & concepts de soirées"
+    texte: |
+      Nos racines sont dans les clubs : on retrouve régulièrement nos DJs aux platines des meilleures adresses de Paris et du Sud-Ouest. Soirée unique ou résidence, DJ résident ou guest de renom, Groove Caviar programme les artistes les plus adaptés à votre public, dans une large variété de styles.
+
+      Nous concevons aussi des **concepts de soirées complets** (direction artistique, communication, réseaux sociaux), comme nos soirées Auguste, Dangerhouse Club, Addix ou La French.
+    image_alt: "DJ aux platines dans un club"
+    liens:
+      - texte: "Clubs & discothèques"
+        page: /soirees/clubs-discotheques
+    action:
+      texte: "Parlons de votre programmation"
+      page: /contact
+
+  - ancre: reveillon
+    photo: reveillon
+    piste: "31.12"
+    accroche: "Le 31 décembre"
+    titre: "Réveillon du Nouvel An"
+    sous_titre: "Une seule nuit par an, aucune fausse note"
+    texte: |
+      Le réveillon se célèbre en musique, et le choix du DJ décide de la réussite de la soirée. Pour les bars, hôtels et restaurants comme pour les particuliers, nos DJs accompagnent toute la soirée : apéritif lounge, dîner, compte à rebours de minuit, puis piste de danse, avec une programmation longue et variée qui plaît à tous.
+
+      Les meilleurs DJs sont très demandés le 31 décembre : **pensez à réserver plusieurs mois à l'avance**.
+    image_alt: "Foule en fête lors d'une soirée du Nouvel An"
+    liens:
+      - texte: "Réveillon du Nouvel An"
+        page: /soirees/reveillons
+    action:
+      texte: "Demander un devis"
+      page: /devis/booking-dj
+
+citation: "La bonne musique, au bon moment, pour le bon public."
+
+faq:
+  surtitre: "Questions fréquentes"
+  titre: "Tout savoir sur nos DJs de soirée"
+  intro: "Les réponses aux questions que l'on nous pose le plus souvent avant de réserver un DJ pour une soirée."
+  questions:
+    - question: "Combien coûte un DJ pour une soirée à Biarritz ou au Pays Basque ?"
+      reponse: |
+        Le tarif d'un DJ de soirée dépend de la durée de la prestation, de la date, du lieu et du matériel son et lumière nécessaire. Chaque soirée étant différente, Groove Caviar établit un devis sur-mesure, gratuit et sans engagement, envoyé sous 72h ouvrées après votre [demande de devis](/devis/booking-dj).
+
+    - question: "Quels types de soirées anime Groove Caviar ?"
+      reponse: |
+        Groove Caviar anime les soirées d'entreprise et séminaires, les soirées privées, anniversaires et bar-mitzvah, les soirées en bars, hôtels et restaurants, les soirées en clubs et discothèques, ainsi que les réveillons du Nouvel An. Basée à Biarritz, l'agence intervient aussi pour les mariages et les événements de marque.
+
+    - question: "Dans quelles villes intervenez-vous pour une soirée ?"
+      reponse: |
+        Basé à Biarritz, Groove Caviar intervient dans tout le Pays Basque et le Sud-Ouest : Bayonne, Anglet, Saint-Jean-de-Luz, Guéthary, ainsi que dans les Landes (Hossegor, Seignosse, Capbreton) et jusqu'à Bordeaux. Nos DJs se déplacent également partout en France et à l'international.
+
+    - question: "Le matériel son et lumière est-il fourni ?"
+      reponse: |
+        Oui. Pour les soirées privées et d'entreprise, nous fournissons la régie DJ professionnelle, une sonorisation adaptée à votre lieu et à votre nombre d'invités, et un micro sans fil pour les discours. L'éclairage de piste, la mise en lumière architecturale et d'autres options peuvent être ajoutés. L'installation et le démontage sont assurés par nos soins.
+
+    - question: "Peut-on choisir la musique de sa soirée ?"
+      reponse: |
+        Oui. Avant la soirée, nous échangeons avec vous par téléphone ou lors d'un rendez-vous pour définir l'ambiance, vos morceaux favoris et ceux à éviter. Le jour J, le DJ construit son set en temps réel selon l'énergie de vos invités : pas de playlist figée, mais une vraie direction musicale, de la pop au disco, de la soul à la house.
+
+    - question: "Pouvez-vous animer une soirée chez un particulier ?"
+      reponse: |
+        Oui. Maison, villa, jardin, bord de piscine ou location de vacances : Groove Caviar installe un DJ à domicile avec un matériel discret, adapté aux espaces privés, en intérieur comme en extérieur. Le volume est réglé selon le lieu et le voisinage, de l'apéritif jusqu'à la piste de danse.
+
+    - question: "Proposez-vous des DJs pour les bars, restaurants et clubs ?"
+      reponse: |
+        Oui. Grâce à son réseau artistique, Groove Caviar place des DJs dans les bars, hôtels, restaurants et discothèques, pour une soirée ponctuelle ou une résidence régulière. Nous sélectionnons les artistes selon votre lieu, votre clientèle et votre budget, et pouvons concevoir des concepts de soirées complets.
+
+    - question: "Combien de temps à l'avance faut-il réserver son DJ ?"
+      reponse: |
+        Le plus tôt possible : les week-ends d'été et les fêtes de fin d'année partent vite. Pour le réveillon du 31 décembre, date la plus demandée de l'année, nous conseillons de réserver plusieurs mois à l'avance.
+
+    - question: "Comment demander un devis pour une soirée ?"
+      reponse: |
+        Remplissez notre [formulaire de demande de devis](/devis/booking-dj) en quelques minutes, ou contactez-nous au 06 23 62 57 04 ou par e-mail à contact@groovecaviar.com. Nous revenons vers vous sous 72h ouvrées avec une proposition personnalisée, gratuite et sans engagement.
+
+cta:
+  titre_blanc: "Et si on"
+  titre_or: "dansait ?"
+  texte: "Dites-nous tout de votre projet : nous vous répondons sous 72h ouvrées avec une proposition sur-mesure."
+  bouton_devis:
+    texte: "Demander un devis"
+    page: /devis/booking-dj
+  bouton_contact:
+    texte: "Contacter l'agence"
+    page: /contact

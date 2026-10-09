@@ -1,0 +1,177 @@
+# ══════════════════════════════════════════════════════════════════════
+#  « PARTIES » PAGE — ENGLISH TEXTS  (address: /en/parties)
+# ══════════════════════════════════════════════════════════════════════
+#  Même fonctionnement que soirees.fr.yaml (voir les explications en tête
+#  de ce fichier). Garde le même ordre de sections et les mêmes « photo: »
+#  que la version française pour que les deux pages restent cohérentes.
+# ══════════════════════════════════════════════════════════════════════
+
+seo:
+  titre: "Private & Corporate Party DJ in Biarritz | Groove Caviar"
+  description: "DJs for corporate parties, seminars, private parties, birthdays, bar mitzvahs, bars, clubs and New Year's Eve in Biarritz, the Basque Country, the Landes and across France."
+
+hero:
+  surtitre: "Biarritz · Basque Country · Landes"
+  titre_blanc: "DJ"
+  titre_or: "Parties"
+
+intro:
+  titre: "Parties like no other"
+  texte: |
+    Corporate party, private celebration, bar, club or New Year's Eve: Groove Caviar provides professional DJs and the right sound and lighting for every venue, in Biarritz, the Basque Country, the Landes and across France. Bespoke music direction, real-time crowd reading and a high-end standard of service: from the first call to the very last track, we take care of everything.
+
+sommaire:
+  surtitre: "Side A"
+  titre: "Choose your party"
+  pochette: "Parties"
+
+sections:
+  - ancre: corporate
+    photo: entreprise
+    piste: "Corporate"
+    accroche: "Bring your teams together"
+    titre: "Corporate parties & seminars"
+    sous_titre: "Your brand deserves the right soundtrack"
+    texte: |
+      End-of-year party, client evening, opening, seminar or retirement party: an evening shared by colleagues and partners is a moment of connection and celebration that reflects your company's image.
+
+      Because your guests come from different cultures and enjoy different music, our DJs build a programme that brings everyone together, from networking background music to a packed dancefloor. **Turnkey service** (DJ, sound system, wireless mic for speeches, lighting) or integration with your existing suppliers: we adapt to your organisation.
+    image_alt: "Groove Caviar DJ performing at a corporate party"
+    liens:
+      - texte: "Corporate parties"
+        page: /en/parties/corporate
+      - texte: "Seminars"
+        page: /en/parties/seminars
+    action:
+      texte: "Request a quote"
+      page: /en/quote/dj-booking
+
+  - ancre: private
+    photo: privees
+    piste: "Private"
+    accroche: "The party comes to you"
+    titre: "Private parties, birthdays & bar mitzvahs"
+    sous_titre: "Your home, your villa, your pop-up club"
+    texte: |
+      A party in your garden, your villa or your holiday rental? Groove Caviar turns your living room into a dancefloor and your terrace into a pop-up club, from sunset cocktails until the early hours.
+
+      Birthday, wedding anniversary, bar mitzvah, pool party or hen party: we plan the evening with you, and our DJs bring it to life with discreet equipment designed for private venues, indoors and outdoors.
+    image_alt: "Private party with a Groove Caviar DJ"
+    liens:
+      - texte: "Private parties"
+        page: /en/parties/private
+      - texte: "Birthdays"
+        page: /en/parties/private/birthday
+      - texte: "Bar mitzvahs"
+        page: /en/parties/private/bar-mitzvah
+    action:
+      texte: "Request a quote"
+      page: /en/quote/dj-booking
+
+  - ancre: bars-restaurants
+    photo: bars
+    piste: "Hospitality"
+    accroche: "Keep your guests coming back"
+    titre: "Bars, hotels & restaurants"
+    sous_titre: "Make your venue a destination"
+    texte: |
+      Aperitif sessions, afterworks, dinner dances, jazzy brunches or rooftop sunsets: a regular music programme turns first-time guests into regulars, locals and visitors alike.
+
+      Groove Caviar selects the right DJs for your venue, your clientele and your budget, for a one-off event or a weekly residency. For a hotel, a bar that comes alive at night means guests who stay in-house.
+    image_alt: "DJ playing a set in a bar"
+    liens:
+      - texte: "Bars, hotels & restaurants"
+        page: /en/parties/bars-restaurants
+    action:
+      texte: "Let's talk programming"
+      page: /en/contact
+
+  - ancre: clubs
+    photo: clubs
+    piste: "Nightlife"
+    accroche: "Where we come from"
+    titre: "Clubs & nightclubs"
+    sous_titre: "DJ booking, residencies & party concepts"
+    texte: |
+      Our roots are in clubs: our DJs regularly play the best venues in Paris and the South West of France. One-off night or residency, resident DJ or headline guest, Groove Caviar books the artists best suited to your crowd, across a wide range of styles.
+
+      We also create **complete party concepts** (art direction, communication, social media), such as our Auguste, Dangerhouse Club, Addix and La French nights.
+    image_alt: "DJ on the decks in a nightclub"
+    liens:
+      - texte: "Clubs & nightclubs"
+        page: /en/parties/clubs
+    action:
+      texte: "Let's talk programming"
+      page: /en/contact
+
+  - ancre: new-years-eve
+    photo: reveillon
+    piste: "31.12"
+    accroche: "December 31st"
+    titre: "New Year's Eve"
+    sous_titre: "One night a year, not a single wrong note"
+    texte: |
+      New Year's Eve is celebrated with music, and your choice of DJ makes or breaks the night. For bars, hotels and restaurants as well as private hosts, our DJs take care of the whole evening: lounge aperitif, dinner, the midnight countdown and then the dancefloor, with a long and varied set that pleases everyone.
+
+      The best DJs are in high demand on December 31st: **book several months in advance**.
+    image_alt: "Crowd celebrating at a New Year's Eve party"
+    liens:
+      - texte: "New Year's Eve"
+        page: /en/parties/new-years-eve
+    action:
+      texte: "Request a quote"
+      page: /en/quote/dj-booking
+
+citation: "The right music, at the right time, for the right crowd."
+
+faq:
+  surtitre: "Frequently asked questions"
+  titre: "Everything about our party DJs"
+  intro: "Answers to the questions we are asked most often before booking a DJ for a party."
+  questions:
+    - question: "How much does a party DJ cost in Biarritz or the Basque Country?"
+      reponse: |
+        The price of a party DJ depends on the length of the set, the date, the venue and the sound and lighting required. As every party is different, Groove Caviar prepares a bespoke quote, free and with no obligation, sent within 72 business hours of your [quote request](/en/quote/dj-booking).
+
+    - question: "What kinds of parties does Groove Caviar cover?"
+      reponse: |
+        Groove Caviar provides DJs for corporate parties and seminars, private parties, birthdays and bar mitzvahs, bars, hotels and restaurants, clubs and nightclubs, as well as New Year's Eve. Based in Biarritz, the agency also covers weddings and brand events.
+
+    - question: "Which areas do you cover for parties?"
+      reponse: |
+        Based in Biarritz, Groove Caviar covers the whole Basque Country and South West of France: Bayonne, Anglet, Saint-Jean-de-Luz, Guéthary, the Landes (Hossegor, Seignosse, Capbreton) and as far as Bordeaux. Our DJs also travel across France and internationally.
+
+    - question: "Is sound and lighting equipment provided?"
+      reponse: |
+        Yes. For private and corporate parties, we provide a professional DJ booth, a sound system suited to your venue and guest count, and a wireless microphone for speeches. Dancefloor lighting, architectural lighting and other options can be added. Set-up and breakdown are handled by our team.
+
+    - question: "Can we choose the music for our party?"
+      reponse: |
+        Yes. Before the event, we talk with you by phone or in person to define the atmosphere, your favourite tracks and the ones to avoid. On the night, the DJ builds the set in real time around your guests' energy: no fixed playlist, but genuine music direction, from pop to disco, from soul to house.
+
+    - question: "Can you play a party at a private home?"
+      reponse: |
+        Yes. House, villa, garden, poolside or holiday rental: Groove Caviar sets up a DJ at your home with discreet equipment designed for private spaces, indoors and outdoors. The volume is adjusted to the venue and the neighbours, from the aperitif to the dancefloor.
+
+    - question: "Do you provide DJs for bars, restaurants and clubs?"
+      reponse: |
+        Yes. Through its artist network, Groove Caviar places DJs in bars, hotels, restaurants and nightclubs, for a one-off night or a regular residency. We select artists to match your venue, your clientele and your budget, and can design complete party concepts.
+
+    - question: "How far in advance should we book a DJ?"
+      reponse: |
+        As early as possible: summer weekends and the festive season fill up fast. For New Year's Eve, the busiest night of the year, we recommend booking several months ahead.
+
+    - question: "How do I request a quote for a party?"
+      reponse: |
+        Fill in our [quote request form](/en/quote/dj-booking) in a few minutes, or contact us on +33 6 23 62 57 04 or by email at contact@groovecaviar.com. We get back to you within 72 business hours with a personalised proposal, free and with no obligation.
+
+cta:
+  titre_blanc: "Shall we"
+  titre_or: "dance?"
+  texte: "Tell us all about your project: we reply within 72 business hours with a bespoke proposal."
+  bouton_devis:
+    texte: "Request a quote"
+    page: /en/quote/dj-booking
+  bouton_contact:
+    texte: "Contact the agency"
+    page: /en/contact
