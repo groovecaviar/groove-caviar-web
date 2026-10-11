@@ -1,0 +1,181 @@
+# ══════════════════════════════════════════════════════════════════════
+#  « EVENTS » PAGE — ENGLISH TEXTS  (address: /en/events)
+# ══════════════════════════════════════════════════════════════════════
+#  BROUILLON : à relire après validation de la version française.
+#  Même fonctionnement que evenements.fr.yaml (voir les explications en
+#  tête de ce fichier). Garde le même ordre de sections et les mêmes
+#  « photo: » que la version française.
+# ══════════════════════════════════════════════════════════════════════
+
+seo:
+  titre: "Event DJ in Biarritz & Basque Country | Groove Caviar"
+  description: "Event DJ in Biarritz: cocktails, exhibition openings, product launches, fashion shows, trade fairs, sporting events and festivals. Basque Country, Landes, France and worldwide."
+
+hero:
+  surtitre: "Biarritz · Basque Country · France & worldwide"
+  titre_blanc: "DJ"
+  titre_or: "Events"
+
+intro:
+  titre: "Events that leave a mark"
+  texte: |
+    Cocktail, exhibition opening, inauguration, fashion show, trade fair, sporting event or festival: Groove Caviar creates the soundscape of your events in Biarritz, the Basque Country and across France. Professional DJs who get your crowd going, music direction tailored to your image and, if you wish, sound and lighting suited to your venue: from preparation to the last guest, we support you with the standards of a high-end agency.
+
+univers:
+  surtitre: "Our worlds"
+  titre_blanc: "Seven worlds,"
+  titre_or: "one standard"
+  texte: "Keep scrolling: every event has its own codes, audience and sound."
+
+sections:
+  - ancre: cocktails
+    photo: cocktail
+    accroche: "The atmosphere people talk about"
+    titre: "Cocktails & receptions"
+    texte: |
+      Corporate cocktail, brand reception, VIP evening or garden party: background music supports conversation without ever drowning it out, then lifts the energy when the event calls for it. Our DJ adapts the set to the venue, the time of day and your guests, with discretion and elegance.
+    image_alt: "Groove Caviar DJ setting the mood at a cocktail reception"
+    liens:
+      - texte: "Cocktails & receptions"
+        page: /en/events/cocktails
+    action:
+      texte: "Request a quote"
+      page: /en/quote/dj-booking
+
+  - ancre: exhibition-openings
+    photo: vernissage
+    accroche: "A soundtrack worthy of the art"
+    titre: "Exhibition openings"
+    texte: |
+      Art gallery, museum, showroom or boutique: the music extends the world of the artist or the brand. Bespoke selections, controlled volume and discreet equipment that respects the works and the venue, for an evening where guests mingle, talk and stay.
+    image_alt: "Discreet DJ at an exhibition opening in a gallery"
+    liens:
+      - texte: "Exhibition openings"
+        page: /en/events/exhibition-openings
+    action:
+      texte: "Request a quote"
+      page: /en/quote/dj-booking
+
+  - ancre: product-launches
+    photo: lancement
+    accroche: "The sound of a first impression"
+    titre: "Inaugurations & product launches"
+    texte: |
+      Venue opening, inauguration, product presentation or press event: the big reveal is also played out in sound. Building tension, background atmosphere, then the after-party: we synchronise the music with your programme and staging.
+    image_alt: "Sound and lighting design at a product launch"
+    liens:
+      - texte: "Inaugurations & product launches"
+        page: /en/events/product-launches
+    action:
+      texte: "Request a quote"
+      page: /en/quote/dj-booking
+
+  - ancre: fashion-shows
+    photo: defile
+    accroche: "A soundtrack that sets the pace"
+    titre: "Fashion shows"
+    texte: |
+      Runway show, collection presentation or collaboration launch: the soundtrack sets the pace of each look and signs the brand's identity. We create bespoke mixes timed to your running order, working alongside your production and technical teams.
+    image_alt: "DJ at the decks during a fashion show"
+    liens:
+      - texte: "Fashion shows"
+        page: /en/events/fashion-shows
+    action:
+      texte: "Request a quote"
+      page: /en/quote/dj-booking
+
+  - ancre: sporting-events
+    photo: sportif
+    accroche: "Stadium energy, premium style"
+    titre: "Sporting events"
+    texte: |
+      Rugby match or tennis tournament, surf or volleyball competition, race or prize-giving: the DJ warms up the crowd before kick-off, at half-time and during stoppages in play, punctuates the highlights, then carries the atmosphere on into the partner village or the closing party. We adapt to your venue and the constraints of your organisation.
+    image_alt: "DJ entertaining at a sporting event"
+    liens:
+      - texte: "Sporting events"
+        page: /en/events/sporting-events
+    action:
+      texte: "Request a quote"
+      page: /en/quote/dj-booking
+
+  - ancre: festivals
+    photo: festival
+    accroche: "From the first set to the last"
+    titre: "Parties & festivals"
+    texte: |
+      Village fête, festival, cultural event: our DJs get your crowd dancing, from the first set to the last, with music programmed for your event and your audience. Need a full line-up? We bring the artists together and can also provide sound and lighting, with a single point of contact for municipalities, associations and organisers.
+    image_alt: "Crowd and DJ at an open-air festival"
+    liens:
+      - texte: "Parties & festivals"
+        page: /en/events/festivals
+    action:
+      texte: "Request a quote"
+      page: /en/quote/dj-booking
+
+  - ancre: trade-shows
+    photo: salon
+    accroche: "Make your stand come alive"
+    titre: "Trade fairs & professional exhibitions"
+    texte: |
+      Stand, exhibitor evening, VIP cocktail or convention: a carefully crafted soundscape draws visitors in, elevates your event and makes meetings warmer. We adapt our set and the volume to the fair's rules.
+    image_alt: "Music atmosphere on a stand at a trade fair"
+    liens:
+      - texte: "Trade fairs & exhibitions"
+        page: /en/events/trade-shows
+    action:
+      texte: "Request a quote"
+      page: /en/quote/dj-booking
+
+citation: "Every event has its own rhythm. We find yours."
+
+faq:
+  surtitre: "Frequently asked questions"
+  titre: "Everything about our event DJs"
+  intro: "Answers to the questions we are asked most often before booking a DJ for an event."
+  questions:
+    - question: "What kinds of events does Groove Caviar cover?"
+      reponse: |
+        Groove Caviar provides DJs for cocktails and receptions, exhibition openings, inaugurations and product launches, fashion shows, sporting events, parties and festivals, as well as trade fairs and professional exhibitions. Based in Biarritz, the agency also covers weddings and private parties.
+
+    - question: "How much does a DJ for a corporate event in Biarritz cost?"
+      reponse: |
+        The price depends on the length of the set, the date, the venue and the equipment required. As every event is different, Groove Caviar prepares a bespoke quote, free and with no obligation, sent within 72 business hours of your [quote request](/en/quote/dj-booking).
+
+    - question: "Do you provide the sound and lighting?"
+      reponse: |
+        Depending on your event, yes: we can provide the DJ booth, a sound system suited to your venue and guest count, a wireless microphone for speeches and, as an option, lighting. We can also plug into the sound system of your venue or technical provider.
+
+    - question: "Do you work outside the Basque Country?"
+      reponse: |
+        Yes. Based in Biarritz, Groove Caviar works across the South West, throughout France and internationally.
+
+    - question: "Can the DJ follow the timed running order of a fashion show or a launch?"
+      reponse: |
+        Yes. We time the music to your running order (entrances, speeches, reveals, highlights) and work with your production and technical teams so that every moment is in sync.
+
+    - question: "What music works for a cocktail, an inauguration or a corporate event?"
+      reponse: |
+        A refined atmosphere during the welcome and conversations, then a gradual lift in energy if you wish. We define with you the mood, the tracks to favour and the ones to avoid.
+
+    - question: "Can a DJ play outdoors?"
+      reponse: |
+        It depends on the venue: we prefer to play under cover (marquee, tent, covered terrace) with a power supply. Get in touch in advance and we will look at the conditions of your event together.
+
+    - question: "How far in advance should we book?"
+      reponse: |
+        As early as possible: trade-fair seasons, festival periods and the festive season fill up fast. For a large-scale event, we recommend contacting us several months ahead.
+
+    - question: "How do I request a quote for an event?"
+      reponse: |
+        Fill in our [quote request form](/en/quote/dj-booking) in a few minutes, or contact us on +33 6 23 62 57 04 or by email at contact@groovecaviar.com. We get back to you within 72 business hours with a personalised proposal, free and with no obligation.
+
+cta:
+  titre_blanc: "Shall we"
+  titre_or: "talk?"
+  texte: "Tell us all about your project: we reply within 72 business hours with a bespoke proposal."
+  bouton_devis:
+    texte: "Request a quote"
+    page: /en/quote/dj-booking
+  bouton_contact:
+    texte: "Contact the agency"
+    page: /en/contact

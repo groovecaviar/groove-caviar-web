@@ -1,0 +1,196 @@
+# ══════════════════════════════════════════════════════════════════════
+#  PAGE « ÉVÉNEMENTS » — TEXTES FRANÇAIS  (adresse : /evenements)
+# ══════════════════════════════════════════════════════════════════════
+#  Comment modifier :
+#   • Change le texte après les deux-points, puis enregistre (Cmd + S).
+#     Avec « npm run dev », la page se met à jour toute seule dans le navigateur.
+#   • Ne modifie PAS les mots-clés à gauche (titre:, texte:, liens:…),
+#     ni les tirets « - », ni le décalage (les espaces en début de ligne).
+#   • Les textes longs sont sous un « | » : écris librement en dessous,
+#     en gardant le même décalage. Une ligne vide = un nouveau paragraphe.
+#
+#  Mise en forme automatique (rien à faire) :
+#   • « Groove Caviar » s'affiche toujours en doré (classe .brand).
+#   • Les espaces insécables avant ? ! : ; » et après « sont ajoutées.
+#   • **mot** → mot en gras.      [texte du lien](/adresse) → lien.
+#
+#  Sections : l'ordre des sections ci-dessous = l'ordre sur la page
+#  (numéros 01, 02… recalculés automatiquement).
+#  Liens « liens: » vers les sous-pages : ils n'apparaissent QUE lorsque
+#  la sous-page existe — inutile de les retirer en attendant.
+#  « photo: » doit rester l'un de :
+#     cocktail, vernissage, lancement, defile, sportif, festival, salon
+# ══════════════════════════════════════════════════════════════════════
+
+seo:
+  titre: "DJ événementiel à Biarritz & Pays Basque | Groove Caviar"
+  description: "DJ événementiel à Biarritz : cocktails, vernissages, lancements, défilés, salons, événements sportifs et festivals. Pays Basque, Landes, France et international."
+
+hero:
+  surtitre: "Biarritz · Pays Basque · France & international"
+  titre_blanc: "DJ"
+  titre_or: "Événements"
+
+intro:
+  titre: "Des événements qui marquent les esprits"
+  texte: |
+    Cocktail, vernissage, inauguration, défilé, salon professionnel, compétition sportive ou festival : Groove Caviar crée l'ambiance sonore de vos événements, à Biarritz, au Pays Basque et partout en France. Des DJs professionnels qui font vibrer votre public, une direction musicale pensée pour votre image et, si vous le souhaitez, la sonorisation et l'éclairage adaptés à votre lieu : de la préparation au dernier invité, nous vous accompagnons avec l'exigence d'une agence haut de gamme.
+
+univers:
+  surtitre: "Nos univers"
+  titre_blanc: "Sept univers,"
+  titre_or: "une même exigence"
+  texte: "Faites défiler : chaque événement a ses codes, son public et son ambiance sonore."
+
+sections:
+  - ancre: cocktails
+    photo: cocktail
+    accroche: "L'ambiance qui fait parler de vous"
+    titre: "Cocktails & réceptions"
+    texte: |
+      Cocktail d'entreprise, réception de marque, soirée VIP ou garden party : la musique d'ambiance accompagne les échanges sans jamais les couvrir, puis monte en énergie quand l'événement s'y prête. Notre DJ adapte son set au lieu, à l'heure et à vos invités, avec discrétion et élégance.
+    image_alt: "DJ Groove Caviar en ambiance cocktail lors d'une réception"
+    liens:
+      - texte: "Cocktails & réceptions"
+        page: /evenements/cocktail
+    action:
+      texte: "Demander un devis"
+      page: /devis/booking-dj
+
+  - ancre: vernissages
+    photo: vernissage
+    accroche: "Une bande-son à la hauteur des œuvres"
+    titre: "Vernissages & expositions"
+    texte: |
+      Galerie d'art, musée, showroom ou boutique : la musique prolonge l'univers de l'artiste ou de la marque. Sélections sur mesure, volume maîtrisé et matériel discret qui respecte les œuvres et les lieux, pour une soirée où l'on circule, échange et reste.
+    image_alt: "DJ discret lors d'un vernissage dans une galerie"
+    liens:
+      - texte: "Vernissages & expositions"
+        page: /evenements/vernissage
+    action:
+      texte: "Demander un devis"
+      page: /devis/booking-dj
+
+  - ancre: lancements
+    photo: lancement
+    accroche: "Le son d'une première impression"
+    titre: "Inaugurations & lancements de produit"
+    texte: |
+      Ouverture d'un établissement, inauguration, présentation de produit ou événement presse : le moment de la révélation se joue aussi au son. Montée en tension, ambiance de fond, puis after : nous synchronisons la musique avec votre programme et votre mise en scène.
+    image_alt: "Mise en scène sonore et lumineuse lors d'un lancement de produit"
+    liens:
+      - texte: "Inaugurations & lancements de produit"
+        page: /evenements/lancement-produit
+    action:
+      texte: "Demander un devis"
+      page: /devis/booking-dj
+
+  - ancre: defiles
+    photo: defile
+    accroche: "Une bande-son qui fait défiler"
+    titre: "Défilés de mode"
+    texte: |
+      Défilé, présentation de collection ou lancement de collaboration : la bande-son donne le tempo des passages et signe l'identité de la marque. Nous composons des mixes sur mesure, calés sur votre déroulé minuté, en lien avec vos équipes de production et de régie.
+    image_alt: "DJ aux platines lors d'un défilé de mode"
+    liens:
+      - texte: "Défilés de mode"
+        page: /evenements/defile-mode
+    action:
+      texte: "Demander un devis"
+      page: /devis/booking-dj
+
+  - ancre: sportifs
+    photo: sportif
+    accroche: "L'énergie du stade, version premium"
+    titre: "Événements sportifs"
+    texte: |
+      Match de rugby ou tournoi de tennis, compétition de surf ou de volley, course ou remise de prix : le DJ chauffe le public avant le coup d'envoi, pendant la mi-temps et lors des arrêts de jeu, rythme les temps forts, puis prolonge l'ambiance dans le village partenaires ou lors de la soirée de clôture. Nous nous adaptons à votre site et aux contraintes de l'organisation.
+    image_alt: "DJ animant un événement sportif"
+    liens:
+      - texte: "Événements sportifs"
+        page: /evenements/evenement-sportif
+    action:
+      texte: "Demander un devis"
+      page: /devis/booking-dj
+
+  - ancre: festivals
+    photo: festival
+    accroche: "Du premier au dernier set"
+    titre: "Fêtes & festivals"
+    texte: |
+      Fête de village, festival, manifestation culturelle : nos DJs font danser votre public, du premier au dernier set, avec une programmation pensée pour votre événement et votre audience. Besoin d'une affiche complète ? Nous réunissons les artistes et pouvons aussi prendre en charge la sonorisation et l'éclairage, avec un interlocuteur unique pour les communes, les associations et les organisateurs.
+    image_alt: "Foule et DJ lors d'un festival en plein air"
+    liens:
+      - texte: "Fêtes & festivals"
+        page: /evenements/fetes-festivals
+    action:
+      texte: "Demander un devis"
+      page: /devis/booking-dj
+
+  - ancre: salons
+    photo: salon
+    accroche: "Faire vibrer votre stand"
+    titre: "Foires & salons professionnels"
+    texte: |
+      Stand, soirée exposants, cocktail VIP ou convention : une ambiance sonore soignée attire les visiteurs, valorise votre événement et rend les rendez-vous plus chaleureux. Nous adaptons notre set et le niveau sonore au règlement du salon.
+    image_alt: "Ambiance musicale sur un stand lors d'un salon professionnel"
+    liens:
+      - texte: "Foires & salons professionnels"
+        page: /evenements/foires-salons
+    action:
+      texte: "Demander un devis"
+      page: /devis/booking-dj
+
+citation: "Chaque événement a son rythme. Nous trouvons le vôtre."
+
+faq:
+  surtitre: "Questions fréquentes"
+  titre: "Tout savoir sur nos DJs événementiels"
+  intro: "Les réponses aux questions que l'on nous pose le plus souvent avant de réserver un DJ pour un événement."
+  questions:
+    - question: "Quels types d'événements Groove Caviar anime-t-il ?"
+      reponse: |
+        Groove Caviar anime les cocktails et réceptions, vernissages et expositions, inaugurations et lancements de produit, défilés de mode, événements sportifs, fêtes et festivals, ainsi que les foires et salons professionnels. Basée à Biarritz, l'agence intervient aussi pour les mariages et les soirées privées.
+
+    - question: "Combien coûte un DJ pour un événement d'entreprise à Biarritz ?"
+      reponse: |
+        Le tarif dépend de la durée de la prestation, de la date, du lieu et du matériel nécessaire. Chaque événement étant différent, Groove Caviar établit un devis sur-mesure, gratuit et sans engagement, envoyé sous 72h ouvrées après votre [demande de devis](/devis/booking-dj).
+
+    - question: "Fournissez-vous la sonorisation et l'éclairage ?"
+      reponse: |
+        Selon votre événement, oui : nous pouvons fournir la régie DJ, une sonorisation adaptée à votre lieu et à votre nombre d'invités, un micro sans fil pour les discours et, en option, l'éclairage. Nous pouvons aussi nous intégrer à la sonorisation de votre lieu ou de votre prestataire technique.
+
+    - question: "Intervenez-vous en dehors du Pays Basque ?"
+      reponse: |
+        Oui. Basé à Biarritz, Groove Caviar intervient dans tout le Sud-Ouest, partout en France et à l'international.
+
+    - question: "Le DJ peut-il suivre le programme minuté d'un défilé ou d'un lancement ?"
+      reponse: |
+        Oui. Nous calons la musique sur votre déroulé (entrées, discours, révélations, temps forts) et travaillons avec vos équipes de production et de régie pour que chaque moment soit synchronisé.
+
+    - question: "Quelle musique pour un cocktail, une inauguration ou un événement d'entreprise ?"
+      reponse: |
+        Une ambiance sobre pendant l'accueil et les échanges, puis une montée en énergie progressive si vous le souhaitez. Nous définissons avec vous l'ambiance, les morceaux à privilégier et ceux à éviter.
+
+    - question: "Un DJ peut-il jouer en extérieur ?"
+      reponse: |
+        Cela dépend du lieu : nous intervenons de préférence sous abri (chapiteau, barnum, terrasse couverte) avec une alimentation électrique. Contactez-nous en amont : nous étudions ensemble les conditions de votre événement et ce qui est possible.
+
+    - question: "Combien de temps à l'avance faut-il réserver ?"
+      reponse: |
+        Le plus tôt possible : les périodes de salons, de festivals et de fin d'année se remplissent vite. Pour un événement d'envergure, nous conseillons de nous contacter plusieurs mois à l'avance.
+
+    - question: "Comment demander un devis pour un événement ?"
+      reponse: |
+        Remplissez notre [formulaire de demande de devis](/devis/booking-dj) en quelques minutes, ou contactez-nous au 06 23 62 57 04 ou par e-mail à contact@groovecaviar.com. Nous revenons vers vous sous 72h ouvrées avec une proposition personnalisée, gratuite et sans engagement.
+
+cta:
+  titre_blanc: "Et si on en"
+  titre_or: "parlait ?"
+  texte: "Dites-nous tout de votre projet : nous vous répondons sous 72h ouvrées avec une proposition sur-mesure."
+  bouton_devis:
+    texte: "Demander un devis"
+    page: /devis/booking-dj
+  bouton_contact:
+    texte: "Contacter l'agence"
+    page: /contact

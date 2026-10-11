@@ -31,6 +31,7 @@ export const routeMap: Record<string, string> = {
   '/evenements/defile-mode': '/en/events/fashion-shows',
   '/evenements/evenement-sportif': '/en/events/sporting-events',
   '/evenements/fetes-festivals': '/en/events/festivals',
+  '/evenements/foires-salons': '/en/events/trade-shows',
   '/musique': '/en/music',
   '/a-propos': '/en/about',
   '/faq': '/en/faq',

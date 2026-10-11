@@ -1,0 +1,620 @@
+---
+// Page pilier « Événements » (FR /evenements ↔ EN /en/events)
+// Textes : src/data/textes/evenements.fr.yaml / evenements.en.yaml (mise à jour à chaud).
+// Même hero / intro / citation / FAQ / CTA que les autres pages piliers ;
+// la liste des univers est un « défilement avec image fixe » : l'image à gauche
+// change au fil de la lecture des types d'événements à droite.
+import { Image } from 'astro:assets';
+import heroImg from '~/assets/images/EVENEMENTS-hero.webp';
+import imgCocktail from '~/assets/images/EVENEMENTS-cocktail.webp';
+import imgVernissage from '~/assets/images/EVENEMENTS-vernissage.webp';
+import imgLancement from '~/assets/images/EVENEMENTS-lancement.webp';
+import imgDefile from '~/assets/images/EVENEMENTS-defile.webp';
+import imgSportif from '~/assets/images/EVENEMENTS-sportif.webp';
+import imgFestival from '~/assets/images/EVENEMENTS-festival.webp';
+import imgSalon from '~/assets/images/EVENEMENTS-salon.webp';
+import type { EvenementsContent } from '~/data/pages/evenements';
+import { ligne, paragraphes, texteBrut, typo, pageExiste, type Locale } from '~/utils/textes';
+
+export interface Props {
+  t: EvenementsContent;
+  locale: Locale;
+}
+
+const { t, locale } = Astro.props;
+
+const photos = {
+  cocktail: imgCocktail,
+  vernissage: imgVernissage,
+  lancement: imgLancement,
+  defile: imgDefile,
+  sportif: imgSportif,
+  festival: imgFestival,
+  salon: imgSalon,
+};
+
+const L = (s: string) => ligne(s, locale);
+const P = (s: string) => paragraphes(s, locale);
+const T = (s: string) => typo(s, locale);
+const B = (s: string) => texteBrut(s, locale);
+// Titres : un mot composé ne se coupe jamais au trait d'union
+const H = (s: string) => L(s).replace(/([A-Za-zÀ-ÿ]+(?:-[A-Za-zÀ-ÿ]+)+)/g, '<span class="gc-prt-nowrap">$1</span>');
+
+// Sections numérotées (01…) ; les liens vers des sous-pages pas encore créées
+// sont masqués automatiquement.
+const total = String(t.sections.length).padStart(2, '0');
+const sections = t.sections.map((s, i) => ({
+  ...s,
+  num: String(i + 1).padStart(2, '0'),
+  liensVisibles: (s.liens ?? []).filter((l) => pageExiste(l.page)),
+}));
+
+// ── Données structurées (JSON-LD) : page, fil d'Ariane, service, FAQ ──────
+const SITE_URL = 'https://www.groovecaviar.com';
+const pagePath = locale === 'fr' ? '/evenements' : '/en/events';
+const pageUrl = `${SITE_URL}${pagePath}`;
+const homeUrl = locale === 'fr' ? `${SITE_URL}/` : `${SITE_URL}/en`;
+const villes = ['Biarritz', 'Bayonne', 'Anglet', 'Saint-Jean-de-Luz', 'Guéthary', 'Hossegor', 'Seignosse', 'Capbreton', 'Bordeaux'];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: t.seo.titre,
+      description: t.seo.description,
+      inLanguage: locale,
+      isPartOf: { '@id': `${SITE_URL}#website` },
+      about: { '@id': SITE_URL },
+      breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+      primaryImageOfPage: `${SITE_URL}${heroImg.src}`,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: locale === 'fr' ? 'Accueil' : 'Home', item: homeUrl },
+        { '@type': 'ListItem', position: 2, name: `${t.hero.titre_blanc} ${t.hero.titre_or}`, item: pageUrl },
+      ],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${pageUrl}#service`,
+      name: `${t.hero.titre_blanc} ${t.hero.titre_or} — Groove Caviar`,
+      serviceType: locale === 'fr' ? 'DJ pour événements' : 'Event DJ',
+      description: B(t.intro.texte),
+      url: pageUrl,
+      provider: { '@id': SITE_URL },
+      areaServed: [
+        ...villes.map((name) => ({ '@type': 'City', name })),
+        { '@type': 'AdministrativeArea', name: locale === 'fr' ? 'Pays Basque' : 'Basque Country' },
+        { '@type': 'AdministrativeArea', name: 'Landes' },
+        { '@type': 'Country', name: 'France' },
+      ],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: `${t.univers.titre_blanc} ${t.univers.titre_or}`,
+        itemListElement: sections.map((s) => ({
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: s.titre,
+            description: B(s.texte.split(/\n\s*\n/)[0]),
+            url: `${pageUrl}#${s.ancre}`,
+          },
+        })),
+      },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${pageUrl}#faq`,
+      inLanguage: locale,
+      mainEntity: t.faq.questions.map((q) => ({
+        '@type': 'Question',
+        name: B(q.question),
+        acceptedAnswer: { '@type': 'Answer', text: B(q.reponse) },
+      })),
+    },
+  ],
+};
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+<!-- ═══ HERO ═══════════════════════════════════════════════════════════════ -->
+<section class="gc-hero-section gc-photo-hero">
+  <Image
+    src={heroImg}
+    alt=""
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="gc-hero-media gc-photo-hero-bg"
+  />
+  <div class="gc-photo-hero-overlay" aria-hidden="true"></div>
+  <div class="gc-photo-hero-content">
+    <span class="gc-page-eyebrow">{t.hero.surtitre}</span>
+    <h1 class="gc-photo-hero-h1 gc-photo-hero-h1-zoom">
+      <span class="gc-photo-hero-h1-white">{t.hero.titre_blanc}</span>
+      {' '}
+      <span class="gc-photo-hero-h1-gold gc-shimmer gc-prt-accent-safe">{t.hero.titre_or}</span>
+    </h1>
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- ═══ BANDEAU INTRO ═════════════════════════════════════════════════════ -->
+<section class="gc-intro-band gc-reveal">
+  <div class="gc-intro-band-inner">
+    <h2 class="gc-intro-band-title" set:html={L(t.intro.titre)} />
+    <div class="gc-intro-band-text gc-prt-intro-text" set:html={P(t.intro.texte)} />
+  </div>
+</section>
+
+<!-- ═══ UNIVERS : défilement avec image fixe ═══════════════════════════════ -->
+<section class="gc-evt" aria-labelledby="gc-evt-title" data-evt>
+  <div class="gc-evt-inner">
+    <!-- Colonne image (bureau) : reste fixe, l'image change selon la lecture -->
+    <div class="gc-evt-stage-col">
+      <div class="gc-evt-stage">
+        {sections.map((s, i) => (
+          <figure class:list={['gc-evt-shot', i === 0 && 'is-active']} data-shot={i}>
+            <Image
+              src={photos[s.photo]}
+              alt={s.image_alt}
+              widths={[600, 900, 1200]}
+              sizes="(min-width: 1024px) 46vw, 1px"
+              loading="lazy"
+            />
+            <span class="gc-evt-shot-big" aria-hidden="true">{s.num}</span>
+            <figcaption class="gc-evt-shot-cap">
+              <span class="gc-evt-shot-count">{s.num} / {total}</span>
+              <span class="gc-evt-shot-line">{T(s.accroche)}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+
+    <!-- Colonne texte -->
+    <div class="gc-evt-col">
+      <header class="gc-evt-head gc-reveal">
+        <span class="gc-sec-accroche">{t.univers.surtitre}</span>
+        <h2 id="gc-evt-title" class="gc-sec-title">
+          <span set:html={H(t.univers.titre_blanc)} /><br />
+          <span class="gc-evt-gold" set:html={H(t.univers.titre_or)} />
+        </h2>
+        <p class="gc-body-text" set:html={L(t.univers.texte)} />
+      </header>
+
+      {sections.map((s, i) => (
+        <article id={s.ancre} class:list={['gc-evt-item', i === 0 && 'is-active']} data-item={i}>
+          <div class="gc-evt-item-media">
+            <Image
+              src={photos[s.photo]}
+              alt={s.image_alt}
+              widths={[400, 700, 900]}
+              sizes="(min-width: 1024px) 1px, 92vw"
+              loading="lazy"
+            />
+          </div>
+          <div class="gc-evt-item-body">
+            <span class="gc-evt-num" aria-hidden="true">{s.num}</span>
+            <div class="gc-evt-item-text">
+              <span class="gc-evt-accroche">{T(s.accroche)}</span>
+              <h3 class="gc-evt-item-title" set:html={H(s.titre)} />
+              <div class="gc-evt-item-copy gc-body-text" set:html={P(s.texte)} />
+
+              {(s.liensVisibles.length > 0 || s.action) && (
+                <div class="gc-prt-actions">
+                  {s.liensVisibles.length > 0 && (
+                    <ul class="gc-prt-links">
+                      {s.liensVisibles.map((l) => (
+                        <li><a href={l.page} class="gc-srv-link">{l.texte} →</a></li>
+                      ))}
+                    </ul>
+                  )}
+                  {s.action && pageExiste(s.action.page) && (
+                    <a href={s.action.page} class="gc-prt-cta">{s.action.texte} →</a>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BANDEAU CITATION ══════════════════════════════════════════════════ -->
+<section class="gc-quote-banner gc-reveal">
+  <div class="gc-quote-inner">
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+    <blockquote set:html={L(t.citation)} />
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══════════════════════════════════════════════════════════════ -->
+<section class="gc-sec gc-sec--white gc-reveal" aria-labelledby="gc-prt-faq-title">
+  <div class="gc-sec-inner gc-prt-faq-inner">
+    <div class="gc-sec-head">
+      <span class="gc-sec-accroche">{t.faq.surtitre}</span>
+      <h2 id="gc-prt-faq-title" class="gc-sec-title" set:html={L(t.faq.titre)} />
+      {t.faq.intro && <p class="gc-body-text" set:html={L(t.faq.intro)} />}
+    </div>
+    <div class="gc-prt-faq-list">
+      {t.faq.questions.map((q, i) => (
+        <details class="gc-prt-faq-item" name="gc-prt-faq">
+          <summary>
+            <span class="gc-eyebrow-num">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="gc-prt-faq-q" set:html={L(q.question)} />
+            <span class="gc-prt-faq-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="gc-prt-faq-a gc-body-text" set:html={P(q.reponse)} />
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA FINAL ═════════════════════════════════════════════════════════ -->
+<section class="gc-final-cta gc-reveal">
+  <div class="gc-final-cta-inner">
+    <h2 class="gc-final-cta-title gc-prt-cta-oneline">
+      <span class="gc-final-cta-title-1">{T(t.cta.titre_blanc)}</span>{' '}
+      <span class="gc-final-cta-title-2 gc-shimmer">{T(t.cta.titre_or)}</span>
+    </h2>
+    <p class="gc-final-cta-subtitle" set:html={L(t.cta.texte)} />
+    <div class="gc-btn-pair">
+      <a href={t.cta.bouton_devis.page} class="btn-gc-primary">{t.cta.bouton_devis.texte}</a>
+      <a href={t.cta.bouton_contact.page} class="btn-gc-outline">{t.cta.bouton_contact.texte}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Couleurs : variables de palette (tailwind.css) — --gc-surface #FFFFFF ·
+     --gc-surface-alt #F2F2F2 · --gc-ink #0D0D0D · --gc-gold #AF9453 — et hex 8 chiffres. */
+
+  .gc-prt-intro-text :global(p) { margin-bottom: 1rem; }
+  .gc-prt-intro-text :global(p:last-child) { margin-bottom: 0; }
+  :global(.gc-prt-nowrap) { white-space: nowrap; }
+  /* L'accent d'une majuscule (É) n'est plus rogné par le fond du .gc-shimmer */
+  .gc-prt-accent-safe { display: inline-block; padding-top: 0.2em; margin-top: -0.2em; }
+
+  /* ══ UNIVERS : défilement avec image fixe ═══════════════════════════════ */
+  .gc-evt {
+    background-color: var(--gc-surface);
+    color: var(--gc-ink);
+  }
+  .gc-evt-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  /* Colonne image : cachée sur mobile (chaque événement a alors sa propre image) */
+  .gc-evt-stage-col { display: none; }
+  .gc-evt-col { padding: 3.5rem 1.25rem 1rem; }
+
+  .gc-evt-head { margin-bottom: 2.5rem; }
+  .gc-evt-gold { color: var(--gc-gold); }
+
+  .gc-evt-item {
+    padding: 2.25rem 0 2.5rem;
+    border-top: 1px solid #0D0D0D1F;
+    scroll-margin-top: 4.5rem;
+  }
+  .gc-evt-item-media {
+    aspect-ratio: 4 / 3;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .gc-evt-item-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .gc-evt-item-body {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 0.5rem;
+  }
+  .gc-evt-num {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--gc-gold);
+  }
+  .gc-evt-accroche {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.2;
+    color: var(--gc-gold);
+  }
+  .gc-evt-item-title {
+    margin: 0 0 1rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(1.35rem, 5vw, 1.75rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    line-height: 1.1;
+    color: var(--gc-ink);
+  }
+  .gc-evt-item-copy :global(p) { margin-bottom: 1rem; }
+  .gc-evt-item-copy :global(p:last-child) { margin-bottom: 0; }
+  .gc-evt-item-copy :global(strong) { font-weight: 700; }
+
+  /* ── Liens vers les sous-pages + action (même style que Soirées) ── */
+  .gc-prt-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-top: 1.5rem;
+  }
+  .gc-prt-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 2rem;
+  }
+  .gc-srv-link,
+  .gc-prt-cta {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    position: relative;
+    width: fit-content;
+  }
+  .gc-srv-link { color: var(--gc-gold); }
+  .gc-prt-cta  { color: var(--gc-ink); }
+  .gc-srv-link::after,
+  .gc-prt-cta::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 1px;
+    background-color: var(--gc-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .gc-prt-cta::after { transform: scaleX(1); opacity: 0.6; }
+  .gc-srv-link:hover::after { transform: scaleX(1); }
+  .gc-prt-cta:hover { color: var(--gc-gold); }
+  .gc-prt-cta:hover::after { opacity: 1; }
+
+  /* ── Bureau : image fixe à gauche, texte à droite ── */
+  @media (min-width: 1024px) {
+    .gc-evt-inner { grid-template-columns: 46fr 54fr; }
+
+    .gc-evt-stage-col {
+      display: block;
+      background-color: var(--gc-ink);
+    }
+    .gc-evt-stage {
+      position: sticky;
+      top: 4.5rem;
+      height: calc(100svh - 4.5rem);
+      overflow: hidden;
+    }
+    .gc-evt-shot {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      opacity: 0;
+      transition: opacity 0.9s ease;
+    }
+    .gc-evt-shot.is-active { opacity: 1; }
+    .gc-evt-shot :global(img) {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .gc-evt-shot::after {
+      /* voile pour la lisibilité de la légende */
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, #000000D9 0%, #00000000 48%);
+      pointer-events: none;
+    }
+    .gc-evt-shot-big {
+      position: absolute;
+      top: 1.25rem;
+      right: 2rem;
+      z-index: 2;
+      font-family: var(--aw-font-heading, sans-serif);
+      font-size: clamp(6rem, 12vw, 11rem);
+      font-weight: 700;
+      line-height: 1;
+      color: #FFFFFF38;
+    }
+    .gc-evt-shot-cap {
+      position: absolute;
+      left: 2.5rem;
+      right: 2.5rem;
+      bottom: 2.5rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      color: #FFFFFF;
+    }
+    .gc-evt-shot-count {
+      font-family: var(--aw-font-heading, sans-serif);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      color: var(--gc-gold);
+    }
+    .gc-evt-shot-line {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+      line-height: 1.15;
+    }
+
+    .gc-evt-col {
+      padding: 6rem clamp(2rem, 5vw, 5rem) 4rem clamp(2.5rem, 5vw, 5rem);
+    }
+    .gc-evt-head { margin-bottom: 4rem; max-width: 36rem; }
+
+    .gc-evt-item {
+      min-height: 62svh;
+      display: flex;
+      align-items: center;
+      padding: 3rem 0;
+      transition: opacity 0.6s ease;
+    }
+    /* Seules les lignes non actives sont estompées (si JavaScript est actif) */
+    .gc-evt-js .gc-evt-item:not(.is-active) { opacity: 0.32; }
+    .gc-evt-item-media { display: none; }
+    .gc-evt-item-body { grid-template-columns: 4.5rem 1fr; gap: 0.75rem; max-width: 38rem; }
+    .gc-evt-num { font-size: 2.5rem; }
+    .gc-evt-accroche { font-size: 1.35rem; }
+    .gc-evt-item-title { font-size: clamp(1.5rem, 2.4vw, 2rem); }
+  }
+
+  /* ══ FAQ ═════════════════════════════════════════════════════════════════ */
+  .gc-prt-faq-inner { max-width: 50rem; }
+  .gc-prt-faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .gc-prt-faq-item {
+    background: var(--gc-surface-alt);
+    border-radius: 0.65rem;
+    padding: 1.15rem 1.4rem;
+    transition: background-color 0.3s ease;
+  }
+  .gc-prt-faq-item[open] { background: #AF945314; }
+  .gc-prt-faq-item summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .gc-prt-faq-item summary::-webkit-details-marker { display: none; }
+  .gc-prt-faq-q {
+    flex: 1;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--gc-ink);
+  }
+  /* Icône + / − */
+  .gc-prt-faq-icon {
+    position: relative;
+    flex-shrink: 0;
+    width: 0.8rem;
+    height: 0.8rem;
+    align-self: center;
+  }
+  .gc-prt-faq-icon::before,
+  .gc-prt-faq-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: var(--gc-gold);
+    transition: transform 0.3s ease;
+  }
+  .gc-prt-faq-icon::after { transform: rotate(90deg); }
+  .gc-prt-faq-item[open] .gc-prt-faq-icon::after { transform: rotate(0deg); }
+  .gc-prt-faq-a { margin: 0.85rem 0 0; padding-left: 2.05rem; color: var(--gc-ink); }
+  .gc-prt-faq-a :global(p) { opacity: 0.88; }
+
+  /* ══ CTA final : une seule ligne ═════════════════════════════════════════ */
+  .gc-prt-cta-oneline {
+    white-space: nowrap;
+    font-size: clamp(1.45rem, 6.6vw, 4rem);
+  }
+  .gc-prt-cta-oneline .gc-final-cta-title-1,
+  .gc-prt-cta-oneline .gc-final-cta-title-2 { display: inline-block; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gc-evt-shot,
+    .gc-evt-item { transition: none; }
+  }
+</style>
+
+<script>
+  // 1) Apparition au scroll des blocs .gc-reveal (même réglage que Services).
+  // 2) Image fixe : l'événement lu (au milieu de l'écran) active l'image correspondante.
+  let revealObserver: IntersectionObserver | null = null;
+  let activeObserver: IntersectionObserver | null = null;
+
+  const initReveal = () => {
+    revealObserver?.disconnect();
+    const revealEls = document.querySelectorAll<HTMLElement>('.gc-reveal');
+    if (!revealEls.length) return;
+    revealObserver = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -25% 0px' }
+    );
+    revealEls.forEach((el) => revealObserver!.observe(el));
+  };
+
+  const initActive = () => {
+    activeObserver?.disconnect();
+    const root = document.querySelector<HTMLElement>('[data-evt]');
+    if (!root) return;
+    const items = Array.from(root.querySelectorAll<HTMLElement>('[data-item]'));
+    const shots = Array.from(root.querySelectorAll<HTMLElement>('[data-shot]'));
+    if (!items.length) return;
+    root.classList.add('gc-evt-js');
+
+    const activate = (index: number) => {
+      items.forEach((el, i) => el.classList.toggle('is-active', i === index));
+      shots.forEach((el, i) => el.classList.toggle('is-active', i === index));
+    };
+
+    activeObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          activate(Number((entry.target as HTMLElement).dataset.item));
+        });
+      },
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+    );
+    items.forEach((el) => activeObserver!.observe(el));
+  };
+
+  const init = () => {
+    initReveal();
+    initActive();
+  };
+
+  document.addEventListener('astro:page-load', init);
+</script>
