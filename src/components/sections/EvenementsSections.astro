@@ -13,6 +13,24 @@ import imgDefile from '~/assets/images/EVENEMENTS-defile.webp';
 import imgSportif from '~/assets/images/EVENEMENTS-sportif.webp';
 import imgFestival from '~/assets/images/EVENEMENTS-festival.webp';
 import imgSalon from '~/assets/images/EVENEMENTS-salon.webp';
+import logoAnglet from '~/assets/images/clients/Anglet.png';
+import logoBelambra from '~/assets/images/clients/Belambra.png';
+import logoBiarritz from '~/assets/images/clients/Biarritz.png';
+import logoBrindos from '~/assets/images/clients/Brindos.png';
+import logoCentury21 from '~/assets/images/clients/Century21.png';
+import logoPalais from '~/assets/images/clients/HotelduPalais-Biarritz.png';
+import logoInsularis from '~/assets/images/clients/Insularis.png';
+import logoConnecteur from '~/assets/images/clients/LeConnecteur.png';
+import logoNovotel from '~/assets/images/clients/Novotel.png';
+import logoRitz from '~/assets/images/clients/Ritz.png';
+import logoSofitel from '~/assets/images/clients/Sofitel.png';
+import logoTotal from '~/assets/images/clients/TotalEnergies.png';
+import logoUaf from '~/assets/images/clients/UAF.png';
+import logoW from '~/assets/images/clients/W-Hotels.png';
+import logoAntemeta from '~/assets/images/clients/antemeta.png';
+import logoVans from '~/assets/images/clients/vans.png';
+import logoReef from '~/assets/images/clients/reef.png';
+import logoExpomedia from '~/assets/images/clients/expomedia.png';
 import type { EvenementsContent } from '~/data/pages/evenements';
 import { ligne, paragraphes, texteBrut, typo, pageExiste, type Locale } from '~/utils/textes';
 
@@ -32,6 +50,42 @@ const photos = {
   festival: imgFestival,
   salon: imgSalon,
 };
+
+// Logos clients (18 logos = 3 rangées de 6 sur ordinateur ; ordre : larges et étroits alternés).
+// Pour ajouter / retirer un client : modifier cette liste (le nom sert au texte alternatif).
+const clients = [
+  { nom: "Ville d'Anglet", logo: logoAnglet },
+  { nom: 'Antemeta', logo: logoAntemeta },
+  { nom: 'Belambra', logo: logoBelambra },
+  { nom: 'Ville de Biarritz', logo: logoBiarritz },
+  { nom: 'Brindos Lac & Château', logo: logoBrindos },
+  { nom: 'Century 21', logo: logoCentury21 },
+  { nom: 'Hôtel du Palais Biarritz', logo: logoPalais },
+  { nom: 'Insularis', logo: logoInsularis },
+  { nom: 'Le Connecteur', logo: logoConnecteur },
+  { nom: 'Novotel', logo: logoNovotel },
+  { nom: 'Ritz Paris', logo: logoRitz },
+  { nom: 'Sofitel', logo: logoSofitel },
+  { nom: 'TotalEnergies', logo: logoTotal },
+  { nom: 'UAF Life Patrimoine', logo: logoUaf },
+  { nom: 'W Hotels', logo: logoW },
+  { nom: 'Vans', logo: logoVans },
+  { nom: 'Reef', logo: logoReef },
+  { nom: 'Expomedia', logo: logoExpomedia },
+].map((c) => ({ ...c, alt: t.clients.logo_alt.replace('{nom}', c.nom) }));
+
+// Galerie : toutes les photos du dossier assets/images/galerie (EVENEMENTS-galerie-1.webp, -2, …),
+// dans l'ordre des numéros ; la légende de la photo n°N est la N-ième de « galerie.photos » (YAML).
+const galerieFichiers = import.meta.glob<{ default: ImageMetadata }>('~/assets/images/galerie/EVENEMENTS-galerie-*.webp', { eager: true });
+const galerieImages = Object.entries(galerieFichiers)
+  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+  .map(([, m]) => m.default);
+if (galerieImages.length !== t.galerie.photos.length) {
+  throw new Error(
+    `Galerie : ${galerieImages.length} photo(s) dans src/assets/images/galerie mais ${t.galerie.photos.length} légende(s) dans le fichier de textes — il doit y en avoir autant.`
+  );
+}
+const galerie = t.galerie.photos.map((p, i) => ({ ...p, image: galerieImages[i] }));
 
 const L = (s: string) => ligne(s, locale);
 const P = (s: string) => paragraphes(s, locale);
@@ -226,6 +280,65 @@ const jsonLd = {
           </div>
         </article>
       ))}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ILS NOUS FONT CONFIANCE : mur de logos ═════════════════════════════ -->
+<section class="gc-sec gc-sec--tint gc-evt-clients gc-reveal" aria-labelledby="gc-evt-clients-title">
+  <div class="gc-sec-inner">
+    <div class="gc-sec-head">
+      <span class="gc-sec-accroche">{t.clients.surtitre}</span>
+      <h2 id="gc-evt-clients-title" class="gc-sec-title" set:html={L(t.clients.titre)} />
+      {t.clients.texte && <p class="gc-body-text" set:html={L(t.clients.texte)} />}
+    </div>
+    <ul class="gc-evt-logos">
+      {clients.map((c) => (
+        <li class:list={['gc-evt-logo', c.logo.width / c.logo.height < 1.1 && 'gc-evt-logo--tall']}>
+          <Image src={c.logo} alt={c.alt} height={100} loading="lazy" decoding="async" />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ GALERIE : carrousel à glissement (scroll-snap) ═════════════════════ -->
+<section class="gc-sec gc-sec--white gc-evt-gal gc-reveal" aria-labelledby="gc-evt-gal-title" data-gal>
+  <div class="gc-sec-inner">
+    <div class="gc-sec-head">
+      <span class="gc-sec-accroche">{t.galerie.surtitre}</span>
+      <h2 id="gc-evt-gal-title" class="gc-sec-title" set:html={L(t.galerie.titre)} />
+    </div>
+  </div>
+  <div class="gc-evt-gal-wrap">
+    <ul class="gc-evt-gal-track" data-gal-track tabindex="0" aria-label={B(t.galerie.titre)}>
+      {galerie.map((g) => (
+        <li class="gc-evt-gal-item">
+          <figure class="gc-evt-gal-fig">
+            <Image
+              src={g.image}
+              alt={g.alt}
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 1024px) 30vw, (min-width: 768px) 44vw, 80vw"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>{T(g.legende)}</figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+    <div class="gc-evt-gal-nav">
+      <button type="button" class="gc-evt-gal-btn" data-gal-prev aria-label={B(t.galerie.precedent)}>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </button>
+      <button type="button" class="gc-evt-gal-btn gc-evt-gal-btn--pause" data-gal-pause aria-pressed="false" aria-label={B(t.galerie.pause)} data-label-pause={B(t.galerie.pause)} data-label-play={B(t.galerie.lecture)}>
+        <svg class="gc-evt-gal-ico-pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5v14M16 5v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+        <svg class="gc-evt-gal-ico-play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor" /></svg>
+      </button>
+      <button type="button" class="gc-evt-gal-btn" data-gal-next aria-label={B(t.galerie.suivant)}>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </button>
     </div>
   </div>
 </section>
@@ -560,6 +673,127 @@ const jsonLd = {
     .gc-evt-shot,
     .gc-evt-item { transition: none; }
   }
+  /* ── Mur de logos clients (monochrome, apparition en cascade) ───────── */
+  .gc-evt-logos {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 76rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .gc-evt-logo {
+    width: 50%;
+    height: 5.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .gc-evt-clients.is-visible .gc-evt-logo { opacity: 0.6; transform: none; }
+  /* Cascade : le retard dépend de la position dans la rangée */
+  .gc-evt-logo:nth-child(6n + 2) { transition-delay: 70ms; }
+  .gc-evt-logo:nth-child(6n + 3) { transition-delay: 140ms; }
+  .gc-evt-logo:nth-child(6n + 4) { transition-delay: 210ms; }
+  .gc-evt-logo:nth-child(6n + 5) { transition-delay: 280ms; }
+  .gc-evt-logo:nth-child(6n + 6) { transition-delay: 350ms; }
+  .gc-evt-clients.is-visible .gc-evt-logo:hover { opacity: 1; transition-delay: 0s; transition-duration: 0.25s; }
+  .gc-evt-logo :global(img) {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 3.1rem;
+    object-fit: contain;
+  }
+  /* Logos étroits / verticaux : plus hauts pour le même poids visuel */
+  .gc-evt-logo--tall :global(img) { max-height: 4.4rem; }
+  @media (min-width: 640px) {
+    .gc-evt-logo { width: 33.333%; }
+  }
+  @media (min-width: 1024px) {
+    .gc-evt-logo { width: 16.666%; height: 6.5rem; padding: 0 1rem; }
+    .gc-evt-logo :global(img) { max-height: 3.6rem; }
+    .gc-evt-logo--tall :global(img) { max-height: 5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gc-evt-logo { opacity: 0.6; transform: none; transition: none; }
+  }
+
+  /* ── Galerie : carrousel à glissement (scroll-snap, sans bibliothèque) ── */
+  .gc-evt-gal { padding-bottom: 4rem; }
+  .gc-evt-gal-wrap { max-width: 90rem; margin: 0 auto; }
+  .gc-evt-gal-track {
+    list-style: none;
+    margin: 0;
+    padding: 0 1rem;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1rem;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .gc-evt-gal-track::-webkit-scrollbar { display: none; }
+  .gc-evt-gal-track:focus-visible { outline: 2px solid var(--gc-gold); outline-offset: 4px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .gc-evt-gal-track { scroll-behavior: smooth; }
+  }
+  .gc-evt-gal-item { flex: 0 0 80%; scroll-snap-align: start; }
+  .gc-evt-gal-fig { margin: 0; }
+  .gc-evt-gal-fig :global(img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background-color: var(--gc-surface-alt);
+  }
+  .gc-evt-gal-fig figcaption {
+    margin-top: 0.75rem;
+    font-family: var(--aw-font-serif, 'Cormorant Garamond', serif);
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.3;
+    color: var(--gc-ink);
+  }
+  .gc-evt-gal-nav { display: flex; justify-content: center; gap: 0.75rem; margin-top: 2rem; }
+  .gc-evt-gal-btn {
+    width: 2.9rem;
+    height: 2.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--gc-ink);
+    border-radius: 9999px;
+    background: transparent;
+    color: var(--gc-ink);
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+  }
+  .gc-evt-gal-btn:hover:not(:disabled) { background: var(--gc-gold); border-color: var(--gc-gold); color: var(--gc-ink); }
+  .gc-evt-gal-btn:focus-visible { outline: 2px solid var(--gc-gold); outline-offset: 3px; }
+  .gc-evt-gal-btn:disabled { opacity: 0.3; cursor: default; }
+  /* Bouton pause / lecture : visible seulement quand le défilement automatique est actif */
+  .gc-evt-gal-btn--pause { display: none; }
+  [data-gal].is-auto .gc-evt-gal-btn--pause { display: inline-flex; }
+  .gc-evt-gal-ico-play { display: none; }
+  .gc-evt-gal-btn--pause[aria-pressed='true'] .gc-evt-gal-ico-pause { display: none; }
+  .gc-evt-gal-btn--pause[aria-pressed='true'] .gc-evt-gal-ico-play { display: block; }
+  /* Saut invisible du carrousel infini : pas d'accroche ni d'animation pendant le repositionnement */
+  .gc-evt-gal-track.is-jumping { scroll-snap-type: none; scroll-behavior: auto; }
+  @media (min-width: 768px) {
+    .gc-evt-gal-track { padding-inline: 2rem; scroll-padding-inline: 2rem; gap: 1.25rem; }
+    .gc-evt-gal-item { flex-basis: 44%; }
+  }
+  @media (min-width: 1024px) {
+    .gc-evt-gal-track { padding-inline: max(2rem, calc((100% - 80rem) / 2)); scroll-padding-inline: max(2rem, calc((100% - 80rem) / 2)); gap: 1.5rem; }
+    .gc-evt-gal-item { flex-basis: 30%; }
+  }
 </style>
 
 <script>
@@ -614,6 +848,126 @@ const jsonLd = {
   const init = () => {
     initReveal();
     initActive();
+    initGallery();
+  };
+
+  // 3) Galerie : carrousel INFINI. On entoure les photos d'une copie avant et d'une copie après ;
+  //    dès qu'on s'approche d'un bord, on saute (sans que ça se voie) sur la même photo au milieu.
+  //    Défilement automatique doux, mis en pause au survol / au toucher / au focus,
+  //    avec un bouton pause (et désactivé si le visiteur a demandé moins d'animations).
+  //    Sans JavaScript : carrousel simple, glissement tactile / clavier.
+  const AUTO_MS = 4500;
+  const initGallery = () => {
+    document.querySelectorAll<HTMLElement>('[data-gal]').forEach((root) => {
+      if (root.dataset.galReady) return;
+      const track = root.querySelector<HTMLElement>('[data-gal-track]');
+      const prev = root.querySelector<HTMLButtonElement>('[data-gal-prev]');
+      const next = root.querySelector<HTMLButtonElement>('[data-gal-next]');
+      const pause = root.querySelector<HTMLButtonElement>('[data-gal-pause]');
+      if (!track || !prev || !next) return;
+      const originals = Array.from(track.children) as HTMLElement[];
+      const n = originals.length;
+      if (n < 3) return;
+      root.dataset.galReady = '1';
+
+      const makeClones = () =>
+        originals.map((li) => {
+          const c = li.cloneNode(true) as HTMLElement;
+          c.setAttribute('aria-hidden', 'true');
+          c.setAttribute('inert', '');
+          c.dataset.clone = '1';
+          return c;
+        });
+      track.prepend(...makeClones());
+      track.append(...makeClones());
+
+      let setW = 0;
+      const measure = () => {
+        setW = originals[0].offsetLeft - (track.children[0] as HTMLElement).offsetLeft;
+      };
+      const jump = (delta: number) => {
+        track.classList.add('is-jumping');
+        track.scrollLeft += delta;
+        requestAnimationFrame(() => requestAnimationFrame(() => track.classList.remove('is-jumping')));
+      };
+      const recentre = () => {
+        if (track.scrollLeft < setW * 0.5) jump(setW);
+        else if (track.scrollLeft > setW * 1.5) jump(-setW);
+      };
+      const step = () => {
+        const item = originals[0];
+        return item.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || '16');
+      };
+
+      measure();
+      track.classList.add('is-jumping');
+      track.scrollLeft = setW;
+      requestAnimationFrame(() => track.classList.remove('is-jumping'));
+
+      let timer: number | undefined;
+      track.addEventListener(
+        'scroll',
+        () => {
+          window.clearTimeout(timer);
+          timer = window.setTimeout(recentre, 120);
+        },
+        { passive: true }
+      );
+      window.addEventListener('resize', () => {
+        measure();
+        track.classList.add('is-jumping');
+        track.scrollLeft = setW;
+        requestAnimationFrame(() => track.classList.remove('is-jumping'));
+      });
+
+      const go = (dir: 1 | -1) => track.scrollBy({ left: dir * step(), behavior: 'smooth' });
+      prev.disabled = false;
+      next.disabled = false;
+      prev.onclick = () => { go(-1); stopForGood(); };
+      next.onclick = () => { go(1); stopForGood(); };
+
+      // ── Défilement automatique ──
+      // Si le visiteur a demandé « moins d'animations » (réglage du système), le défilement démarre
+      // en pause : le bouton lecture reste affiché pour qu'il puisse le lancer lui-même.
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let auto: number | undefined;
+      let paused = reduce;    // pause demandée (bouton, réglage système ou action du visiteur)
+      let hovering = false;   // souris sur les photos / focus clavier
+      let visible = false;    // section à l'écran
+      const setPaused = (value: boolean) => {
+        paused = value;
+        if (!pause) return;
+        pause.setAttribute('aria-pressed', String(paused));
+        pause.setAttribute('aria-label', (paused ? pause.dataset.labelPlay : pause.dataset.labelPause) || '');
+        refresh();
+      };
+      function refresh() {
+        window.clearInterval(auto);
+        auto = undefined;
+        if (paused || hovering || !visible) return;
+        auto = window.setInterval(() => go(1), AUTO_MS);
+      }
+      function stopForGood() {
+        // le visiteur pilote lui-même avec les flèches : on arrête l'automatique
+        setPaused(true);
+      }
+      if (pause) {
+        root.classList.add('is-auto');
+        setPaused(reduce);
+        pause.onclick = () => setPaused(!paused);
+        // Pause uniquement quand la souris est SUR les photos (pas sur toute la section),
+        // ou quand le carrousel est piloté au clavier.
+        track.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { hovering = true; refresh(); } });
+        track.addEventListener('pointerleave', () => { hovering = false; refresh(); });
+        track.addEventListener('focus', () => { hovering = true; refresh(); });
+        track.addEventListener('blur', () => { hovering = false; refresh(); });
+        track.addEventListener('touchstart', () => setPaused(true), { passive: true });
+        new IntersectionObserver(
+          (entries) => { visible = entries[0].isIntersecting; refresh(); },
+          { threshold: 0.4 }
+        ).observe(root);
+      }
+    });
   };
 
   document.addEventListener('astro:page-load', init);

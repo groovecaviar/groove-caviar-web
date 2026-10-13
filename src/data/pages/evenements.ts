@@ -34,6 +34,21 @@ export interface EvenementsContent {
     readonly texte: string;
   };
   readonly sections: readonly EventSection[];
+  readonly clients: {
+    readonly surtitre: string;
+    readonly titre: string;
+    readonly texte?: string;
+    readonly logo_alt: string;
+  };
+  readonly galerie: {
+    readonly surtitre: string;
+    readonly titre: string;
+    readonly precedent: string;
+    readonly suivant: string;
+    readonly pause: string;
+    readonly lecture: string;
+    readonly photos: readonly { readonly legende: string; readonly alt: string }[];
+  };
   readonly citation: string;
   readonly faq: {
     readonly surtitre: string;
@@ -62,6 +77,8 @@ function charger(raw: string, fichier: string): EvenementsContent {
       'intro.titre', 'intro.texte',
       'univers.surtitre', 'univers.titre_blanc', 'univers.titre_or', 'univers.texte',
       'sections', 'citation',
+      'clients.surtitre', 'clients.titre', 'clients.logo_alt',
+      'galerie.surtitre', 'galerie.titre', 'galerie.precedent', 'galerie.suivant', 'galerie.pause', 'galerie.lecture', 'galerie.photos',
       'faq.titre', 'faq.questions',
       'cta.titre_blanc', 'cta.titre_or', 'cta.texte',
       'cta.bouton_devis.texte', 'cta.bouton_devis.page',
@@ -74,6 +91,9 @@ function charger(raw: string, fichier: string): EvenementsContent {
   );
   data.faq.questions.forEach((_, i) =>
     verifier(data, [`faq.questions.${i}.question`, `faq.questions.${i}.reponse`], fichier)
+  );
+  data.galerie.photos.forEach((_, i) =>
+    verifier(data, [`galerie.photos.${i}.legende`, `galerie.photos.${i}.alt`], fichier)
   );
   const photoInconnue = data.sections.find((s) => !PHOTOS.includes(s.photo));
   if (photoInconnue) {

@@ -141,6 +141,35 @@ sections:
       texte: "Demander un devis"
       page: /devis/booking-dj
 
+clients:
+  surtitre: "Ils nous font confiance"
+  titre: "Des références à la hauteur de vos événements"
+  texte: "Hôtels, collectivités, marques et entreprises nous font confiance. Avec Groove Caviar, vous avez l'assurance d'une prestation soignée, de la préparation au dernier morceau."
+  logo_alt: "Logo {nom}"
+
+galerie:
+  # ⚠️ Légendes PROVISOIRES (photos factices) : à remplacer avec tes vraies photos.
+  # Chaque légende correspond à la photo du même rang : EVENEMENTS-galerie-1.webp = 1re légende, etc.
+  surtitre: "En images"
+  titre: "Nos événements en images"
+  precedent: "Photo précédente"
+  suivant: "Photo suivante"
+  pause: "Mettre le défilement en pause"
+  lecture: "Reprendre le défilement"
+  photos:
+    - legende: "Cocktail de marque"
+      alt: "DJ Groove Caviar lors d'un cocktail de marque"
+    - legende: "Vernissage en galerie"
+      alt: "Ambiance musicale lors d'un vernissage"
+    - legende: "Lancement de produit"
+      alt: "DJ Groove Caviar lors d'un lancement de produit"
+    - legende: "Défilé de mode"
+      alt: "Bande-son d'un défilé de mode"
+    - legende: "Soirée de gala"
+      alt: "DJ Groove Caviar lors d'une soirée de gala"
+    - legende: "Salon professionnel"
+      alt: "DJ Groove Caviar sur un salon professionnel"
+
 citation: "Chaque événement a son rythme. Nous trouvons le vôtre."
 
 faq:

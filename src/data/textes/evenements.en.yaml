@@ -126,6 +126,35 @@ sections:
       texte: "Request a quote"
       page: /en/quote/dj-booking
 
+clients:
+  surtitre: "They trust us"
+  titre: "References worthy of your events"
+  texte: "Hotels, local authorities, brands and companies trust us. With Groove Caviar, you can count on a polished service, from preparation to the very last track."
+  logo_alt: "{nom} logo"
+
+galerie:
+  # ⚠️ PLACEHOLDER captions (dummy photos): replace once the real photos are in.
+  # Each caption matches the photo of the same rank: EVENEMENTS-galerie-1.webp = 1st caption, etc.
+  surtitre: "In pictures"
+  titre: "Our events in pictures"
+  precedent: "Previous photo"
+  suivant: "Next photo"
+  pause: "Pause the slideshow"
+  lecture: "Resume the slideshow"
+  photos:
+    - legende: "Brand cocktail"
+      alt: "Groove Caviar DJ at a brand cocktail event"
+    - legende: "Gallery opening"
+      alt: "Music at an exhibition opening"
+    - legende: "Product launch"
+      alt: "Groove Caviar DJ at a product launch"
+    - legende: "Fashion show"
+      alt: "Soundtrack of a fashion show"
+    - legende: "Gala evening"
+      alt: "Groove Caviar DJ at a gala evening"
+    - legende: "Trade show"
+      alt: "Groove Caviar DJ at a trade show"
+
 citation: "Every event has its own rhythm. We find yours."
 
 faq:
