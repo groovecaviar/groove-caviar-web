@@ -1,0 +1,14 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import MariagesSections from '~/components/sections/MariagesSections.astro';
+import { mariages } from '~/data/pages/mariages';
+
+// Textes de la page : src/data/textes/mariages.fr.yaml
+const locale = 'fr';
+const t = mariages[locale]!;
+const metadata = { title: t.seo.titre, ignoreTitleTemplate: true, description: t.seo.description };
+---
+
+<PageLayout metadata={metadata} lang={locale}>
+  <MariagesSections t={t} locale={locale} />
+</PageLayout>

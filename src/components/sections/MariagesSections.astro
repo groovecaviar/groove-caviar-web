@@ -1,0 +1,1700 @@
+---
+// Page pilier « Mariages » (FR /mariages ↔ EN /en/weddings)
+// Textes : src/data/textes/mariages.fr.yaml (mise à jour à chaud avec npm run dev).
+// Réutilise les blocs communs du site (hero photo, bandeau intro, titres de
+// section, FAQ, bandeau citation, CTA final, carrousel) ; les classes gc-mar-*
+// ne concernent que ce qui est propre à cette page.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import heroImg from '~/assets/images/MARIAGES-hero.webp';
+import { estRempli, type MariagesContent } from '~/data/pages/mariages';
+import { ligne, paragraphes, texteBrut, typo, pageExiste, type Locale } from '~/utils/textes';
+
+export interface Props {
+  t: MariagesContent;
+  locale: Locale;
+}
+
+const { t, locale } = Astro.props;
+
+// ── Compteur d avis : {google_avis} remplacé partout ──
+const C = (s: string) => s.replace(/\{google_avis\}/g, t.compteurs_avis.google_avis);
+const L = (s: string) => ligne(C(s), locale);
+const P = (s: string) => paragraphes(C(s), locale);
+const T = (s: string) => typo(C(s), locale);
+const B = (s: string) => texteBrut(C(s), locale);
+
+// ── Images (dossiers src/assets/images/mariages, avis, lieux) ───────────────
+type ImgMap = Record<string, { default: ImageMetadata }>;
+// Les noms de fichiers sont comparés sans tenir compte des majuscules (DJ-Pierre = dj-pierre).
+const parNom = (g: ImgMap) =>
+  Object.fromEntries(Object.entries(g).map(([k, v]) => [k.split('/').pop()!.replace(/\.(webp|jpe?g|png)$/i, '').toLowerCase(), v.default]));
+const imgMariages = parNom(import.meta.glob<{ default: ImageMetadata }>('~/assets/images/mariages/*.{webp,jpg,jpeg,png}', { eager: true }));
+const imgAvis = parNom(import.meta.glob<{ default: ImageMetadata }>('~/assets/images/avis/*.{webp,jpg,jpeg,png}', { eager: true }));
+const imgBadges = parNom(import.meta.glob<{ default: ImageMetadata }>('~/assets/images/badges/*.{webp,jpg,jpeg,png}', { eager: true }));
+const imgLieux = parNom(import.meta.glob<{ default: ImageMetadata }>('~/assets/images/lieux/*.{webp,jpg,jpeg,png}', { eager: true }));
+
+const exiger = (map: Record<string, ImageMetadata>, nom: string, dossier: string) => {
+  const img = map[nom.toLowerCase()];
+  if (!img) throw new Error(`Page Mariages : image « ${nom}.webp » introuvable dans src/assets/images/${dossier}/`);
+  return img;
+};
+const slug = (s: string) =>
+  s.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+// ── 4. Déroulé : une photo par moment, dans l'ordre ──────────────────────────
+const PHOTOS_MOMENTS = ['ceremonie', 'cocktail', 'diner', 'ouverture-bal', 'soiree', 'dernier-morceau', 'moment-7', 'moment-8'];
+const NB_CLAIRS = 3; // les 3 premiers moments sur fond clair (jour), les suivants sur fond sombre (nuit)
+const moments = t.deroule.moments.map((m, i) => ({
+  ...m,
+  img: exiger(imgMariages, `MARIAGES-${PHOTOS_MOMENTS[i]}`, 'mariages'),
+  nuit: i >= NB_CLAIRS,
+  etiquettes: m.etiquettes ?? [],
+}));
+
+// ── 5. Avis : seuls les avis complétés (sans ⚠️) s'affichent ─────────────────
+const aLaUne = t.avis.a_la_une
+  .filter((a) => estRempli(a.texte) && estRempli(a.date))
+  .map((a) => ({ ...a, img: exiger(imgAvis, `avis-${a.portrait}`, 'avis') }));
+const avisListe = t.avis.liste.filter((a) => estRempli(a.texte) && estRempli(a.initiales) && estRempli(a.date));
+const LONG = 260; // au-delà, l'avis est replié avec « Lire la suite »
+const LONG_UNE = 450; // avis « à la une » plus long : police un peu plus petite
+const lienGoogle = 'https://maps.app.goo.gl/sJXkZtVEC7YZbHtn8';
+const libelles = locale === 'fr'
+  ? { suite: 'Lire la suite', moins: 'Réduire', precedent: 'Avis précédent', suivant: 'Avis suivant' }
+  : { suite: 'Read more', moins: 'Show less', precedent: 'Previous review', suivant: 'Next review' };
+
+// ── 6. DJs ───────────────────────────────────────────────────────────────────
+const djs = t.djs.liste.map((d) => ({
+  ...d,
+  img: exiger(imgMariages, d.photo, 'mariages'),
+}));
+
+// ── 8. Bien plus qu'un prix : le montant en euros devient un compteur ───────
+const avantages = t.avantages.points.map((p, i) => {
+  const m = p.titre.match(/(\d[\d\s  ]*\d|\d)/);
+  const num = String(i + 1).padStart(2, '0');
+  if (!m || m.index === undefined) return { ...p, num, avant: p.titre, chiffre: '', valeur: 0, apres: '' };
+  return {
+    ...p,
+    num,
+    avant: p.titre.slice(0, m.index),
+    chiffre: m[0],
+    valeur: Number(m[0].replace(/\D/g, '')),
+    apres: p.titre.slice(m.index + m[0].length),
+  };
+});
+
+// ── 10. Localisation : carte stylisée (SVG maison, aucun service externe) ────
+//  Coordonnées approximatives (lon, lat) des lieux où nous avons joué.
+const LIEUX_CARTE: [string, number, number][] = [
+  ["Hôtel du Palais", -1.556, 43.486], ['Château du Clair de Lune', -1.548, 43.465], ['Domaine Elhorria', -1.538, 43.452],
+  ["Château d'Arcangues", -1.523, 43.432], ['Théâtre de la Nature', -1.518, 43.428], ['Château de Larraldia', -1.452, 43.437],
+  ['Domaine de Larbéou', -1.468, 43.468], ["Espace de l'Océan", -1.532, 43.512], ['Espace Maïténa', -1.505, 43.493],
+  ['Maison Chiberta', -1.522, 43.527], ['Château de Brindos', -1.505, 43.478], ['Domaine Arremonteguy', -1.293, 43.49], ['La Ferme aux Piments', -1.534, 43.358],
+  ['Ferme Inharria', -1.548, 43.348], ['Ferme Ostalapia', -1.592, 43.4], ['Les Hortensias du Lac', -1.432, 43.665],
+  ["70 Hectares & l'Océan", -1.415, 43.705], ['Château de Monbet', -1.112, 43.613], ['Château de Campet', -0.612, 43.925],
+  ['Domaine de Tilh', -0.737, 43.43],
+];
+const LON0 = -2.1, LAT0 = 44.15, K = 500, COS = 0.724;
+const px = (lon: number, lat: number) => [Math.round((lon - LON0) * COS * K * 10) / 10, Math.round((LAT0 - lat) * K * 10) / 10];
+const chemin = (pts: [number, number][], ferme = false) =>
+  pts.map(([lo, la], i) => `${i ? 'L' : 'M'}${px(lo, la).join(' ')}`).join(' ') + (ferme ? ' Z' : '');
+const COTE: [number, number][] = [
+  [-1.27, 44.15], [-1.31, 44.0], [-1.36, 43.85], [-1.42, 43.72], [-1.445, 43.65], [-1.48, 43.57], [-1.52, 43.525],
+  [-1.555, 43.49], [-1.58, 43.45], [-1.6, 43.42], [-1.64, 43.4], [-1.67, 43.39], [-1.72, 43.385], [-1.78, 43.37],
+  [-1.8, 43.35], [-1.88, 43.33], [-1.98, 43.32], [-2.1, 43.3],
+];
+const carte = {
+  terre: chemin([...COTE, [-2.1, 43.15], [-0.45, 43.15], [-0.45, 44.15]], true),
+  cote: chemin(COTE),
+  frontiere: chemin([[-1.79, 43.36], [-1.66, 43.29], [-1.5, 43.27], [-1.38, 43.2], [-1.28, 43.15]]),
+  adour: chemin([[-1.52, 43.525], [-1.45, 43.5], [-1.3, 43.53], [-1.1, 43.55], [-0.95, 43.64], [-0.75, 43.71], [-0.45, 43.75]]),
+  points: LIEUX_CARTE.map(([nom, lo, la]) => {
+    const [x, y] = px(lo, la);
+    return { nom, x, y };
+  }),
+  villes: [
+    { nom: 'Biarritz', lo: -1.556, la: 43.483, ancre: 'end', dx: -12, dy: 4 },
+    { nom: 'Bayonne', lo: -1.475, la: 43.493, ancre: 'start', dx: 12, dy: -6 },
+    { nom: 'Hossegor', lo: -1.44, la: 43.665, ancre: 'start', dx: 12, dy: 4 },
+    { nom: 'Saint-Jean-de-Luz', lo: -1.66, la: 43.388, ancre: 'end', dx: -12, dy: 10 },
+    { nom: 'Dax', lo: -1.053, la: 43.71, ancre: 'start', dx: 10, dy: 4 },
+  ].map((v) => {
+    const [x, y] = px(v.lo, v.la);
+    return { ...v, x, y };
+  }),
+  ocean: locale === 'fr' ? 'Océan Atlantique' : 'Atlantic Ocean',
+  espagne: locale === 'fr' ? 'Espagne' : 'Spain',
+  monde: locale === 'fr' ? 'Paris · France · Monde' : 'Paris · France · Worldwide',
+};
+const [oceanX, oceanY] = px(-1.88, 43.85);
+const [espX, espY] = px(-1.95, 43.22);
+const [landesX, landesY] = px(-0.98, 43.86);
+const [pbX, pbY] = px(-1.2, 43.3);
+
+const lieuxPhotos = t.localisation.avec_photo.map((l) => ({ ...l, img: exiger(imgLieux, slug(l.nom), 'lieux') }));
+const zones = t.localisation.zones.map((z) => ({ ...z, lien: z.page && pageExiste(z.page) ? z.page : '' }));
+const cartesCouples = t.couples.cartes.map((c) => ({ ...c, lien: c.page && pageExiste(c.page) ? c.page : '' }));
+const badges = (t.couples.badges ?? []).map((b) => ({ ...b, img: exiger(imgBadges, b.image, 'badges') }));
+// Texte sur plusieurs lignes dans le fichier : chaque ligne devient une ligne à l'écran.
+const lignes = (s: string, br = '<br />') => s.trim().split(/\n+/).map((l) => L(l)).join(br);
+const exergue = t.couples.exergue.trim().split(/\n+/).map((l) => L(l)).join('<br />');
+const carrousel = locale === 'fr'
+  ? { precedent: 'Lieu précédent', suivant: 'Lieu suivant', pause: 'Mettre le défilement en pause', lecture: 'Reprendre le défilement' }
+  : { precedent: 'Previous venue', suivant: 'Next venue', pause: 'Pause the slideshow', lecture: 'Resume the slideshow' };
+const film = locale === 'fr'
+  ? { pause: 'Mettre la vidéo en pause', lecture: 'Lire la vidéo' }
+  : { pause: 'Pause the video', lecture: 'Play the video' };
+// Vidéo : fichiers dans public/videos (720 px pour mobile, 1280 px pour ordinateur)
+const VIDEO = {
+  petit: '/videos/mariage-groove-caviar-720.mp4',
+  grand: '/videos/mariage-groove-caviar-1280.mp4',
+  affiche: '/videos/mariage-groove-caviar-poster.webp',
+};
+
+// ── Données structurées (JSON-LD) ────────────────────────────────────────────
+const SITE_URL = 'https://www.groovecaviar.com';
+const pagePath = locale === 'fr' ? '/mariages' : '/en/weddings';
+const pageUrl = `${SITE_URL}${pagePath}`;
+const homeUrl = locale === 'fr' ? `${SITE_URL}/` : `${SITE_URL}/en`;
+const villes = ['Biarritz', 'Anglet', 'Bayonne', 'Saint-Jean-de-Luz', 'Guéthary', 'Bidart', 'Arcangues', 'Hossegor', 'Seignosse', 'Capbreton'];
+const prixMin = Number(t.tarifs.formule.prix.replace(/\D/g, '')) || undefined;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: t.seo.titre,
+      description: t.seo.description,
+      inLanguage: locale,
+      isPartOf: { '@id': `${SITE_URL}#website` },
+      about: { '@id': SITE_URL },
+      breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+      primaryImageOfPage: `${SITE_URL}${heroImg.src}`,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: locale === 'fr' ? 'Accueil' : 'Home', item: homeUrl },
+        { '@type': 'ListItem', position: 2, name: `${t.hero.titre_blanc} ${t.hero.titre_or}`, item: pageUrl },
+      ],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${pageUrl}#service`,
+      name: `${t.hero.titre_blanc} ${t.hero.titre_or} — Groove Caviar`,
+      serviceType: locale === 'fr' ? 'DJ de mariage' : 'Wedding DJ',
+      description: B(t.intro.texte),
+      url: pageUrl,
+      provider: { '@id': SITE_URL },
+      availableLanguage: ['fr', 'en', 'es'],
+      areaServed: [
+        ...villes.map((name) => ({ '@type': 'City', name })),
+        { '@type': 'AdministrativeArea', name: locale === 'fr' ? 'Pays Basque' : 'Basque Country' },
+        { '@type': 'AdministrativeArea', name: 'Landes' },
+        { '@type': 'Country', name: 'France' },
+      ],
+      ...(prixMin
+        ? {
+            offers: {
+              '@type': 'AggregateOffer',
+              priceCurrency: 'EUR',
+              lowPrice: prixMin,
+              description: B(`${t.tarifs.formule.nom} — ${t.tarifs.formule.a_partir_de} ${t.tarifs.formule.prix} ${t.tarifs.formule.saison}`),
+            },
+          }
+        : {}),
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${pageUrl}#faq`,
+      inLanguage: locale,
+      mainEntity: t.faq.questions.map((q) => ({
+        '@type': 'Question',
+        name: B(q.question),
+        acceptedAnswer: { '@type': 'Answer', text: B(q.reponse) },
+      })),
+    },
+  ],
+};
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+<!-- ═══ 1. HERO (identique aux autres pages piliers) ══════════════════════ -->
+<section class="gc-hero-section gc-photo-hero" data-mar-hero>
+  <Image
+    src={heroImg}
+    alt=""
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="gc-hero-media gc-photo-hero-bg"
+  />
+  <div class="gc-photo-hero-overlay" aria-hidden="true"></div>
+  <div class="gc-photo-hero-content">
+    <span class="gc-page-eyebrow">{t.hero.surtitre}</span>
+    <h1 class="gc-photo-hero-h1 gc-photo-hero-h1-zoom">
+      <span class="gc-photo-hero-h1-white">{t.hero.titre_blanc}</span>
+      {' '}
+      <span class="gc-photo-hero-h1-gold gc-shimmer gc-mar-accent-safe">{t.hero.titre_or}</span>
+    </h1>
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- ═══ 2. CHIFFRES CLÉS ═══════════════════════════════════════════════════ -->
+<section class="gc-mar-stats" aria-label={locale === 'fr' ? 'Chiffres clés' : 'Key figures'}>
+  <ul class="gc-mar-stats-list">
+    {t.chiffres.map((c) => (
+      <li><strong>{c.valeur}</strong><span>{T(c.libelle)}</span></li>
+    ))}
+  </ul>
+</section>
+
+<!-- ═══ 3. INTRO ═══════════════════════════════════════════════════════════ -->
+<section class="gc-intro-band gc-reveal">
+  <div class="gc-intro-band-inner">
+    <h2 class="gc-intro-band-title" set:html={lignes(t.intro.titre)} />
+    <div class="gc-intro-band-text gc-mar-paras" set:html={P(t.intro.texte)} />
+  </div>
+</section>
+
+<!-- ═══ 4. DÉROULÉ : du jour à la nuit ═════════════════════════════════════ -->
+<section class="gc-mar-day" aria-labelledby="gc-mar-day-title">
+  <div class="gc-sec gc-mar-day-head">
+    <div class="gc-sec-head gc-reveal">
+      <span class="gc-sec-accroche">{t.deroule.surtitre}</span>
+      <h2 id="gc-mar-day-title" class="gc-sec-title">
+        {T(t.deroule.titre_blanc)} <span class="gc-mar-gold">{T(t.deroule.titre_or)}</span>
+      </h2>
+      <p class="gc-body-text" set:html={L(t.deroule.texte)} />
+    </div>
+  </div>
+  <div class="gc-mar-day-flow">
+  {moments.map((m, i) => (
+    <article class:list={['gc-mar-mo', `gc-mar-mo--${i + 1}`, m.nuit && 'gc-mar-mo--nuit', i % 2 === 1 && 'gc-mar-mo--inv']}>
+      <div class="gc-mar-mo-inner gc-reveal">
+        <span class="gc-mar-mo-dot" aria-hidden="true"></span>
+        <figure class="gc-mar-mo-fig gc-media-hover">
+          <Image src={m.img} alt={m.image_alt} widths={[480, 720, 960]} sizes="(min-width: 900px) 24rem, 90vw" loading="lazy" />
+        </figure>
+        <div class="gc-mar-mo-txt">
+          <span class="gc-mar-mo-time">{T(m.heure)}</span>
+          <h3 class="gc-mar-mo-title">{T(m.titre)}</h3>
+          <div class="gc-mar-mo-copy gc-mar-paras" set:html={P(m.texte)} />
+          {m.etiquettes.length > 0 && (
+            <ul class="gc-mar-chips">
+              {m.etiquettes.map((e) => <li>{T(e)}</li>)}
+            </ul>
+          )}
+          {m.ecoute && estRempli(m.ecoute.lien) && (
+            <a class="gc-mar-listen" href={m.ecoute.lien} target="_blank" rel="noopener">
+              <span aria-hidden="true" class="gc-mar-listen-ico"></span>{T(m.ecoute.texte)}
+            </a>
+          )}
+          {m.citation && estRempli(m.citation.texte) && (
+            <blockquote class="gc-mar-snip">
+              <p>«&nbsp;{T(m.citation.texte)}&nbsp;»</p>
+              <footer>{T(m.citation.auteur)}</footer>
+            </blockquote>
+          )}
+        </div>
+      </div>
+    </article>
+  ))}
+  </div>
+  <p class="gc-mar-day-note">{T(t.deroule.note)}</p>
+</section>
+
+<!-- ═══ VIDÉO : bandeau pleine largeur (chargée seulement à l'approche) ═══ -->
+{t.video && (
+  <section class="gc-mar-film" data-film aria-label={B(t.video.description)}>
+    <video
+      class="gc-mar-film-video"
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster={VIDEO.affiche}
+      data-src-small={VIDEO.petit}
+      data-src-large={VIDEO.grand}
+      aria-hidden="true"
+    ></video>
+    <div class="gc-mar-film-bar">
+      {t.video.credit_lien
+        ? <a class="gc-mar-film-credit" href={t.video.credit_lien} target="_blank" rel="noopener">{T(t.video.credit)}</a>
+        : <span class="gc-mar-film-credit">{T(t.video.credit)}</span>}
+      <button type="button" class="gc-evt-gal-btn gc-mar-film-btn" data-film-btn aria-pressed="false" aria-label={film.pause} data-label-pause={film.pause} data-label-play={film.lecture}>
+        <svg class="gc-mar-film-ico-pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5v14M16 5v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+        <svg class="gc-mar-film-ico-play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor" /></svg>
+      </button>
+    </div>
+  </section>
+)}
+
+<!-- ═══ 5. AVIS ════════════════════════════════════════════════════════════ -->
+<section class="gc-sec gc-sec--tint" id="avis" aria-labelledby="gc-mar-avis-title">
+  <div class="gc-sec-inner gc-mar-wide">
+    <div class="gc-sec-head gc-reveal">
+      <span class="gc-sec-accroche">{t.avis.surtitre}</span>
+      <h2 id="gc-mar-avis-title" class="gc-sec-title">
+        {T(t.avis.titre_blanc)} <span class="gc-mar-gold">{T(t.avis.titre_or)}</span>
+      </h2>
+    </div>
+
+    <div class="gc-mar-scores gc-reveal">
+      <a class="gc-mar-score" href={lienGoogle} target="_blank" rel="noopener">
+        <svg class="gc-mar-score-logo" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+        <span><span class="gc-mar-stars" aria-hidden="true">★★★★★</span><strong>{T(t.avis.google_libelle)}</strong></span>
+      </a>
+
+    </div>
+
+    {aLaUne.length > 0 && (
+      <div class="gc-mar-feat gc-reveal" data-feat>
+        <div class="gc-mar-feat-track">
+        {aLaUne.map((a, i) => (
+          <figure class:list={['gc-mar-feat-slide', i === 0 && 'is-active', a.texte.length > LONG_UNE && 'is-long']} data-feat-slide aria-hidden={i === 0 ? undefined : 'true'}>
+            <div class="gc-mar-feat-img">
+              <Image src={a.img} alt="" widths={[400, 700]} sizes="(min-width: 860px) 22rem, 90vw" loading="lazy" />
+            </div>
+            <div class="gc-mar-feat-q">
+              <blockquote set:html={P(a.texte)} />
+              <figcaption>
+                <strong>{T(a.initiales)}</strong>
+                <span>{T(a.date)}</span>
+                <span class="gc-mar-stars" aria-label={locale === 'fr' ? '5 étoiles' : '5 stars'}>★★★★★</span>
+              </figcaption>
+            </div>
+          </figure>
+        ))}
+        </div>
+        {aLaUne.length > 1 && (
+          <div class="gc-mar-feat-nav">
+            <button type="button" class="gc-evt-gal-btn gc-mar-btn-dark" data-feat-prev aria-label={libelles.precedent}>
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </button>
+            <div class="gc-mar-feat-dots" aria-hidden="true">
+              {aLaUne.map((_, i) => <span class:list={[i === 0 && 'is-active']} />)}
+            </div>
+            <button type="button" class="gc-evt-gal-btn gc-mar-btn-dark" data-feat-next aria-label={libelles.suivant}>
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </button>
+          </div>
+        )}
+      </div>
+    )}
+
+    {avisListe.length > 0 && (
+      <div class="gc-mar-wall">
+        {avisListe.map((a) => (
+          <article class="gc-mar-rv gc-reveal">
+            <div class="gc-mar-rv-top">
+              <span class="gc-mar-stars" aria-label={locale === 'fr' ? '5 étoiles' : '5 stars'}>★★★★★</span>
+            </div>
+            {estRempli(a.titre) && <h3 class="gc-mar-rv-title">{T(a.titre)}</h3>}
+            <div class:list={['gc-mar-rv-text gc-mar-paras', a.texte.length > LONG && 'is-long']} data-rv-text set:html={P(a.texte)} />
+            {a.texte.length > LONG && (
+              <button type="button" class="gc-mar-rv-more" data-rv-more data-less={libelles.moins} aria-expanded="false">{libelles.suite}</button>
+            )}
+            <footer class="gc-mar-rv-meta">
+              <span class="gc-mar-rv-ini" aria-hidden="true">{a.initiales.replace(/[^A-Za-zÀ-ÿ&]/g, '').replace('&', ' & ')}</span>
+              <span><strong>{T(a.initiales)}</strong>{T(a.date)}</span>
+            </footer>
+          </article>
+        ))}
+      </div>
+    )}
+
+    <div class="gc-mar-center gc-reveal">
+      <a class="gc-prt-cta" href={lienGoogle} target="_blank" rel="noopener">{T(t.avis.bouton)}</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 6. NOS DJs ═════════════════════════════════════════════════════════ -->
+<section class="gc-mar-dark" aria-labelledby="gc-mar-djs-title">
+  <div class="gc-sec-inner gc-mar-wide">
+    <div class="gc-sec-head gc-reveal">
+      <span class="gc-sec-accroche">{t.djs.surtitre}</span>
+      <h2 id="gc-mar-djs-title" class="gc-sec-title gc-mar-on-dark">
+        {T(t.djs.titre_blanc)} <span class="gc-mar-gold">{T(t.djs.titre_or)}</span>
+      </h2>
+      <div class="gc-body-text gc-mar-paras gc-mar-soft" set:html={P(t.djs.texte)} />
+    </div>
+    <ul class="gc-mar-djs">
+      {djs.map((d) => (
+        <li class="gc-mar-dj gc-reveal">
+          <figure class="gc-mar-dj-fig">
+            <Image src={d.img} alt={`${d.nom}, ${B(d.role)} — Groove Caviar`} widths={[400, 700]} sizes="(min-width: 900px) 20rem, 90vw" loading="lazy" />
+          </figure>
+          <span class="gc-mar-dj-role">{T(d.role)}</span>
+          <h3 class="gc-mar-dj-name">{d.nom}</h3>
+          {estRempli(d.langues) && <span class="gc-mar-dj-lang">{d.langues}</span>}
+          {estRempli(d.texte) && <div class="gc-body-text gc-mar-paras gc-mar-soft" set:html={P(d.texte)} />}
+        </li>
+      ))}
+    </ul>
+    <p class="gc-mar-promise gc-reveal">
+      <strong>{T(t.djs.promesse_titre)}</strong> <span>{T(t.djs.promesse_texte)}</span>
+    </p>
+  </div>
+</section>
+
+<!-- ═══ 7. MÉTHODE ═════════════════════════════════════════════════════════ -->
+<section class="gc-sec gc-sec--white" aria-labelledby="gc-mar-steps-title">
+  <div class="gc-sec-inner gc-mar-wide">
+    <div class="gc-sec-head gc-reveal">
+      <span class="gc-sec-accroche">{t.methode.surtitre}</span>
+      <h2 id="gc-mar-steps-title" class="gc-sec-title">
+        {T(t.methode.titre_blanc)} <span class="gc-mar-gold">{T(t.methode.titre_or)}</span>
+      </h2>
+    </div>
+    <ol class="gc-mar-steps">
+      {t.methode.etapes.map((e, i) => (
+        <li class="gc-reveal">
+          <span class="gc-mar-step-num">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="gc-mar-step-title">{T(e.titre)}</h3>
+          <div class="gc-body-text gc-mar-paras" set:html={P(e.texte)} />
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<!-- ═══ 8. BIEN PLUS QU'UN PRIX ════════════════════════════════════════════ -->
+<section class="gc-mar-dark gc-mar-plus" aria-labelledby="gc-mar-plus-title" data-plus>
+  <div class="gc-sec-inner">
+    <div class="gc-sec-head gc-reveal">
+      <span class="gc-sec-accroche">{t.avantages.surtitre}</span>
+      <h2 id="gc-mar-plus-title" class="gc-sec-title gc-mar-on-dark">
+        {T(t.avantages.titre_blanc)} <span class="gc-mar-gold">{T(t.avantages.titre_or)}</span>
+      </h2>
+      <p class="gc-body-text gc-mar-soft" set:html={L(t.avantages.texte)} />
+    </div>
+    <ol class="gc-mar-plus-list">
+      {avantages.map((p) => (
+        <li class="gc-mar-plus-row" data-plus-row>
+          <span class="gc-mar-plus-num" aria-hidden="true">{p.num}</span>
+          <div>
+            <h3 class="gc-mar-plus-title">
+              {T(p.avant)}
+              {p.chiffre && (
+                <span class="gc-mar-plus-count" data-count={p.valeur} data-final={T(p.chiffre)}>{T(p.chiffre)}</span>
+              )}
+              {T(p.apres)}
+            </h3>
+            <span class="gc-mar-plus-line" aria-hidden="true"></span>
+            <p class="gc-mar-plus-detail">{T(p.detail)}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<!-- ═══ 9. TARIFS & OPTIONS ════════════════════════════════════════════════ -->
+<section class="gc-sec gc-sec--tint" aria-labelledby="gc-mar-price-title">
+  <div class="gc-sec-inner gc-mar-wide">
+    <div class="gc-sec-head gc-mar-head-wide gc-reveal">
+      <span class="gc-sec-accroche">{t.tarifs.surtitre}</span>
+      <h2 id="gc-mar-price-title" class="gc-sec-title">
+        {T(t.tarifs.titre_blanc)}<br class="gc-br-lg" /> <span class="gc-mar-gold">{T(t.tarifs.titre_or)}</span>
+      </h2>
+    </div>
+    <!-- Carte « carton d'invitation » : double filet doré -->
+    <div class="gc-mar-price gc-reveal">
+      <h3 class="gc-mar-price-name">{T(t.tarifs.formule.nom)}</h3>
+      <span class="gc-mar-price-from">{T(t.tarifs.formule.a_partir_de)}</span>
+      <strong class="gc-mar-price-amt">{T(t.tarifs.formule.prix)}</strong>
+      <p class="gc-mar-price-season">{T(t.tarifs.formule.saison)}<br />{T(t.tarifs.formule.remise)}</p>
+      <span class="gc-mar-price-orn" aria-hidden="true"></span>
+      <ul class="gc-mar-price-list">
+        {t.tarifs.formule.inclus.map((x) => <li set:html={L(x)} />)}
+      </ul>
+      {t.tarifs.formule.mention && <p class="gc-mar-price-note" set:html={L(t.tarifs.formule.mention)} />}
+      <a href={t.cta.bouton_devis.page} class="btn-gc-primary">{T(t.tarifs.formule.bouton)}</a>
+    </div>
+
+    <div class="gc-mar-opts-head gc-reveal">
+      <h3 class="gc-mar-sub gc-mar-sub--center">{T(t.tarifs.options_titre)}</h3>
+      {estRempli(t.tarifs.options_texte) && <p class="gc-body-text" set:html={L(t.tarifs.options_texte)} />}
+    </div>
+    <div class="gc-mar-opts">
+      {t.tarifs.options.map((o) => (
+        <div class="gc-mar-opt gc-reveal">
+          <h4 class="gc-mar-opt-title">{T(o.titre)}</h4>
+          <ul>
+            {o.liste.map((x) => <li>{T(x)}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 10. LOCALISATION ═══════════════════════════════════════════════════ -->
+<section class="gc-sec gc-sec--white gc-mar-loc" aria-labelledby="gc-mar-loc-title">
+  <div class="gc-sec-inner gc-mar-wide">
+    <div class="gc-sec-head gc-reveal">
+      <span class="gc-sec-accroche">{t.localisation.surtitre}</span>
+      <h2 id="gc-mar-loc-title" class="gc-sec-title">
+        {T(t.localisation.titre_blanc)}<br class="gc-br-lg" /> <span class="gc-mar-gold">{T(t.localisation.titre_or)}</span>
+      </h2>
+      <p class="gc-body-text" set:html={lignes(t.localisation.texte, '<br class="gc-br-lg" /> ')} />
+    </div>
+
+    <div class="gc-mar-geo">
+      <figure class="gc-mar-map gc-reveal" data-map>
+        <svg viewBox="0 0 600 500" role="img" aria-labelledby="gc-mar-map-cap">
+          <rect width="600" height="500" class="gc-mar-map-sea" />
+          <path d={carte.terre} class="gc-mar-map-land" />
+          <path d={carte.cote} class="gc-mar-map-coast" />
+          <path d={carte.frontiere} class="gc-mar-map-border" />
+          <path d={carte.adour} class="gc-mar-map-river" />
+          <text x={oceanX} y={oceanY} class="gc-mar-map-sea-label" transform={`rotate(-72 ${oceanX} ${oceanY})`}>{carte.ocean}</text>
+          <text x={espX} y={espY} class="gc-mar-map-region">{carte.espagne}</text>
+          <text x={landesX} y={landesY} class="gc-mar-map-region">Landes</text>
+          <text x={pbX} y={pbY} class="gc-mar-map-region">{locale === 'fr' ? 'Pays Basque' : 'Basque Country'}</text>
+          {carte.villes.map((v) => (
+            <g class="gc-mar-map-city">
+              <circle cx={v.x} cy={v.y} r="2.5" />
+              <text x={v.x + v.dx} y={v.y + v.dy} text-anchor={v.ancre}>{v.nom}</text>
+            </g>
+          ))}
+          {carte.points.map((p, i) => (
+            <g class="gc-mar-map-pt" data-i={i}>
+              <circle cx={p.x} cy={p.y} r="9" class="gc-mar-map-halo" />
+              <circle cx={p.x} cy={p.y} r="4.2" class="gc-mar-map-dot"><title>{p.nom}</title></circle>
+            </g>
+          ))}
+          <g class="gc-mar-map-world">
+            <path d="M470 70 L548 30 M532 28 L548 30 L541 45" />
+            <text x="560" y="94" text-anchor="end">{carte.monde}</text>
+          </g>
+        </svg>
+        <figcaption id="gc-mar-map-cap">{T(t.localisation.carte_legende)}</figcaption>
+      </figure>
+
+      <div class="gc-mar-zones">
+        <h3 class="gc-mar-sub">{T(t.localisation.zones_titre)}</h3>
+        <ul>
+          {zones.map((z) => (
+            <li class="gc-mar-zone gc-reveal">
+              <span class="gc-mar-card-kicker">{T(z.surtitre)}</span>
+              <h4 class="gc-mar-card-title">{T(z.titre)}</h4>
+              <p class="gc-body-text" set:html={L(z.texte)} />
+              {z.lien && <a class="gc-prt-cta" href={z.lien}>{T(t.localisation.lien_texte)}</a>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="gc-mar-sub gc-mar-sub--center gc-reveal">{T(t.localisation.lieux_titre)}</h3>
+  </div>
+
+  <div class="gc-evt-gal gc-evt-gal--portrait" data-gal>
+    <div class="gc-evt-gal-wrap">
+      <ul class="gc-evt-gal-track" data-gal-track tabindex="0" aria-label={B(t.localisation.lieux_titre)}>
+        {lieuxPhotos.map((l) => (
+          <li class="gc-evt-gal-item">
+            <figure class="gc-evt-gal-fig">
+              <div class="gc-media-hover gc-mar-venue-img">
+                <Image src={l.img} alt={`${l.nom}, ${l.ville}`} widths={[400, 600, 900]} sizes="(min-width: 1024px) 22vw, (min-width: 768px) 34vw, 70vw" loading="lazy" decoding="async" />
+              </div>
+              <figcaption><strong class="gc-mar-venue-name">{T(l.nom)}</strong>{T(l.ville)}</figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+      <div class="gc-evt-gal-nav">
+        <button type="button" class="gc-evt-gal-btn" data-gal-prev aria-label={carrousel.precedent}>
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+        <button type="button" class="gc-evt-gal-btn gc-evt-gal-btn--pause" data-gal-pause aria-pressed="false" aria-label={carrousel.pause} data-label-pause={carrousel.pause} data-label-play={carrousel.lecture}>
+          <svg class="gc-evt-gal-ico-pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5v14M16 5v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+          <svg class="gc-evt-gal-ico-play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor" /></svg>
+        </button>
+        <button type="button" class="gc-evt-gal-btn" data-gal-next aria-label={carrousel.suivant}>
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <p class="gc-body-text gc-mar-venues-more" set:html={L(t.localisation.autres)} />
+</section>
+
+<!-- ═══ EXERGUE : bandeau citation ═════════════════════════════════════════ -->
+<section class="gc-quote-banner gc-reveal">
+  <div class="gc-quote-inner">
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+    <blockquote set:html={exergue} />
+    <span class="gc-editorial-line" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- ═══ 11. À CHAQUE COUPLE SA BANDE-SON ═══════════════════════════════════ -->
+<section class="gc-sec gc-sec--white" aria-labelledby="gc-mar-couples-title">
+  <div class="gc-sec-inner gc-mar-wide">
+    <div class="gc-sec-head gc-reveal">
+      <span class="gc-sec-accroche">{t.couples.surtitre}</span>
+      <h2 id="gc-mar-couples-title" class="gc-sec-title">
+        {T(t.couples.titre_blanc)}<br class="gc-br-lg" /> <span class="gc-mar-gold">{T(t.couples.titre_or)}</span>
+      </h2>
+      <p class="gc-body-text" set:html={L(t.couples.texte)} />
+    </div>
+    <ul class="gc-mar-cards">
+      {cartesCouples.map((c) => (
+        <li class="gc-mar-card gc-reveal">
+          <span class="gc-mar-card-kicker">{T(c.surtitre)}</span>
+          <h3 class="gc-mar-card-title">{T(c.titre)}</h3>
+          <p class="gc-body-text" set:html={L(c.texte)} />
+          {c.lien && <a class="gc-prt-cta" href={c.lien}>{T(t.couples.lien_texte)}</a>}
+        </li>
+      ))}
+    </ul>
+    {badges.length > 0 && (
+      <div class="gc-mar-badges gc-reveal">
+        {t.couples.badges_titre && <h3 class="gc-mar-sub gc-mar-sub--center">{T(t.couples.badges_titre)}</h3>}
+        <ul>
+          {badges.map((b) => (
+            <li>
+              {b.lien ? (
+                <a href={b.lien} target="_blank" rel="noopener"><Image src={b.img} alt={b.nom} height={110} loading="lazy" /></a>
+              ) : (
+                <Image src={b.img} alt={b.nom} height={110} loading="lazy" />
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+</section>
+
+<!-- ═══ 12. FAQ (mêmes classes que Soirées / Événements) ═══════════════════ -->
+<section class="gc-sec gc-sec--tint gc-reveal" aria-labelledby="gc-prt-faq-title">
+  <div class="gc-sec-inner gc-prt-faq-inner">
+    <div class="gc-sec-head">
+      <span class="gc-sec-accroche">{t.faq.surtitre}</span>
+      <h2 id="gc-prt-faq-title" class="gc-sec-title" set:html={L(t.faq.titre)} />
+      {t.faq.intro && <p class="gc-body-text" set:html={L(t.faq.intro)} />}
+    </div>
+    <div class="gc-prt-faq-list">
+      {t.faq.questions.map((q, i) => (
+        <details class="gc-prt-faq-item" name="gc-prt-faq">
+          <summary>
+            <span class="gc-eyebrow-num">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="gc-prt-faq-q" set:html={L(q.question)} />
+            <span class="gc-prt-faq-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="gc-prt-faq-a gc-body-text" set:html={P(q.reponse)} />
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 13. CTA FINAL (identique aux autres pages) ═════════════════════════ -->
+<section class="gc-final-cta gc-reveal" data-mar-cta>
+  <div class="gc-final-cta-inner">
+    <h2 class="gc-final-cta-title gc-prt-cta-oneline">
+      <span class="gc-final-cta-title-1">{T(t.cta.titre_blanc)}</span>{' '}
+      <span class="gc-final-cta-title-2 gc-shimmer">{T(t.cta.titre_or)}</span>
+    </h2>
+    <p class="gc-final-cta-subtitle" set:html={L(t.cta.texte)} />
+    <div class="gc-btn-pair">
+      <a href={t.cta.bouton_devis.page} class="btn-gc-primary">{T(t.cta.bouton_devis.texte)}</a>
+      <a href={t.cta.bouton_contact.page} class="btn-gc-outline">{T(t.cta.bouton_contact.texte)}</a>
+    </div>
+  </div>
+</section>
+
+<!-- Barre fixe mobile : apparaît après le hero, disparaît sur le CTA final -->
+<div class="gc-mar-bar" data-mar-bar>
+  <a href={t.cta.bouton_devis.page} class="btn-gc-primary">{T(t.barre_mobile.bouton)}</a>
+  <a href={t.cta.bouton_contact.page} class="gc-mar-bar-tel" aria-label={T(t.cta.bouton_contact.texte)}>
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z" /></svg>
+  </a>
+</div>
+
+<style>
+  /* Couleurs : variables de palette (tailwind.css) — --gc-surface #FFFFFF ·
+     --gc-surface-alt #F2F2F2 · --gc-ink #0D0D0D · --gc-gold #AF9453 — et hex 8 chiffres. */
+
+  .gc-mar-gold { color: var(--gc-gold); }
+  .gc-mar-wide { max-width: 72rem; }
+  .gc-mar-head-wide { max-width: 60rem; }
+  .gc-mar-paras :global(p) { margin-bottom: 1rem; }
+  .gc-mar-paras :global(p:last-child) { margin-bottom: 0; }
+  .gc-mar-accent-safe { display: inline-block; padding-top: 0.2em; margin-top: -0.2em; }
+  .gc-mar-stars { color: var(--gc-gold); letter-spacing: 0.12em; }
+  .gc-mar-center { text-align: center; margin-top: 2.5rem; }
+  .gc-mar-center .gc-prt-cta { margin-inline: auto; }
+
+  /* ══ 2. CHIFFRES ═════════════════════════════════════════════════════════ */
+  .gc-mar-stats { background: var(--gc-ink); color: #FFFFFF; border-top: 1px solid #FFFFFF1A; }
+  .gc-mar-stats-list {
+    list-style: none;
+    margin: 0 auto;
+    padding: 2.75rem 1.25rem;
+    max-width: 64rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1rem;
+    text-align: center;
+  }
+  .gc-mar-stats-list strong {
+    display: block;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--gc-gold);
+  }
+  .gc-mar-stats-list span {
+    display: block;
+    margin-top: 0.6rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #FFFFFFB3;
+  }
+  @media (min-width: 900px) { .gc-mar-stats-list { grid-template-columns: repeat(4, 1fr); } }
+
+  /* ══ 4. DÉROULÉ : chaque moment porte sa portion du dégradé jour → nuit ══ */
+  /* Un seul dégradé continu jour → nuit sur l'ensemble des moments.
+     Réglé pour 6 moments : la bascule vers la nuit se fait entre le 3e et le 4e. */
+  .gc-mar-day-head { background: #FFFFFF; padding-bottom: 2rem; }
+  .gc-mar-day-flow {
+    background: linear-gradient(
+      180deg,
+      #FFFFFF 0%, #FDFBF7 12%, #F9F4EB 22%, #F3EBDC 31%, #EBDFC8 38%,
+      #E0CFB0 43%, #CDB78F 46.5%, #AC946C 49%, #7F6B4E 51.5%, #554837 54%,
+      #362E25 57%, #231E19 61%, #171513 67%, #111010 75%, #0D0D0D 85%, #0D0D0D 100%
+    );
+  }
+  .gc-mar-mo { position: relative; color: var(--gc-ink); padding: 2.5rem 1.25rem; }
+  .gc-mar-mo--nuit { color: #FFFFFF; }
+  /* Ligne du temps continue (dessinée par chaque moment) */
+  .gc-mar-mo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 2.3rem;
+    width: 1px;
+    background: var(--gc-gold);
+  }
+  .gc-mar-mo-inner {
+    position: relative;
+    max-width: 64rem;
+    margin-inline: auto;
+    display: grid;
+    gap: 1.5rem;
+    padding-left: 2.5rem;
+  }
+  .gc-mar-mo-dot {
+    position: absolute;
+    left: 0.55rem;
+    top: 0.4rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: var(--gc-gold);
+    box-shadow: 0 0 0 6px #AF945333;
+  }
+  .gc-mar-mo-fig { margin: 0; aspect-ratio: 4 / 5; overflow: hidden; max-width: 24rem; }
+  .gc-mar-mo-fig :global(img) { display: block; }
+  .gc-mar-mo-fig :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .gc-mar-mo-time {
+    display: block;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gc-gold);
+  }
+  .gc-mar-mo-title {
+    margin: 0.4rem 0 0.9rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.05;
+  }
+  .gc-mar-mo-copy { font-size: 0.95rem; line-height: 1.7; max-width: 32rem; }
+  .gc-mar-mo--nuit .gc-mar-mo-copy { color: #FFFFFFD9; }
+  .gc-mar-chips { list-style: none; margin: 1.1rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .gc-mar-chips li {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gc-gold);
+    border: 1px solid var(--gc-gold);
+    padding: 0.55rem 0.8rem;
+  }
+  .gc-mar-listen {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: inherit;
+    border-bottom: 1px solid var(--gc-gold);
+    padding-bottom: 0.35rem;
+  }
+  .gc-mar-listen:hover { color: var(--gc-gold); }
+  .gc-mar-listen-ico { width: 0; height: 0; border-left: 7px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+  .gc-mar-snip { margin: 1.5rem 0 0; padding-left: 1rem; border-left: 2px solid var(--gc-gold); }
+  .gc-mar-snip p {
+    margin: 0;
+    font-family: var(--font-quote, 'Cormorant Garamond', serif);
+    font-style: italic;
+    font-size: 1.35rem;
+    line-height: 1.35;
+  }
+  .gc-mar-snip footer { margin-top: 0.4rem; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; }
+  .gc-mar-day-note { margin: 0; padding: 0 1.25rem 4rem; background: #0D0D0D; text-align: center; font-size: 0.78rem; color: #FFFFFF80; }
+
+  @media (min-width: 900px) {
+    .gc-mar-mo { padding: 3.5rem 1.25rem; }
+    .gc-mar-mo::before { left: 50%; }
+    .gc-mar-mo-inner { grid-template-columns: 1fr 1fr; gap: 5rem; padding-left: 0; align-items: center; }
+    .gc-mar-mo-dot { left: calc(50% - 0.5rem); top: 50%; }
+    .gc-mar-mo-fig { justify-self: end; width: 100%; }
+    .gc-mar-mo--inv .gc-mar-mo-fig { order: 2; justify-self: start; }
+    .gc-mar-mo--inv .gc-mar-mo-txt { text-align: right; justify-self: end; }
+    .gc-mar-mo--inv .gc-mar-mo-copy { margin-left: auto; }
+    .gc-mar-mo--inv .gc-mar-chips { justify-content: flex-end; }
+    .gc-mar-mo--inv .gc-mar-snip { border-left: 0; border-right: 2px solid var(--gc-gold); padding: 0 1rem 0 0; }
+  }
+
+  /* ══ 5. AVIS ═════════════════════════════════════════════════════════════ */
+  .gc-mar-scores { display: grid; gap: 1rem; max-width: 52rem; margin: 0 auto 3rem; }
+  .gc-mar-score {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 1.3rem 1.5rem;
+    background: var(--gc-surface);
+    border: 1px solid #0D0D0D1A;
+    transition: border-color 0.25s ease;
+  }
+  .gc-mar-score:hover { border-color: var(--gc-gold); }
+  .gc-mar-score-logo { width: 2rem; height: 2rem; flex: none; }
+  .gc-mar-score strong { display: block; margin-top: 0.15rem; font-size: 0.95rem; color: var(--gc-ink); }
+  .gc-mar-scores { max-width: 26rem; }
+
+  .gc-mar-feat { position: relative; max-width: 62rem; margin: 0 auto 3.5rem; background: var(--gc-ink); color: #FFFFFF; }
+  /* Toutes les diapositives occupent la même case : la hauteur reste celle de l'avis le plus long
+     (pas de saut de page quand on change d'avis). */
+  .gc-mar-feat-track { display: grid; }
+  .gc-mar-feat-slide {
+    grid-area: 1 / 1;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s;
+  }
+  .gc-mar-feat-slide.is-active { opacity: 1; visibility: visible; }
+  .gc-mar-feat-img { aspect-ratio: 1; overflow: hidden; }
+  .gc-mar-feat-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .gc-mar-feat-q { padding: 2rem 1.75rem 2.25rem; }
+  .gc-mar-feat-q blockquote { margin: 0; }
+  .gc-mar-feat-q blockquote::before {
+    content: '“';
+    display: block;
+    font-family: var(--font-quote, 'Cormorant Garamond', serif);
+    font-size: 4.5rem;
+    line-height: 0.6;
+    color: var(--gc-gold);
+    margin-bottom: 0.6rem;
+  }
+  .gc-mar-feat-q blockquote :global(p) {
+    margin: 0 0 0.8rem;
+    font-family: var(--font-quote, 'Cormorant Garamond', serif);
+    font-style: italic;
+    font-size: clamp(1.25rem, 2.3vw, 1.7rem);
+    line-height: 1.35;
+  }
+  .gc-mar-feat-slide.is-long blockquote :global(p) { font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.45; }
+  .gc-mar-feat-q figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1rem;
+    margin-top: 1.25rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .gc-mar-feat-q figcaption strong { color: var(--gc-gold); font-size: 0.95rem; white-space: nowrap; }
+  .gc-mar-feat-nav { display: flex; align-items: center; gap: 1rem; padding: 0 1.75rem 2rem; }
+  .gc-mar-feat-nav .gc-evt-gal-btn { flex: none; }
+  .gc-mar-feat-dots { display: flex; gap: 0.5rem; min-width: 0; }
+  .gc-mar-feat-dots span { width: 2rem; min-width: 0.9rem; flex-shrink: 1; height: 2px; background: #FFFFFF4D; transition: background-color 0.3s ease; }
+  .gc-mar-feat-dots span.is-active { background: var(--gc-gold); }
+  @media (min-width: 860px) {
+    .gc-mar-feat-slide { grid-template-columns: 22rem 1fr; gap: 3rem; align-items: center; }
+    .gc-mar-feat-q { padding: 2.5rem 3rem 2.5rem 0; }
+    .gc-mar-feat-nav { justify-content: flex-end; padding: 0 3rem 2.25rem; }
+  }
+
+  .gc-mar-wall { columns: 1; column-gap: 1.25rem; }
+  @media (min-width: 700px) { .gc-mar-wall { columns: 2; } }
+  @media (min-width: 1050px) { .gc-mar-wall { columns: 3; } }
+  .gc-mar-rv { break-inside: avoid; background: var(--gc-surface); border: 1px solid #0D0D0D1A; padding: 1.5rem 1.5rem 1.3rem; margin: 0 0 1.25rem; }
+  .gc-mar-rv-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+  .gc-mar-rv-src { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.55; }
+  .gc-mar-rv-title {
+    margin: 0 0 0.5rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .gc-mar-rv-text { font-size: 0.9rem; line-height: 1.65; }
+  .gc-mar-rv-text.is-long:not(.is-open) {
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .gc-mar-rv-more {
+    margin-top: 0.6rem;
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gc-gold);
+  }
+  .gc-mar-rv-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid #0D0D0D1A;
+    font-size: 0.76rem;
+    color: #0D0D0D99;
+  }
+  .gc-mar-rv-meta strong { display: block; color: var(--gc-ink); font-size: 0.82rem; }
+  .gc-mar-rv-ini {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    background: var(--gc-ink);
+    color: var(--gc-gold);
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* ══ Sections sombres (DJs, Bien plus qu'un prix) ════════════════════════ */
+  .gc-mar-dark { background: var(--gc-ink); color: #FFFFFF; padding: clamp(4rem, 9vh, 6.5rem) 1.25rem; }
+  .gc-mar-on-dark { color: #FFFFFF; }
+  .gc-mar-soft { color: #FFFFFFC7; }
+
+  /* ══ 6. DJs ══════════════════════════════════════════════════════════════ */
+  .gc-mar-djs { list-style: none; margin: 0; padding: 0; display: grid; gap: 3rem 2rem; }
+  .gc-mar-dj-fig { margin: 0 0 1.25rem; aspect-ratio: 4 / 5; overflow: hidden; }
+  .gc-mar-dj-fig :global(img) { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); transition: filter 0.8s ease; }
+  @media (hover: hover) { .gc-mar-dj:hover .gc-mar-dj-fig :global(img) { filter: grayscale(0); } }
+  @media (hover: none) { .gc-mar-dj-fig :global(img) { filter: grayscale(0); } }
+  .gc-mar-dj-role {
+    display: block;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gc-gold);
+  }
+  .gc-mar-dj-name {
+    margin: 0.35rem 0 0.5rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .gc-mar-dj-lang {
+    display: inline-block;
+    margin-bottom: 0.9rem;
+    border: 1px solid #FFFFFF4D;
+    padding: 0.4rem 0.65rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+  }
+  .gc-mar-promise {
+    margin: 3.5rem auto 0;
+    max-width: 48rem;
+    padding: 1.3rem 1.5rem;
+    border: 1px solid #AF945366;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #FFFFFFD9;
+  }
+  .gc-mar-promise strong {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gc-gold);
+  }
+  @media (min-width: 760px) { .gc-mar-djs { grid-template-columns: repeat(3, 1fr); } }
+
+  /* ══ 7. MÉTHODE ══════════════════════════════════════════════════════════ */
+  .gc-mar-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 2.5rem 2rem; }
+  .gc-mar-steps li { padding-top: 1.4rem; border-top: 1px solid var(--gc-gold); }
+  .gc-mar-step-num { font-family: var(--aw-font-heading, sans-serif); font-size: 2.4rem; font-weight: 700; line-height: 1; color: var(--gc-gold); }
+  .gc-mar-step-title {
+    margin: 0.8rem 0 0.5rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  @media (min-width: 700px) { .gc-mar-steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .gc-mar-steps { grid-template-columns: repeat(3, 1fr); } }
+
+  /* ══ 8. BIEN PLUS QU'UN PRIX : révélation en deux temps + compteurs ══════ */
+  .gc-mar-plus-list { list-style: none; margin: 0 auto; padding: 0; max-width: 52rem; }
+  .gc-mar-plus-row {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr;
+    gap: 0 1rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid #FFFFFF14;
+  }
+  .gc-mar-plus-num {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--gc-gold);
+    padding-top: 0.45rem;
+  }
+  .gc-mar-plus-title {
+    margin: 0;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    text-transform: uppercase;
+    color: #FFFFFF;
+  }
+  .gc-mar-plus-count { color: var(--gc-gold); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .gc-mar-plus-line {
+    display: block;
+    height: 1px;
+    width: 6rem;
+    margin: 0.9rem 0 0.7rem;
+    background: var(--gc-gold);
+  }
+  .gc-mar-plus-detail {
+    margin: 0;
+    font-family: var(--font-quote, 'Cormorant Garamond', serif);
+    font-style: italic;
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 1.35;
+    color: var(--gc-gold);
+  }
+  /* État initial (seulement si JavaScript actif et animations autorisées) */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.gc-js) .gc-mar-plus-title { opacity: 0; transform: translateY(26px); transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+    :global(.gc-js) .gc-mar-plus-line { transform: scaleX(0); transform-origin: left; transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1) 0.35s; }
+    :global(.gc-js) .gc-mar-plus-detail { clip-path: inset(0 100% 0 0); transition: clip-path 1.1s cubic-bezier(0.25, 1, 0.5, 1) 0.6s; }
+    :global(.gc-js) .gc-mar-plus-num { opacity: 0; transition: opacity 0.6s ease; }
+    .gc-mar-plus-row.is-in .gc-mar-plus-title { opacity: 1; transform: none; }
+    .gc-mar-plus-row.is-in .gc-mar-plus-line { transform: scaleX(1); }
+    .gc-mar-plus-row.is-in .gc-mar-plus-detail { clip-path: inset(0 0 0 0); }
+    .gc-mar-plus-row.is-in .gc-mar-plus-num { opacity: 1; }
+  }
+
+  /* ══ 9. TARIFS & OPTIONS ═════════════════════════════════════════════════ */
+  /* Carte « carton d'invitation » : fond blanc, double filet doré */
+  .gc-mar-price {
+    position: relative;
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    background: #FFFFFF;
+    text-align: center;
+    outline: 1px solid var(--gc-gold);
+    outline-offset: -10px;
+  }
+  .gc-mar-price::before {
+    content: '';
+    position: absolute;
+    inset: 15px;
+    border: 1px solid #AF945359;
+    pointer-events: none;
+  }
+  .gc-mar-price-name {
+    margin: 0;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gc-gold);
+  }
+  .gc-mar-price-from {
+    display: block;
+    margin: 1.6rem 0 0.3rem;
+    font-family: var(--aw-font-serif, serif);
+    font-style: italic;
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+  .gc-mar-price-amt {
+    display: block;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: clamp(3rem, 9vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .gc-mar-price-season { margin: 0.9rem 0 0; font-size: 0.9rem; color: #0D0D0DA6; }
+  .gc-mar-price-orn { display: block; width: 7rem; height: 1px; margin: 2rem auto; background: var(--gc-gold); }
+  .gc-mar-price-list { list-style: none; max-width: 36rem; margin: 0 auto 1.5rem; padding: 0; text-align: left; }
+  .gc-mar-price-list li { position: relative; break-inside: avoid; padding: 0.45rem 0 0.45rem 1.4rem; font-size: 0.92rem; line-height: 1.45; }
+  .gc-mar-price-list li::before { content: '✦'; position: absolute; left: 0; top: 0.5rem; font-size: 0.75rem; color: var(--gc-gold); }
+  .gc-mar-price-note { max-width: 32rem; margin: 0 auto 2rem; font-size: 0.82rem; font-style: italic; color: #0D0D0DA6; }
+
+  /* Options : 4 colonnes séparées par des filets, titres en Cormorant doré */
+  .gc-mar-opts-head { max-width: 40rem; margin: 4rem auto 1.5rem; text-align: center; }
+  .gc-mar-opts-head .gc-mar-sub { margin-bottom: 0.75rem; }
+  .gc-mar-opts { display: grid; max-width: 60rem; margin: 0 auto; border-top: 1px solid #0D0D0D26; }
+  .gc-mar-opt { padding: 1.5rem 1.25rem; border-bottom: 1px solid #0D0D0D1A; }
+  .gc-mar-opt-title {
+    margin: 0 0 0.8rem;
+    font-family: var(--aw-font-serif, serif);
+    font-style: italic;
+    font-size: 1.45rem;
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--gc-gold);
+  }
+  .gc-mar-opt ul { list-style: none; margin: 0; padding: 0; }
+  .gc-mar-opt li { padding: 0.2rem 0; font-size: 0.88rem; line-height: 1.55; color: #0D0D0DCC; }
+  @media (min-width: 640px) {
+    .gc-mar-price { padding: 3.5rem 3rem; outline-offset: -14px; }
+    .gc-mar-price::before { inset: 20px; }
+    .gc-mar-price-list { columns: 2; column-gap: 2.5rem; }
+    .gc-mar-opts { grid-template-columns: 1fr 1fr; }
+    .gc-mar-opt:nth-child(odd) { border-right: 1px solid #0D0D0D1A; }
+  }
+  @media (min-width: 1000px) {
+    .gc-mar-opts { grid-template-columns: repeat(4, 1fr); }
+    .gc-mar-opt { border-bottom: 0; border-right: 1px solid #0D0D0D1A; }
+    .gc-mar-opt:last-child { border-right: 0; }
+  }
+
+  /* ══ VIDÉO : bandeau pleine largeur ══════════════════════════════════════ */
+  .gc-mar-film { position: relative; background: var(--gc-ink); }
+  .gc-mar-film-video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 85vh;
+    object-fit: cover;
+    background: var(--gc-ink);
+  }
+  .gc-mar-film-bar {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 2.5rem 1.25rem 1rem;
+    background: linear-gradient(to top, #0D0D0DB3 0%, #0D0D0D00 100%);
+  }
+  .gc-mar-film-credit {
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #FFFFFFCC;
+    text-decoration: none;
+  }
+  a.gc-mar-film-credit:hover { color: var(--gc-gold); }
+  .gc-mar-film .gc-mar-film-btn { flex: none; border-color: #FFFFFFB3; color: #FFFFFF; }
+  .gc-mar-film-ico-play { display: none; }
+  .gc-mar-film-btn[aria-pressed='true'] .gc-mar-film-ico-pause { display: none; }
+  .gc-mar-film-btn[aria-pressed='true'] .gc-mar-film-ico-play { display: block; }
+  @media (min-width: 768px) { .gc-mar-film-bar { padding: 3rem 2.5rem 1.5rem; } }
+
+  /* ══ 10. LOCALISATION : carte stylisée + zones ═══════════════════════════ */
+  .gc-mar-geo { display: grid; gap: 2.5rem; align-items: start; margin-bottom: 4rem; }
+  .gc-mar-map { margin: 0; background: var(--gc-ink); padding: 1rem 1rem 1.25rem; }
+  .gc-mar-map svg { display: block; width: 100%; height: auto; }
+  .gc-mar-map figcaption { margin-top: 0.75rem; text-align: center; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: #FFFFFF99; }
+  .gc-mar-map-sea { fill: #0D0D0D; }
+  .gc-mar-map-land { fill: #1C1913; }
+  .gc-mar-map-coast { fill: none; stroke: #AF9453; stroke-width: 1.4; }
+  .gc-mar-map-border { fill: none; stroke: #FFFFFF40; stroke-width: 1; stroke-dasharray: 4 5; }
+  .gc-mar-map-river { fill: none; stroke: #AF945359; stroke-width: 1; }
+  .gc-mar-map-sea-label { fill: #AF945399; font-family: var(--font-quote, 'Cormorant Garamond', serif); font-style: italic; font-size: 20px; letter-spacing: 0.08em; }
+  .gc-mar-map-region { fill: #FFFFFF59; font-family: var(--aw-font-heading, sans-serif); font-size: 12px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
+  .gc-mar-map-city circle { fill: #FFFFFFB3; }
+  .gc-mar-map-city text { fill: #FFFFFFCC; font-family: var(--aw-font-heading, sans-serif); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; }
+  .gc-mar-map-dot { fill: var(--gc-gold); stroke: #0D0D0D; stroke-width: 1.2; cursor: help; }
+  .gc-mar-map-pt { --d: 0ms; }
+  .gc-mar-map-halo { fill: #AF945340; transform-box: fill-box; transform-origin: center; }
+  .gc-mar-map-world path { fill: none; stroke: var(--gc-gold); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .gc-mar-map-world text { fill: var(--gc-gold); font-family: var(--aw-font-heading, sans-serif); font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.gc-js) .gc-mar-map-pt { opacity: 0; transform: translateY(-14px); transition: opacity 0.6s ease var(--d), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) var(--d); }
+    .gc-mar-map.is-visible .gc-mar-map-pt { opacity: 1; transform: none; }
+    .gc-mar-map.is-visible .gc-mar-map-halo { animation: gc-mar-pulse 2.8s ease-out infinite; animation-delay: calc(var(--d) + 0.6s); }
+  }
+  @keyframes gc-mar-pulse { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(2.2); opacity: 0; } }
+
+  .gc-mar-sub {
+    margin: 0 0 1.25rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gc-gold);
+  }
+  .gc-mar-sub--center { text-align: center; margin-bottom: 2rem; }
+  .gc-mar-zones ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .gc-mar-zone, .gc-mar-card { background: var(--gc-surface); border: 1px solid #0D0D0D1A; padding: 1.4rem 1.5rem; transition: border-color 0.25s ease; }
+  .gc-mar-zone:hover, .gc-mar-card:hover { border-color: var(--gc-gold); }
+  .gc-mar-card-kicker {
+    display: block;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gc-gold);
+  }
+  .gc-mar-card-title {
+    margin: 0.5rem 0 0.5rem;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 1.15rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.15;
+  }
+  .gc-mar-zone .gc-prt-cta, .gc-mar-card .gc-prt-cta { margin-top: 1rem; }
+  .gc-mar-venue-name { display: block; font-family: var(--aw-font-heading, sans-serif); font-style: normal; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+  .gc-mar-venues-more { max-width: 56rem; margin: 2rem auto 0; padding: 0 1.25rem; text-align: center; color: #0D0D0DA6; }
+  @media (min-width: 1000px) {
+    .gc-mar-geo { grid-template-columns: 1.15fr 1fr; gap: 3rem; }
+    .gc-mar-map { position: sticky; top: 6rem; }
+  }
+
+  /* ══ 11. À CHAQUE COUPLE SA BANDE-SON ════════════════════════════════════ */
+  .gc-mar-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .gc-mar-card { padding: 2rem 1.75rem 1.75rem; }
+  @media (min-width: 700px) { .gc-mar-cards { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .gc-mar-cards { grid-template-columns: repeat(4, 1fr); } }
+
+  .gc-mar-badges { margin-top: 3.5rem; }
+  .gc-mar-badges ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.5rem 2.5rem; }
+  .gc-mar-badges :global(img) { display: block; height: 6.5rem; width: auto; }
+
+  /* ══ Carrousel des lieux : mêmes classes que la galerie de la page Événements ══ */
+  .gc-evt-gal { padding-bottom: 0; }
+  .gc-evt-gal-wrap { max-width: 90rem; margin: 0 auto; }
+  .gc-evt-gal-track {
+    list-style: none;
+    margin: 0;
+    padding: 0 1rem;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1rem;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .gc-evt-gal-track::-webkit-scrollbar { display: none; }
+  .gc-evt-gal-track:focus-visible { outline: 2px solid var(--gc-gold); outline-offset: 4px; }
+  @media (prefers-reduced-motion: no-preference) { .gc-evt-gal-track { scroll-behavior: smooth; } }
+  .gc-evt-gal-item { flex: 0 0 70%; scroll-snap-align: start; }
+  .gc-evt-gal-fig { margin: 0; }
+  .gc-mar-venue-img { overflow: hidden; }
+  .gc-evt-gal-fig :global(img) { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background-color: var(--gc-surface-alt); }
+  .gc-evt-gal-fig figcaption {
+    margin-top: 0.75rem;
+    font-family: var(--font-quote, 'Cormorant Garamond', serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    color: #0D0D0DA6;
+  }
+  .gc-evt-gal-nav { display: flex; justify-content: center; gap: 0.75rem; margin-top: 2rem; }
+  .gc-evt-gal-btn {
+    width: 2.9rem;
+    height: 2.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--gc-ink);
+    border-radius: 9999px;
+    background: transparent;
+    color: var(--gc-ink);
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+  }
+  .gc-evt-gal-btn:hover:not(:disabled) { background: var(--gc-gold); border-color: var(--gc-gold); color: var(--gc-ink); }
+  .gc-evt-gal-btn:focus-visible { outline: 2px solid var(--gc-gold); outline-offset: 3px; }
+  .gc-evt-gal-btn--pause { display: none; }
+  [data-gal].is-auto .gc-evt-gal-btn--pause { display: inline-flex; }
+  .gc-evt-gal-ico-play { display: none; }
+  .gc-evt-gal-btn--pause[aria-pressed='true'] .gc-evt-gal-ico-pause { display: none; }
+  .gc-evt-gal-btn--pause[aria-pressed='true'] .gc-evt-gal-ico-play { display: block; }
+  .gc-evt-gal-track.is-jumping { scroll-snap-type: none; scroll-behavior: auto; }
+  .gc-mar-btn-dark { border-color: #FFFFFF66; color: #FFFFFF; }
+  @media (min-width: 768px) {
+    .gc-evt-gal-track { padding-inline: 2rem; scroll-padding-inline: 2rem; gap: 1.25rem; }
+    .gc-evt-gal-item { flex-basis: 36%; }
+  }
+  @media (min-width: 1024px) {
+    .gc-evt-gal-track { padding-inline: max(2rem, calc((100% - 72rem) / 2)); scroll-padding-inline: max(2rem, calc((100% - 72rem) / 2)); gap: 1.5rem; }
+    .gc-evt-gal-item { flex-basis: 23%; }
+  }
+
+  /* ══ FAQ (identique à Soirées / Événements) ══════════════════════════════ */
+  .gc-prt-faq-inner { max-width: 50rem; }
+  .gc-prt-faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .gc-prt-faq-item { background: var(--gc-surface); border-radius: 0.65rem; padding: 1.15rem 1.4rem; transition: background-color 0.3s ease; }
+  .gc-prt-faq-item[open] { background: #AF945314; }
+  .gc-prt-faq-item summary { display: flex; align-items: baseline; gap: 0.9rem; cursor: pointer; list-style: none; }
+  .gc-prt-faq-item summary::-webkit-details-marker { display: none; }
+  .gc-prt-faq-q { flex: 1; margin: 0; font-size: 0.95rem; font-weight: 700; line-height: 1.4; color: var(--gc-ink); }
+  .gc-prt-faq-icon { position: relative; flex-shrink: 0; width: 0.8rem; height: 0.8rem; align-self: center; }
+  .gc-prt-faq-icon::before,
+  .gc-prt-faq-icon::after { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1.5px; background: var(--gc-gold); transition: transform 0.3s ease; }
+  .gc-prt-faq-icon::after { transform: rotate(90deg); }
+  .gc-prt-faq-item[open] .gc-prt-faq-icon::after { transform: rotate(0deg); }
+  .gc-prt-faq-a { margin: 0.85rem 0 0; padding-left: 2.05rem; color: var(--gc-ink); }
+  .gc-prt-faq-a :global(p) { opacity: 0.88; }
+
+  /* Liens « Découvrir / Lire nos avis » (identiques à Soirées / Événements) */
+  .gc-prt-cta {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    position: relative;
+    font-family: var(--aw-font-heading, sans-serif);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gc-ink);
+  }
+  .gc-prt-cta::after { content: ''; position: absolute; left: 0; bottom: -3px; width: 100%; height: 1px; background-color: var(--gc-gold); opacity: 0.6; }
+  .gc-prt-cta:hover { color: var(--gc-gold); }
+  .gc-prt-cta:hover::after { opacity: 1; }
+
+  /* CTA final sur une ligne (identique aux autres pages) */
+  .gc-prt-cta-oneline { white-space: nowrap; font-size: clamp(1.45rem, 6.6vw, 4rem); }
+  .gc-prt-cta-oneline .gc-final-cta-title-1,
+  .gc-prt-cta-oneline .gc-final-cta-title-2 { display: inline-block; }
+
+  /* ══ Barre fixe mobile ═══════════════════════════════════════════════════ */
+  .gc-mar-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem calc(0.6rem + env(safe-area-inset-bottom));
+    background: #0D0D0DF2;
+    border-top: 1px solid #AF945366;
+    transform: translateY(110%);
+    transition: transform 0.35s ease;
+  }
+  .gc-mar-bar.is-shown { transform: none; }
+  .gc-mar-bar-tel {
+    width: 2.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--gc-gold);
+    color: var(--gc-gold);
+  }
+  @media (min-width: 900px) { .gc-mar-bar { display: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gc-mar-feat-slide { transition: none; }
+    .gc-mar-bar { transition: none; }
+  }
+</style>
+
+<script>
+  // Comportements de la page Mariages (aucune bibliothèque externe) :
+  // 1) apparitions au scroll (.gc-reveal)  2) « Bien plus qu'un prix » : révélation + compteurs
+  // 3) carte : points qui tombent  4) avis à la une  5) « Lire la suite »
+  // 6) carrousel infini des lieux  7) barre fixe mobile.
+  const observers: IntersectionObserver[] = [];
+  const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const initReveal = () => {
+    const els = document.querySelectorAll<HTMLElement>('.gc-reveal');
+    const obs = new IntersectionObserver(
+      (entries, o) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-visible'); o.unobserve(e.target); } }),
+      { threshold: 0.1, rootMargin: '0px 0px -25% 0px' }
+    );
+    els.forEach((el) => obs.observe(el));
+    observers.push(obs);
+  };
+
+  const formatFr = (n: number) => n.toLocaleString(document.documentElement.lang === 'en' ? 'en-GB' : 'fr-FR');
+  const compter = (el: HTMLElement) => {
+    const fin = Number(el.dataset.count || 0);
+    const texteFinal = el.dataset.final || el.textContent || '';
+    if (!fin || reduce()) { el.textContent = texteFinal; return; }
+    const duree = 2800;
+    const t0 = performance.now();
+    const pas = (t: number) => {
+      const k = Math.min(1, (t - t0) / duree);
+      const v = Math.round(fin * (1 - Math.pow(1 - k, 3)));
+      el.textContent = k < 1 ? formatFr(v) : texteFinal;
+      if (k < 1) requestAnimationFrame(pas);
+    };
+    el.textContent = '0';
+    requestAnimationFrame(pas);
+  };
+  const initPlus = () => {
+    const rows = document.querySelectorAll<HTMLElement>('[data-plus-row]');
+    const obs = new IntersectionObserver(
+      (entries, o) => entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const row = e.target as HTMLElement;
+        row.classList.add('is-in');
+        row.querySelectorAll<HTMLElement>('[data-count]').forEach(compter);
+        o.unobserve(row);
+      }),
+      { threshold: 0.35, rootMargin: '0px 0px -10% 0px' }
+    );
+    rows.forEach((r) => obs.observe(r));
+    observers.push(obs);
+  };
+
+  const initMap = () => {
+    const map = document.querySelector<HTMLElement>('[data-map]');
+    if (!map) return;
+    map.querySelectorAll<SVGGElement>('[data-i]').forEach((g) => g.style.setProperty('--d', `${Number(g.dataset.i) * 70}ms`));
+    const obs = new IntersectionObserver(
+      (entries, o) => entries.forEach((e) => { if (e.isIntersecting) { map.classList.add('is-visible'); o.disconnect(); } }),
+      { threshold: 0.3 }
+    );
+    obs.observe(map);
+    observers.push(obs);
+  };
+
+  const initFeat = () => {
+    const root = document.querySelector<HTMLElement>('[data-feat]');
+    if (!root) return;
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-feat-slide]'));
+    const dots = Array.from(root.querySelectorAll<HTMLElement>('.gc-mar-feat-dots span'));
+    let i = 0;
+    const show = (n: number) => {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => { s.classList.toggle('is-active', k === i); if (k === i) s.removeAttribute('aria-hidden'); else s.setAttribute('aria-hidden', 'true'); });
+      dots.forEach((d, k) => d.classList.toggle('is-active', k === i));
+    };
+    root.querySelector<HTMLButtonElement>('[data-feat-prev]')?.addEventListener('click', () => show(i - 1));
+    root.querySelector<HTMLButtonElement>('[data-feat-next]')?.addEventListener('click', () => show(i + 1));
+  };
+
+  const initMore = () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-rv-more]').forEach((btn) => {
+      const txt = btn.previousElementSibling as HTMLElement | null;
+      const plus = btn.textContent || '';
+      btn.addEventListener('click', () => {
+        const open = txt?.classList.toggle('is-open') ?? false;
+        btn.setAttribute('aria-expanded', String(open));
+        btn.textContent = open ? btn.dataset.less || plus : plus;
+      });
+    });
+  };
+
+  // Carrousel infini (même fonctionnement que la galerie de la page Événements)
+  const AUTO_MS = 4500;
+  const initGallery = () => {
+    document.querySelectorAll<HTMLElement>('[data-gal]').forEach((root) => {
+      if (root.dataset.galReady) return;
+      const track = root.querySelector<HTMLElement>('[data-gal-track]');
+      const prev = root.querySelector<HTMLButtonElement>('[data-gal-prev]');
+      const next = root.querySelector<HTMLButtonElement>('[data-gal-next]');
+      const pause = root.querySelector<HTMLButtonElement>('[data-gal-pause]');
+      if (!track || !prev || !next) return;
+      const originals = Array.from(track.children) as HTMLElement[];
+      if (originals.length < 3) return;
+      root.dataset.galReady = '1';
+      const clones = () => originals.map((li) => {
+        const c = li.cloneNode(true) as HTMLElement;
+        c.setAttribute('aria-hidden', 'true');
+        c.setAttribute('inert', '');
+        return c;
+      });
+      track.prepend(...clones());
+      track.append(...clones());
+      let setW = 0;
+      const measure = () => { setW = originals[0].offsetLeft - (track.children[0] as HTMLElement).offsetLeft; };
+      const jump = (delta: number) => {
+        track.classList.add('is-jumping');
+        track.scrollLeft += delta;
+        requestAnimationFrame(() => requestAnimationFrame(() => track.classList.remove('is-jumping')));
+      };
+      const recentre = () => { if (track.scrollLeft < setW * 0.5) jump(setW); else if (track.scrollLeft > setW * 1.5) jump(-setW); };
+      const step = () => originals[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || '16');
+      const reset = () => { measure(); track.classList.add('is-jumping'); track.scrollLeft = setW; requestAnimationFrame(() => track.classList.remove('is-jumping')); };
+      reset();
+      let timer: number | undefined;
+      track.addEventListener('scroll', () => { window.clearTimeout(timer); timer = window.setTimeout(recentre, 120); }, { passive: true });
+      window.addEventListener('resize', reset);
+      const go = (dir: 1 | -1) => track.scrollBy({ left: dir * step(), behavior: 'smooth' });
+
+      let auto: number | undefined;
+      let paused = reduce();
+      let keyboard = false;
+      let visible = false;
+      function refresh() {
+        window.clearInterval(auto);
+        auto = undefined;
+        if (paused || keyboard || !visible) return;
+        auto = window.setInterval(() => go(1), AUTO_MS);
+      }
+      const setPaused = (v: boolean) => {
+        paused = v;
+        if (pause) {
+          pause.setAttribute('aria-pressed', String(v));
+          pause.setAttribute('aria-label', (v ? pause.dataset.labelPlay : pause.dataset.labelPause) || '');
+        }
+        refresh();
+      };
+      // Clic sur une flèche : on avance, et le défilement auto repart de zéro (il ne s'arrête pas).
+      prev.onclick = () => { go(-1); refresh(); };
+      next.onclick = () => { go(1); refresh(); };
+      if (pause) {
+        root.classList.add('is-auto');
+        setPaused(paused);
+        pause.onclick = () => setPaused(!paused);
+        // Pas de pause au survol (le carrousel occupe toute la largeur) : pause = bouton ou clavier.
+        track.addEventListener('focus', () => { keyboard = track.matches(':focus-visible'); refresh(); });
+        track.addEventListener('blur', () => { keyboard = false; refresh(); });
+        track.addEventListener('touchstart', () => refresh(), { passive: true });
+        const o = new IntersectionObserver((e) => { visible = e[0].isIntersecting; refresh(); }, { threshold: 0.4 });
+        o.observe(root);
+        observers.push(o);
+      }
+    });
+  };
+
+  // Barre mobile : visible après le hero, masquée sur le CTA final et le pied de page
+  const initBar = () => {
+    const bar = document.querySelector<HTMLElement>('[data-mar-bar]');
+    const hero = document.querySelector<HTMLElement>('[data-mar-hero]');
+    if (!bar || !hero) return;
+    const fins = [document.querySelector('[data-mar-cta]'), document.querySelector('footer')].filter(Boolean) as Element[];
+    let heroVu = true;
+    let finVue = false;
+    const maj = () => bar.classList.toggle('is-shown', !heroVu && !finVue);
+    const oHero = new IntersectionObserver((e) => { heroVu = e[0].isIntersecting; maj(); });
+    oHero.observe(hero);
+    const etats = new Map<Element, boolean>();
+    const oFin = new IntersectionObserver((entries) => {
+      entries.forEach((e) => etats.set(e.target, e.isIntersecting));
+      finVue = [...etats.values()].some(Boolean);
+      maj();
+    });
+    fins.forEach((f) => oFin.observe(f));
+    observers.push(oHero, oFin);
+  };
+
+  // Vidéo : chargée seulement à l'approche, jouée uniquement quand elle est à l'écran.
+  // Si le visiteur a demandé « moins d'animations » ou « économie de données », elle reste
+  // sur l'image d'affiche : le bouton lecture permet de la lancer.
+  const initFilm = () => {
+    const root = document.querySelector<HTMLElement>('[data-film]');
+    const video = root?.querySelector<HTMLVideoElement>('video');
+    const btn = root?.querySelector<HTMLButtonElement>('[data-film-btn]');
+    if (!root || !video || !btn || root.dataset.filmReady) return;
+    root.dataset.filmReady = '1';
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
+    let paused = reduce() || saveData;
+    let visible = false;
+    const load = () => {
+      if (video.getAttribute('src')) return;
+      const large = window.matchMedia('(min-width: 768px)').matches;
+      video.src = (large ? video.dataset.srcLarge : video.dataset.srcSmall) || '';
+    };
+    const sync = () => {
+      btn.setAttribute('aria-pressed', String(paused));
+      btn.setAttribute('aria-label', (paused ? btn.dataset.labelPlay : btn.dataset.labelPause) || '');
+      if (!paused && visible) { load(); video.play().catch(() => undefined); } else video.pause();
+    };
+    btn.onclick = () => { paused = !paused; sync(); };
+    // Préchargement un peu avant l'arrivée à l'écran
+    const pre = new IntersectionObserver((e) => { if (e[0].isIntersecting && !paused) { load(); pre.disconnect(); } }, { rootMargin: '400px 0px' });
+    pre.observe(root);
+    const vis = new IntersectionObserver((e) => { visible = e[0].isIntersecting; sync(); }, { threshold: 0.25 });
+    vis.observe(root);
+    observers.push(pre, vis);
+    sync();
+  };
+
+  const init = () => {
+    observers.splice(0).forEach((o) => o.disconnect());
+    document.documentElement.classList.add('gc-js');
+    initReveal();
+    initPlus();
+    initMap();
+    initFeat();
+    initMore();
+    initGallery();
+    initFilm();
+    initBar();
+  };
+  document.addEventListener('astro:page-load', init);
+</script>

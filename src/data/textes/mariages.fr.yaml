@@ -1,0 +1,549 @@
+# ══════════════════════════════════════════════════════════════════════
+#  PAGE « MARIAGES » — TEXTES FRANÇAIS  (adresse : /mariages)
+# ══════════════════════════════════════════════════════════════════════
+#  Comment modifier :
+#   • Change le texte après les deux-points, puis enregistre (Cmd + S).
+#   • Ne modifie PAS les mots-clés à gauche (titre:, texte:, options:…),
+#     ni les tirets « - », ni le décalage (les espaces en début de ligne).
+#   • Les textes longs sont sous un « | » : écris librement en dessous,
+#     en gardant le même décalage. Une ligne vide = un nouveau paragraphe.
+#   • Les lignes qui commencent par « # » sont des notes pour toi :
+#     elles n'apparaissent pas sur le site.
+#   • ⚠️ = point à vérifier ou à compléter.
+#
+#  Mise en forme automatique (rien à faire) :
+#   • « Groove Caviar » s'affiche toujours en doré (classe .brand).
+#   • Les espaces insécables avant ? ! : ; » et après « sont ajoutées.
+#   • **mot** → mot en gras.      [texte du lien](/adresse) → lien.
+#   • {google_avis} : remplacé partout sur la page par
+#     les chiffres de la rubrique « compteurs_avis » juste en dessous.
+#     → Tu n'as qu'UN endroit à mettre à jour (par exemple à chaque dizaine).
+#
+#  Mots-clés visés (référencement) : DJ mariage Biarritz, Anglet, Bayonne,
+#  meilleur DJ mariage. Le Pays Basque élargi et les Landes auront leurs
+#  propres pages : ici on reste centré sur Biarritz / Anglet / Bayonne.
+# ══════════════════════════════════════════════════════════════════════
+
+# ── COMPTEURS D'AVIS (à mettre à jour toi-même de temps en temps) ──────
+#  Écris le nombre arrondi : « 150 » s'affichera « plus de 150 avis ».
+compteurs_avis:
+  google_avis: "60"
+
+seo:
+  # Titre et description affichés dans Google (pas visibles sur la page).
+  # Titre : 60 caractères maximum. Description : 155 caractères environ.
+  titre: "DJ mariage Biarritz, Anglet & Bayonne | Groove Caviar"
+  description: "DJ de mariage à Biarritz, Anglet et Bayonne : plus de 150 mariages, sono et éclairage inclus, DJs trilingues. Côte basque, Landes, international. Devis 72 h."
+
+# ── 1. HERO (grande photo d'ouverture) ─────────────────────────────────
+hero:
+  surtitre: "Biarritz · Anglet · Bayonne · Pays Basque"
+  titre_blanc: "DJ"
+  titre_or: "Mariage"
+
+# ── 2. CHIFFRES CLÉS (bandeau noir) ────────────────────────────────────
+chiffres:
+  - valeur: "10+"
+    libelle: "ans de mariages"
+  - valeur: "150+"
+    libelle: "mariages animés"
+  - valeur: "25000+"
+    libelle: "morceaux hi-fi"
+  - valeur: "0"
+    libelle: "date manquée"
+
+# ── 3. INTRO (réponse directe pour Google et les IA) ───────────────────
+intro:
+  # Un retour à la ligne dans le titre = un retour à la ligne à l'écran
+  titre: |
+    Votre DJ de mariage
+    au Pays Basque
+  texte: |
+    Groove Caviar est une agence de DJs basée à Biarritz. Depuis plus de dix ans et plus de 150 mariages, nos DJs font danser vos invités du vin d'honneur au dernier morceau, à Biarritz, Anglet et Bayonne, sur toute la Côte basque, dans les Landes et à l'international. Direction musicale sur mesure, lecture de piste en temps réel, échanges en français, en anglais ou en espagnol : votre mariage mérite la bonne bande-son.
+
+# ── 4. LE DÉROULÉ, DU JOUR À LA NUIT ───────────────────────────────────
+deroule:
+  surtitre: "Le déroulé"
+  titre_blanc: "De l'arrivée des invités"
+  titre_or: "au dernier morceau"
+  texte: "Chaque moment de votre journée a sa musique. Nous la construisons avec vous, pour une ambiance à votre image."
+  note: "Horaires donnés à titre indicatif : nous suivons le déroulé de votre journée."
+  moments:
+    - heure: "17h · Cérémonie laïque"
+      titre: "Le moment du « oui »"
+      texte: |
+        Entrée des mariés, échange des vœux, sortie sous les applaudissements : chaque morceau est choisi avec vous, et un micro sans fil porte la voix de vos officiants, proches et témoins.
+      etiquettes:
+        - "Sonorisation de cérémonie + micro"
+      ecoute:
+        texte: "Écouter · sélection pour entrée de cérémonie"
+        lien: "https://open.spotify.com/playlist/0cbcwEudFVe8kC8oDMpGQJ"
+      image_alt: "Cérémonie laïque en musique lors d'un mariage à Biarritz"
+
+    - heure: "18h · Vin d'honneur"
+      titre: "Le cocktail, en live"
+      texte: |
+        Bossa nova, soul, jazz : une ambiance élégante qui accompagne les retrouvailles sans couvrir les conversations. Pour un moment inoubliable, un saxophoniste, un percussionniste, ou les deux, jouent en live avec le DJ.
+      etiquettes:
+        - "Saxophoniste live"
+        - "Percussionniste live"
+      ecoute:
+        texte: "Écouter · cocktail mix bossa nova"
+        lien: "https://www.mixcloud.com/groovecaviar/groove-caviar-cocktail-mix-bossa-nova-mariage-wedding/"
+      image_alt: "Saxophoniste et DJ pendant le vin d'honneur d'un mariage au Pays Basque"
+
+    - heure: "20h30 · Dîner"
+      titre: "Le dîner, en douceur"
+      texte: |
+        Un mix feutré qui occupe le silence sans prendre de place et n'oblige pas les convives à élever la voix. Entrée en salle, discours, vidéos, présentation de dessert : nous orchestrons les temps forts avec vous, le lieu et le traiteur.
+      ecoute:
+        texte: "Écouter · dinner mix smooth jazz"
+        lien: "https://www.mixcloud.com/groovecaviar/dinner-mix-urban-smooth-jazz-mariage-wedding/"
+      image_alt: "Dîner de mariage en musique dans un château près de Biarritz"
+
+    - heure: "23h30 · Ouverture de bal"
+      titre: "Votre première danse"
+      texte: |
+        Telle que vous l'avez rêvée : version originale, remix ou enchaînement surprise, préparé ensemble. Et pour un moment magique, nous pouvons vous faire danser sur un nuage ou entourés d'étincelles.
+      etiquettes:
+        - "Option · nuage de fumée lourde"
+        - "Option · jets d'étincelles"
+      ecoute:
+        texte: "Écouter · sélection première danse"
+        lien: "https://open.spotify.com/playlist/01QXNfwZ3GlEScDuaNIonN"
+      image_alt: "Ouverture de bal des mariés sur un nuage de fumée lourde"
+
+    - heure: "Minuit · Soirée"
+      titre: "Jusqu'au bout de la nuit"
+      texte: |
+        Disco, funk, house, des années 80 à aujourd'hui : notre DJ lit la piste en temps réel et fait danser toutes les générations, jusqu'au dernier morceau.
+      ecoute:
+        texte: "Écouter · party mix soul × funk × disco"
+        lien: "https://www.mixcloud.com/groovecaviar/party-mix-soul-x-funk-x-disco-mariage-wedding/"
+      # Petite citation d'avis sous ce moment (initiales uniquement) :
+      citation:
+        texte: "Personne ne voulait quitter la piste de danse."
+        auteur: "M. & A. · Mariage 2025"
+      image_alt: "Piste de danse pleine lors d'une soirée de mariage animée par Groove Caviar"
+
+    - heure: "4h · Dernier morceau"
+      titre: "La touche finale"
+      texte: |
+        Du traditionnel "Les lacs du Connemara" à "The time of my life" de Dirty Dancing, libre à vous de choisir la chanson parfaite pour ce bouquet final plein d'amour qui marquera la fin d'une soirée mémorable.
+      ecoute:
+        texte: "Écouter · sélection dernier morceau"
+        lien: "https://open.spotify.com/playlist/3S5KGTMxWi0e6o36dJiGsf"
+      image_alt: "Une fin de soirée pleine d'amour"
+
+# ── VIDÉO (bandeau pleine largeur après le déroulé) ───────────────────
+video:
+  # Description lue par les lecteurs d'écran (la vidéo est muette)
+  description: "Une soirée de mariage Groove Caviar en vidéo : platines, piste de danse et invités en fête."
+  credit: "Vidéo : Quentin Vanden"
+  credit_lien: "http://videaste432hz.com/"
+
+# ── 5. AVIS ────────────────────────────────────────────────────────────
+avis:
+  surtitre: "Ils nous ont dit oui"
+  titre_blanc: "Les mots"
+  titre_or: "de nos mariés"
+  google_libelle: "Plus de {google_avis} avis sur Google"
+  bouton: "Lire nos avis sur Google"
+  # AVIS : initiales uniquement. Un paragraphe = un bloc séparé par une ligne vide.
+  #    « portrait: » = nom du fichier photo du couple (avis « à la une » uniquement,
+  #    dans src/assets/images/avis/ sous la forme avis-<nom>.webp).
+  #    Les avis longs du mur sont repliés automatiquement avec « Lire la suite ».
+  a_la_une:
+    - initiales: "M. & H."
+      date: "Mariage · juillet 2025"
+      source: google
+      portrait: marie-hugo
+      texte: |
+        Nous avons célébré notre mariage le samedi 26 juillet 2025 et avons eu la chance d'être accompagnés par Pierre, qui a assuré la sonorisation de notre cérémonie laïque, du vin d'honneur, du repas et de la soirée.
+
+        Tout a été parfaitement maîtrisé du début à la fin. Pierre a fait preuve d'une gentillesse et d'une bonne humeur communicatives, tout en nous prodiguant de précieux conseils tout au long des préparatifs et le jour J.
+
+        Résultat : une journée magique et une soirée dansante inoubliable ! Nos invités nous ont répété à quel point ils s'étaient amusés. L'ambiance n'est jamais retombée, et la piste de danse est restée pleine, de la première danse jusqu'à la dernière, à 4 h du matin.
+
+        Si vous voulez profiter pleinement de votre mariage et avoir un prestataire de confiance, vous pouvez confier votre événement à Pierre les yeux fermés ! (Plusieurs de nos invités nous ont même demandé ses coordonnées pour leurs propres événements.)
+    - initiales: "M. & S."
+      date: "Mariage · septembre 2023"
+      source: google
+      portrait: marine-selim
+      texte: |
+        Pierre a animé notre mariage – cérémonie, cocktail, dîner et soirée – et pour faire court, c'était parfait de A à Z !
+
+        Il a su nous accompagner et distiller de bons conseils dans toutes les phases de préparation de sa prestation. Il est à l'écoute de vos besoins, respectueux de vos goûts, très professionnel, mais aussi, disons-le, très sympathique.
+
+        Quand vous préparez un grand événement et que la musique y joue un rôle important, c'est bon de se sentir à l'aise et en confiance, comme ça a été le cas avec Pierre.
+
+        On ne s'est pas trompés : il nous a régalés, ainsi que tous nos convives, qui ont souligné la qualité de ses sets et des choix musicaux.
+
+        Recommandé à 100 % sans une once d'hésitation.
+    - initiales: "M. & C."
+      date: "Mariage · septembre 2021"
+      source: google
+      portrait: marion-clement
+      texte: |
+        Pierre nous a fait passer une soirée exceptionnelle pour notre mariage, en faisant danser toutes les générations. La piste de danse était tout le temps remplie !
+
+        Aussi, Pierre nous a aidés dans la préparation du mariage, nous étions en totale confiance : toutes les animations étaient envoyées en amont pour que tout se passe bien le jour J. Pierre a également fait un excellent montage pour notre première danse. Nous avons également rempli un super formulaire pour les musiques « interdites » et les « obligatoires » ; très à l'écoute, Pierre nous a fait passer une soirée magique !
+    - initiales: "M. & A."
+      date: "Mariage · juin 2025"
+      source: google
+      portrait: marie-anthony
+      texte: |
+        Nous avons fait appel à Pierre (Groove Caviar) pour notre mariage et nous en sommes plus que ravis ! Il est très professionnel et à l'écoute, tant pour l'accompagnement dans la préparation du mariage que pour sa performance le jour J (du cocktail à la fin de la soirée). Il a su entendre nos idées tout en nous conseillant dans les bons choix.
+
+        Une gestion parfaite de l'ambiance de la soirée et des playlists qui ont convaincu tous les invités, de toutes les générations. Personne ne voulait quitter la piste de danse. On recommande les yeux fermés et nous ferons appel à lui sans hésiter pour nos prochains événements.
+    - initiales: "M. & Y."
+      date: "Mariage · octobre 2023"
+      source: google
+      portrait: maxime-yann
+      texte: |
+        Nous avons eu la joie de faire appel à Groove Caviar pour l'animation musicale de notre mariage (cocktail, dîner et soirée). La promesse est tenue : un dancefloor rempli du début à la fin, jeunes et moins jeunes confondus.
+
+        La prestation de Groove Caviar fut de très grande qualité. Résultat : des invités ravis dès le cocktail et des mariés enchantés par la musique, l'animation, la disponibilité de Pierre et son professionnalisme impressionnant. À recommander les yeux fermés !
+    - initiales: "A. & F."
+      date: "Mariage · septembre 2022"
+      source: google
+      portrait: aurelie-fabrice
+      texte: |
+        Pierre a animé de main de maître notre mariage. Une préparation de qualité et très professionnelle pour être sûr de répondre au mieux à nos souhaits, ainsi qu'une animation parfaite tout au long du cocktail, puis du repas et enfin de la soirée dansante.
+
+        La piste est restée remplie jusqu'à la dernière musique et les invités en redemandaient. Bravo et merci de nous avoir accompagnés lors de cette journée inoubliable.
+  liste:
+    - initiales: "L. & J."
+      date: "Mariage · septembre 2026"
+      source: google
+      texte: |
+        Un immense merci à Pierre pour avoir rendu notre mariage encore plus incroyable !
+
+        Nous avons passé une soirée exceptionnelle : la playlist était parfaite, la piste de danse n'a jamais désempli et tous nos invités ont adoré l'ambiance. Nous avons dansé et fait la fête jusqu'à la dernière minute !
+
+        Pierre a été d'un grand professionnalisme, toujours souriant et de bonne humeur, avec des transitions impeccables. Nous ne pouvions vraiment pas rêver mieux pour accompagner cette soirée si importante pour nous. Bravo !
+    - initiales: "T. & A."
+      date: "Mariage · août 2025"
+      source: google
+      texte: |
+        Pierre a animé notre soirée de mariage de manière incroyable ! Beaucoup de monde est resté sur la piste jusqu'au bout, l'ambiance était dingue. Professionnel, rassurant et fluide, tout a été parfait. On recommande vivement !
+    - initiales: "P. & H."
+      date: "Mariage · août 2026"
+      source: google
+      texte: |
+        Pierre a grandement participé à la réussite de notre mariage, il fait preuve d'un très grand professionnalisme. Du rendez-vous de préparation jusqu'à la dernière chanson de notre soirée, Groove Caviar a su répondre à nos attentes.
+
+        À l'écoute de nos goûts musicaux (et de ceux de nos convives), il a fait danser toutes les générations jusqu'au bout de la nuit sans que la piste ne se vide ! La possibilité de rajouter un saxo est un réel plus.
+
+        Merci beaucoup Pierre, nous recommandons à 100 % !
+    - initiales: "M. & B."
+      date: "Mariage multiculturel · mai 2025"
+      source: google
+      texte: |
+        Super expérience pour notre mariage, Pierre a été là pour répondre à nos attentes pour un mariage multiculturel. Nous avons beaucoup travaillé en amont pour faire en sorte que tout se passe à merveille. Merci encore !
+    - initiales: "M. & Y."
+      date: "Mariage multiculturel · août 2024"
+      source: google
+      texte: |
+        Pierre a une démarche méthodique qui comble les plus exigeants en matière de musique. Nous souhaitions garder de l'élégance et de la douceur dans un premier temps, puis poursuivre avec une ambiance pleine d'énergie et de danse pour notre mariage multiculturel.
+
+        Il nous a écoutés et a compris l'essence et l'énergie de chaque moment : nous avons ri, pleuré puis dansé jusqu'au bout de la nuit ! Merci Groove Caviar, nous le recommandons vivement !
+    - initiales: "J. & L."
+      date: "Mariage · mai 2023"
+      source: google
+      texte: |
+        Pierre a été le DJ de notre mariage. Nous avons été ravis de la qualité de ses services ! Il a été disponible, bienveillant et a su facilement cerner nos attentes. Un monsieur d'une grande gentillesse, jovial et extrêmement sympa !
+
+        Je le recommande à 100 % et le remercie d'avoir fait danser nos invités jusqu'au bout de la nuit.
+
+# ── 6. NOS DJs ─────────────────────────────────────────────────────────
+djs:
+  surtitre: "Nos DJs"
+  titre_blanc: "Trois DJs,"
+  titre_or: "une même exigence"
+  texte: |
+    Chaque mariage Groove Caviar est confié à l'un de nos DJs résidents, choisi selon votre style et votre date. Tous partagent la même méthode : une écoute attentive, une préparation minutieuse, et le plaisir de voir une piste pleine jusqu'au bout de la nuit.
+  liste:
+    - nom: "Pierre"
+      role: "Fondateur"
+      photo: dj-pierre
+      langues: "FR · EN · ES"
+      texte: |
+        DJ depuis son adolescence et plus de 150 soirées de mariages à son actif, dont de nombreux mariages internationaux et LGBT+. Des clubs aux châteaux, un DJ qui sait faire danser toutes les générations.
+    - nom: "Domi"
+      role: "DJ résident Île de France"
+      photo: dj-domi
+      langues: "FR · EN"
+      texte: |
+        Avec plus de 10 ans d'expérience derrière les platines, Domi sait parfaitement lire un dancefloor et passer le bon morceau au bon moment. Comptez sur lui pour vous faire danser jusqu'au bout de la nuit ! 
+    - nom: "Mike"
+      role: "DJ résident Sud Ouest"
+      photo: dj-3
+      langues: "⚠️ FR"
+      texte: |
+        ⚠️ Deux ou trois phrases de présentation.
+  promesse_titre: "Jamais une date manquée"
+  promesse_texte: "Et un réseau de DJs de confiance en cas d'imprévu majeur."
+
+# ── 7. NOTRE MÉTHODE ───────────────────────────────────────────────────
+methode:
+  surtitre: "Notre méthode"
+  titre_blanc: "Six étapes,"
+  titre_or: "zéro stress"
+  etapes:
+    - titre: "Votre demande"
+      texte: "Un formulaire en quelques minutes : vous nous communiquez vos souhaits et les informations relatives à votre événement."
+    - titre: "Notre proposition"
+      texte: "Nous vérifions votre date, notre capacité à répondre parfaitement à votre vision et vous envoyons un devis personnalisé sous 72 h ouvrées."
+    - titre: "Validation, contrat et formulaire de préparation"
+      texte: "Vous validez notre engagement en versant des arrhes ce qui bloque la date pour vous dans notre agenda. Nous vous envoyons un contrat d'engagement ainsi qu'un formulaire de préparation qui vous permettra de définir vos souhaits pour l'aspect musical du mariage."
+    - titre: "Le rdv préparatoire"
+      texte: "En visio ou autour d'un café : ambiance, moments clés, morceaux incontournables… et ceux à ne jamais passer. Nous validons ensemble tous les détails "
+    - titre: "Le jour J"
+      texte: "Installation discrète avant l'arrivée de vos invités, en lien avec le lieu, le traiteur et votre wedding planner."
+    - titre: "La fête"
+      texte: "Notre DJ lit votre piste et adapte chaque enchaînement en direct. Vous n'avez plus qu'à danser."
+
+# ── 8. BIEN PLUS QU'UN PRIX (tiré de « infos devis extra 2027 ») ─────
+#  Les montants en euros (30 000, 10 000) défilent comme un compteur à l'écran.
+#  « detail » = le petit texte doré qui se dévoile sous chaque ligne.
+avantages:
+  surtitre: "Nos engagements"
+  titre_blanc: "Bien plus"
+  titre_or: "qu'un prix"
+  texte: "En choisissant Groove Caviar pour votre mariage, vous bénéficiez de nombreux avantages qui ne figurent pas sur un devis."
+  points:
+    - titre: "Plus de 30 000 € de musique"
+      detail: "Des classiques intemporels aux dernières nouveautés, en qualité hi-fi."
+    - titre: "Plus de 10 000 € de matériel"
+      detail: "Un équipement professionnel réputé pour sa qualité et sa fiabilité."
+    - titre: "Des DJs professionnels expérimentés"
+      detail: "Pas de débutants chez nous, mais des DJs compétents au savoir-faire reconnu."
+    - titre: "Un événement sans souci technique"
+      detail: "Il n'y a jamais de risque zéro, mais tout notre matériel est doublé : la musique ne s'arrêtera pas."
+    - titre: "La sérénité, grâce au sérieux de notre équipe"
+      detail: "Nous n'avons jamais manqué une date et disposons d'un réseau d'appui si besoin."
+    - titre: "Une préparation minutieuse, une prestation sur mesure"
+      detail: "Pas de playlist type, mais une musique qui vous ressemble et une organisation fluide."
+    - titre: "Un accompagnement cordial et une présentation soignée"
+      detail: "Nous allons faire la fête ensemble : autant être sympa, poli et bien habillé."
+
+# ── 9. TARIFS & OPTIONS ────────────────────────────────────────────────
+tarifs:
+  surtitre: "Tarifs & options"
+  titre_blanc: "Une prestation d’exception,"
+  titre_or: "des options sur mesure"
+  formule:
+    nom: "Prestation complète mariage"
+    a_partir_de: "à partir de"
+    prix: "1 999 €"
+    saison: "en haute saison (avril – octobre)"
+    # Les montants restent volontairement indicatifs : chaque mariage fait l'objet d'un devis sur mesure.
+    remise: "Tarifs préférentiels hors saison"
+    inclus:
+      - "La musique du vin d'honneur, du dîner et de la soirée, jusqu'au dernier morceau"
+      - "Le matériel DJ professionnel"
+      - "La sonorisation du cocktail"
+      - "La sonorisation du dîner et de la soirée"
+      - "L'éclairage de la piste de danse, façon club"
+      - "Un micro sans fil pour les discours"
+      - "La préparation de votre soirée sur mesure"
+      - "Un rendez-vous préparatoire"
+      - "L'installation et le démontage"
+      - "Les frais de déplacement"
+    mention: "Chaque mariage est unique : le tarif final dépend de votre lieu, de la durée et des options choisies."
+    bouton: "Recevoir mon devis"
+  # Titre et phrase affichés au-dessus des cartes d'options
+  options_titre: "Envie d'aller plus loin ?"
+  options_texte: "Musiciens live, effets, spectacles : des options à ajouter selon vos envies, pour donner à chaque moment de la journée une touche en plus."
+  options:
+    - titre: "Musiciens live"
+      liste:
+        - "Saxophoniste · cocktail et/ou soirée"
+        - "Percussionniste · cocktail"
+        - "Saxophone + percussions"
+    - titre: "Lumière & effets"
+      liste:
+        - "Éclairage d'ambiance (uplighting)"
+        - "Danser sur un nuage"
+        - "Jets d'étincelles · or ou argent"
+        - "Boule à facettes"
+        - "Show lumières avec technicien dédié"
+    - titre: "Cérémonie & discours"
+      liste:
+        - "Sonorisation et musique de cérémonie"
+        - "Micros sans fil supplémentaires & console"
+        - "Pupitre pour les discours"
+        - "Vidéoprojection (écran + projecteur)"
+        - "Batterie autonome (sans prise électrique)"
+    - titre: "Spectacles possibles"
+      liste:
+        - "Show scratch par un triple champion du monde"
+        - "Magicien"
+        - "Cabaret burlesque en déambulation"
+
+# ── 10. LOCALISATION (carte stylisée + lieux + zones) ──────────────
+localisation:
+  surtitre: "Localisation"
+  titre_blanc: "De la Côte basque"
+  titre_or: "au bout du monde"
+  # Un retour à la ligne = un retour à la ligne à l'écran (sur grand écran uniquement)
+  texte: |
+    Basé à Biarritz, Groove Caviar fait danser vos invités sur toute la Côte basque et dans les Landes,
+    partout en France et à l'étranger.
+  carte_legende: "Quelques lieux où nous avons fait danser"
+  lieux_titre: "Nos lieux de cœur"
+  # Lieux avec photo (carrousel) :
+  avec_photo:
+    - nom: "Château d'Arcangues"
+      ville: "Arcangues"
+    - nom: "Hôtel du Palais"
+      ville: "Biarritz"
+    - nom: "Domaine Elhorria"
+      ville: "Biarritz"
+    - nom: "Domaine de Larbéou"
+      ville: "Bayonne"
+    - nom: "Château du Clair de Lune"
+      ville: "Biarritz"
+    - nom: "Château de Larraldia"
+      ville: "Villefranque"
+    - nom: "La Ferme aux Piments"
+      ville: "Saint-Pée-sur-Nivelle"
+    - nom: "70 Hectares & l'Océan"
+      ville: "Seignosse"
+    - nom: "Les Hortensias du Lac"
+      ville: "Hossegor"
+    - nom: "Domaine Arremonteguy"
+      ville: "Urt"
+    - nom: "Château de Brindos"
+      ville: "Anglet"
+    - nom: "Théâtre de la Nature"
+      ville: "Arcangues"
+  autres: "Et aussi : Espace de l'Océan et Espace Maïténa (Anglet), Maison Chiberta (Anglet), Château de Monbet (Saint-Lon-les-Mines), Ferme Inharria (Saint-Pée-sur-Nivelle), Ferme Ostalapia (Ahetze), Château de Campet (Campet-et-Lamolère), Domaine de Tilh (Loubieng)."
+  zones_titre: "Nos zones d'intervention"
+  # Les liens « Découvrir » n'apparaissent QUE lorsque la sous-page existe.
+  zones:
+    - surtitre: "Biarritz · Anglet · Bayonne"
+      titre: "Notre port d'attache"
+      texte: "Châteaux, domaines et villas de l'agglomération : nous connaissons les lieux, leurs équipes et leurs contraintes."
+    - surtitre: "Pays Basque"
+      titre: "Côte & intérieur"
+      texte: "Saint-Jean-de-Luz, Urt, Saint-Pée-sur-Nivelle, Cambo-les-Bains… des villages et des domaines au cœur du Pays Basque."
+      page: /mariages/pays-basque
+    - surtitre: "Landes"
+      titre: "Océan & forêt"
+      texte: "Hossegor, Seignosse, Capbreton… des mariages entre lacs, pins et océan."
+      page: /mariages/landes
+    - surtitre: "Partout en France"
+      titre: "Paris & ailleurs"
+      texte: "Île-de-France, Bordeaux, Provence… nous pouvons intervenir où vous le souhaitez car nos DJs se déplacent partout."
+    - surtitre: "À l'étranger"
+      titre: "Votre mariage hors de France"
+      texte: "Vous êtes français et vous vous mariez à l'étranger ? Un DJ à la culture musicale française, à l'aise avec des invités du monde entier, en français, en anglais ou en espagnol."
+      page: /mariages/etranger
+  lien_texte: "Découvrir"
+
+# ── 11. À CHAQUE COUPLE SA BANDE-SON ───────────────────────────────────
+couples:
+  surtitre: "Mariages sur mesure"
+  titre_blanc: "À chaque couple"
+  titre_or: "sa bande-son"
+  # Exergue (bandeau citation) : un retour à la ligne = une nouvelle ligne à l'écran.
+  exergue: |
+    Des mariages sans frontières,
+    une playlist adaptée à vous et vos invités
+  texte: "Cultures, langues, histoires : nous construisons une programmation qui rassemble tous vos invités."
+  cartes:
+    - surtitre: "Multiculturel"
+      titre: "Deux cultures, une seule piste"
+      texte: "Mariés de nationalités différentes qui se marient en France : nous mêlons les répertoires de vos deux pays pour que chaque famille se sente chez elle."
+      page: /mariages/multiculturel
+    - surtitre: "Destination wedding"
+      titre: "Venir se marier au Pays Basque"
+      texte: "Vous venez de l'étranger pour vous marier dans la région ? Échanges en anglais ou en espagnol, et une programmation pensée pour vos invités."
+      page: /mariages/international
+    - surtitre: "LGBT+"
+      titre: "Tous les amours"
+      texte: "Une fête à votre image, élégante et inclusive, avec la même exigence pour tous les couples."
+      page: /mariages/lgbt
+    - surtitre: "Renouvellement des vœux"
+      titre: "Dire « oui » à nouveau"
+      texte: "Renouvellement des vœux, anniversaire de mariage : 10, 25 ou 50 ans après, revivez votre fête avec ceux qui étaient là, et ceux qui vous ont rejoints."
+      page: /mariages/renouvellement-voeux
+  lien_texte: "Découvrir"
+  # Badges de confiance (images dans src/assets/images/badges/)
+  badges_titre: "Reconnus et recommandés"
+  badges:
+    - nom: "LGBTQ+ Friendly"
+      image: lgbtq-friendly
+    - nom: "Recommandé par Mariages.net"
+      image: mariages-net
+    - nom: "The Knot — Best of Weddings, Hall of Fame"
+      image: theknot
+    - nom: "WeddingWire Rated"
+      image: weddingwire
+    - nom: "Top Pro StarOfService"
+      image: starofservice
+
+# ── 12. FAQ (questions-réponses, très utiles pour Google et les IA) ────
+faq:
+  surtitre: "Questions fréquentes"
+  titre: "Tout savoir sur votre DJ de mariage"
+  questions:
+    - question: "Combien coûte un DJ de mariage à Biarritz ?"
+      reponse: |
+        Chez Groove Caviar, une prestation complète de DJ pour un mariage démarre à 1 999 € en haute saison (d'avril à octobre), avec des tarifs préférentiels hors saison. Elle comprend la musique du vin d'honneur à la fin de soirée, la sonorisation, l'éclairage de piste, un micro sans fil et la préparation de votre soirée. Chaque mariage étant unique, le tarif dépend de votre lieu, de la durée et des options choisies : nous vous envoyons un devis personnalisé, gratuit et sans engagement, sous 72 h ouvrées après votre [demande de devis](/devis/mariages).
+
+    - question: "Que comprend la prestation complète ?"
+      reponse: |
+        La musique du vin d'honneur jusqu'à la fin de soirée, le matériel DJ professionnel, la sonorisation du dîner et de la soirée, la sonorisation du cocktail, l'éclairage de la piste de danse façon club, un micro sans fil pour les discours, la préparation de votre soirée, un rendez-vous préparatoire, l'installation, le démontage et les frais de déplacement.
+
+    - question: "Combien de temps à l'avance faut-il réserver son DJ de mariage ?"
+      reponse: |
+        Dès que votre date et votre lieu sont fixés : les samedis de mai à septembre sont les plus demandés et partent vite. Hors saison, nous avons généralement plus de disponibilités, à des tarifs préférentiels.
+
+    - question: "Comment réserver notre date ?"
+      reponse: |
+        Remplissez notre [formulaire de demande de devis](/devis/mariages). Nous vérifions la disponibilité de votre date et vous envoyons un devis personnalisé sous 72 h ouvrées. Votre date est ensuite bloquée à la signature du contrat et au versement d'arrhes de 400 €.
+
+    - question: "Pouvez-vous jouer en extérieur, en jardin ou en terrasse ?"
+      reponse: |
+        Oui : le vin d'honneur se déroule souvent en terrasse ou dans les jardins des châteaux, et nous y installons notre sonorisation. Le DJ et le matériel doivent simplement être à l'abri des intempéries : en cas de pluie, prévoyez un abri (barnum, tonnelle, préau ou terrasse couverte).
+
+    - question: "Que se passe-t-il si votre DJ a un empêchement ?"
+      reponse: |
+        En plus de dix ans, Groove Caviar n'a jamais manqué une date. En cas d'imprévu grave de dernière minute, nous faisons appel à notre réseau de DJs professionnels de confiance pour assurer votre soirée.
+
+    - question: "Peut-on choisir les morceaux, et ceux à ne pas passer ?"
+      reponse: |
+        Bien sûr. Lors du rendez-vous préparatoire, nous définissons ensemble l'ambiance de chaque moment, vos morceaux incontournables et ceux à ne jamais passer. Le jour J, le DJ construit ses enchaînements en direct selon l'énergie de vos invités. Pour vous inspirer, découvrez nos [playlists mariages](/musique#playlists-mariages).
+
+    - question: "Proposez-vous des musiciens pour le cocktail ?"
+      reponse: |
+        Oui : un saxophoniste, un percussionniste, ou les deux, peuvent accompagner le DJ en live pendant le vin d'honneur, et le saxophoniste aussi pendant la soirée (sous réserve de disponibilité). Nous pouvons aussi vous proposer des groupes live ou des bandas et nous les relayons dès qu'ils font leurs pauses afin que la musique ne s'arrête pas.
+
+    - question: "Parlez-vous anglais et espagnol pour un mariage international ?"
+      reponse: |
+        Oui. Nous accueillons vos invités et faisons les annonces en français, en anglais ou en espagnol, et nous construisons une programmation qui rassemble toutes les cultures présentes.
+
+    - question: "Dans quelles villes intervenez-vous ?"
+      reponse: |
+        Basé à Biarritz, Groove Caviar anime des mariages à Biarritz, Anglet et Bayonne, sur toute la Côte basque (Saint-Jean-de-Luz, Guéthary, Bidart, Arcangues…), dans le Pays Basque intérieur, dans les Landes (Hossegor, Seignosse, Capbreton) et partout en France et à l'international.
+
+    # ⚠️ Question à compléter si tu veux : jusqu'à quelle heure jouez-vous ? Heures supplémentaires ?
+
+# ── 13. APPEL FINAL ────────────────────────────────────────────────────
+cta:
+  titre_blanc: "Votre date"
+  titre_or: "est-elle libre ?"
+  texte: "Dites-nous tout de votre mariage : nous vous répondons sous 72 h ouvrées avec une proposition sur mesure."
+  bouton_devis:
+    texte: "Demander un devis"
+    page: /devis/mariages
+  bouton_contact:
+    texte: "Nous appeler"
+    page: "tel:+33623625704"
+
+# ── Barre fixe en bas de l'écran (mobile) ──────────────────────────────
+barre_mobile:
+  bouton: "Demander un devis"

@@ -923,8 +923,9 @@ const jsonLd = {
       const go = (dir: 1 | -1) => track.scrollBy({ left: dir * step(), behavior: 'smooth' });
       prev.disabled = false;
       next.disabled = false;
-      prev.onclick = () => { go(-1); stopForGood(); };
-      next.onclick = () => { go(1); stopForGood(); };
+      // Clic sur une flèche : on avance, et le défilement auto repart de zéro (il ne s'arrête pas).
+      prev.onclick = () => { go(-1); refresh(); };
+      next.onclick = () => { go(1); refresh(); };
 
       // ── Défilement automatique ──
       // Si le visiteur a demandé « moins d'animations » (réglage du système), le défilement démarre
@@ -932,7 +933,7 @@ const jsonLd = {
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       let auto: number | undefined;
       let paused = reduce;    // pause demandée (bouton, réglage système ou action du visiteur)
-      let hovering = false;   // souris sur les photos / focus clavier
+      let keyboard = false;   // carrousel piloté au clavier
       let visible = false;    // section à l'écran
       const setPaused = (value: boolean) => {
         paused = value;
@@ -944,24 +945,19 @@ const jsonLd = {
       function refresh() {
         window.clearInterval(auto);
         auto = undefined;
-        if (paused || hovering || !visible) return;
+        if (paused || keyboard || !visible) return;
         auto = window.setInterval(() => go(1), AUTO_MS);
-      }
-      function stopForGood() {
-        // le visiteur pilote lui-même avec les flèches : on arrête l'automatique
-        setPaused(true);
       }
       if (pause) {
         root.classList.add('is-auto');
         setPaused(reduce);
         pause.onclick = () => setPaused(!paused);
-        // Pause uniquement quand la souris est SUR les photos (pas sur toute la section),
-        // ou quand le carrousel est piloté au clavier.
-        track.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { hovering = true; refresh(); } });
-        track.addEventListener('pointerleave', () => { hovering = false; refresh(); });
-        track.addEventListener('focus', () => { hovering = true; refresh(); });
-        track.addEventListener('blur', () => { hovering = false; refresh(); });
-        track.addEventListener('touchstart', () => setPaused(true), { passive: true });
+        // Pas de pause au survol : le carrousel occupe toute la largeur, la souris est presque
+        // toujours dessus pendant qu'on le regarde. Pause = bouton, ou navigation au clavier.
+        track.addEventListener('focus', () => { keyboard = track.matches(':focus-visible'); refresh(); });
+        track.addEventListener('blur', () => { keyboard = false; refresh(); });
+        // Glissé au doigt : le défilement auto repart de zéro
+        track.addEventListener('touchstart', () => refresh(), { passive: true });
         new IntersectionObserver(
           (entries) => { visible = entries[0].isIntersecting; refresh(); },
           { threshold: 0.4 }
